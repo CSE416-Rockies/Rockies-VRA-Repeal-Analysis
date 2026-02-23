@@ -5,14 +5,14 @@ export default function StateSelection(){
     
     return(
 
-        <div className = " fixed right-5 top-5 flex flex-col bg-white rounded-2xl shadow-md w-96 pt-4 border-divide">
+        <div className = " fixed right-5 top-5 flex flex-col bg-white rounded-2xl shadow-md w-1/3 pt-4 border-divide">
 
             <div className = "flex justify-between items-center pb-4 px-4">
                 <span className = 'flex gap-2'>
                     <span className = "text-gray-400">Selected:</span>
                     <span className = "font-bold">Delaware</span>
                 </span>
-                <XCircleIcon className = 'text-red-500 w-7 transition-transform transition-duration-700 ease-in-out hover:scale-125'/>
+                <XCircleIcon className = 'text-red-500 w-7 transition-transform duration-500 ease-in-out hover:scale-125'/>
             </div>
 
             <div className = "flex justify-between divide-x divide-gray-300">

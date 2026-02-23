@@ -41,11 +41,7 @@ export default function StateDetail(){
             </div>
         </div>
 
-
    )
-
-
-
 
 }
 
