@@ -2,13 +2,14 @@
 import './index.css'
 import { Routes, Route} from 'react-router-dom';
 import NavBar from './components/NavBar.jsx';
-import Map from './components/Map.jsx';
+import StateSelection from './components/StateSelection.jsx';
 
 function App() {
 
   return (
     <>
       <NavBar/>
+      <StateSelection/>
      
       <Routes>
         <Route path = "/" element = {<Map/>}></Route>

@@ -30,7 +30,7 @@ export default function NavBar(){
             </div>
             
             
-            <div className = "w-full divide-y divide-gray-300 border-y border-gray-300 my-5 overflow-hidden whitespace-nowrap">
+            <div className = "w-full border-divide border-gray-300 my-5 overflow-hidden whitespace-nowrap">
                 
 
                 {navItems.map(({to, id, icon: Icon, label})=> (
