@@ -1,0 +1,22 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none"
+     stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+  <!-- axes -->
+  <line x1="10" y1="8" x2="10" y2="56"/>   <!-- y axis -->
+  <line x1="10" y1="56" x2="58" y2="56"/>  <!-- x axis -->
+
+  <!-- left box plot -->
+  <line x1="26" y1="18" x2="26" y2="46"/>          <!-- whisker -->
+  <line x1="21" y1="18" x2="31" y2="18"/>          <!-- top cap -->
+  <line x1="21" y1="46" x2="31" y2="46"/>          <!-- bottom cap -->
+  <rect x="20" y="26" width="12" height="12" rx="4"/>
+  <line x1="20" y1="32" x2="32" y2="32"/>          <!-- median -->
+
+  <!-- right box plot -->
+  <line x1="44" y1="14" x2="44" y2="50"/>          <!-- whisker -->
+  <line x1="39" y1="14" x2="49" y2="14"/>          <!-- top cap -->
+  <line x1="39" y1="50" x2="49" y2="50"/>          <!-- bottom cap -->
+  <rect x="38" y="28" width="12" height="14" rx="4"/>
+  <line x1="38" y1="35" x2="50" y2="35"/>          <!-- median -->
+
+</svg>

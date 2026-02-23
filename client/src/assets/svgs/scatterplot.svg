@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"
+fill="none" stroke="currentcolor" stroke-width="2.5"
+stroke-linecap="round" stroke-linejoin="round">
+
+<!-- axes -->
+<line x1="12" y1="10" x2="12" y2="54"/>
+<line x1="12" y1="54" x2="56" y2="54"/>
+
+<!-- points -->
+<circle cx="20" cy="42" r="2.0" fill="currentcolor"/>
+<circle cx="28" cy="30" r="2.0" fill="currentcolor"/>
+<circle cx="36" cy="38" r="2.0" fill="currentcolor"/>
+<circle cx="44" cy="20" r="2.0" fill="currentcolor"/>
+<circle cx="45" cy="30" r="2.0" fill="currentcolor"/>
+
+</svg>
