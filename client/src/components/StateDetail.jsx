@@ -1,7 +1,7 @@
-import { ChevronRightIcon } from '@heroicons/react/24/solid'
+import { ChevronRightIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid'
 
 
-export default function StateDetail(){
+export default function StateDetail({expanded, onClick}){
     const races = [
         {race: "White", percent: 39.78, popNumber: 700000},
         {race: "Black", percent: 20.14, popNumber: 300000},
@@ -18,26 +18,32 @@ export default function StateDetail(){
 
 
     return(
-        <div className = "flex flex-col bg-white shadow-md rounded-2xl w-1/3 p-5 fixed right-5 top-16 gap-5">
-            <div className = 'text-xl text-gray-500'>State Detail</div>
-
-            <div className = 'flex text-gray-500 justify-between'>
-                <span>State Population</span>
-                <span className = "text-emerald-500 font-bold">3,200,000</span>
+        <div className = "flex flex-col bg-white shadow-md rounded-2xl w-full p-5">
+            <div className = 'flex bg-white w-full justify-between text-xl text-gray-500 cursor-pointer' onClick = {onClick} >
+                <div>State Detail</div>
+                { expanded ? <ChevronUpIcon className = 'w-5'/> : <ChevronDownIcon className = 'w-5'/> }
             </div>
 
-            <BarSection title = "Racial Population" arr = {races.map(ele=> ({label: ele.race, sublabel: ele.popNumber, color: 'bg-emerald-500', percent: ele.percent}))} />
-
-            <div className = 'flex text-gray-500 justify-between'>
-                <span>Party Control</span>
-                <span className = {`${partyControl == "Republican"? 'text-red-500' : 'text-blue-500'}`}>{partyControl}</span>
-            </div>
-
-            <BarSection title = "State Voter Distribution" arr = {stateVoterDist.map(ele=> ({label: ele.party, sublabel: "", color: ele.partyColor, percent: ele.percent}))} />
+            <div className={`flex flex-col gap-5 overflow-scroll transition-all duration-700 ease-in-out ${expanded ? 'max-h-80 pt-5' : 'max-h-0'}`}>
             
-            <div className = 'flex text-gray-500 justify-between'>
-                <span>Congressional Representatives</span>
-                <ChevronRightIcon className = 'w-5'/>
+                <div className = 'flex text-gray-500 justify-between'>
+                    <span>State Population</span>
+                    <span className = "text-emerald-500 font-bold">3,200,000</span>
+                </div>
+
+                <BarSection title = "Racial Population" arr = {races.map(ele=> ({label: ele.race, sublabel: ele.popNumber, color: 'bg-emerald-500', percent: ele.percent}))} />
+
+                <div className = 'flex text-gray-500 justify-between'>
+                    <span>Party Control</span>
+                    <span className = {`${partyControl == "Republican"? 'text-red-500' : 'text-blue-500'}`}>{partyControl}</span>
+                </div>
+
+                <BarSection title = "State Voter Distribution" arr = {stateVoterDist.map(ele=> ({label: ele.party, sublabel: "", color: ele.partyColor, percent: ele.percent}))} />
+                
+                <div className = 'flex text-gray-500 justify-between'>
+                    <span>Congressional Representatives</span>
+                    <ChevronRightIcon className = 'w-5'/>
+                </div>
             </div>
         </div>
 
