@@ -11,7 +11,7 @@ export default function MapView(){
         <div className = 'flex fixed inset-0 h-screen w-full'>
 
    
-            <div className = 'flex flex-col absolute gap-5 w-1/3 my-5 top-40 right-5'>
+            <div className = 'flex flex-col absolute gap-5 w-1/3 my-5 top-40 bottom-5 right-5'>
                 <StateDetail expanded = {expanded} onClick = {()=>setExpanded(!expanded)} className = 'absolute top-0 '/>
                 <DistrictDetail expanded = {!expanded} onClick = {()=>setExpanded(!expanded)} className = 'absolute bottom-0 '/>
             </div>

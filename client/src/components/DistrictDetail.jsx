@@ -20,27 +20,29 @@ export default function DistrictDetail({expanded, onClick}){
 
     return(
 
-        <div className = 'bg-white  rounded-2xl shadow-md flex flex-col w-full p-5 text-sm'>
-            <div className = 'flex bg-white w-full justify-between text-xl text-gray-500 cursor-pointer' onClick = {onClick} >
+        <div className = 'bg-white rounded-2xl shadow-md flex flex-col w-full py-5 text-sm overflow-hidden min-h-0 transition-all duration-700 ease-in-out' 
+             style={{ flex: expanded ? 1 : '0 0 auto'}}
+        >
+            <div className = 'flex bg-white w-full justify-between text-xl px-5 text-gray-500 cursor-pointer' onClick = {onClick} >
                 <div>District Detail</div>
                 { expanded ? <ChevronUpIcon className = 'w-5'/> : <ChevronDownIcon className = 'w-5'/> }
             </div>
         
-            <div className={`flex justify-center overflow-scroll transition-all duration-700 ease-in-out ${expanded ? 'max-h-80 pt-5' : 'max-h-0'}`}>
+            <div className={`flex justify-center overflow-y-scroll ${expanded ? 'opacity-100 pt-5' : 'max-h-0 opacity-0'}`}>
                 <table className = 'w-full'>
                     <thead className = 'text-left text-gray-400 '>
                         <tr>
-                            <th>#</th>
+                            <th className = 'pl-5'>#</th>
                             <th>Representative</th>
                             <th>Party</th>
                             <th>Racial Group</th>
-                            <th>Vote Margin</th>
+                            <th >Vote Margin</th>
                         </tr>
                     </thead>
                     <tbody>
                         {districtArr.map(({dNum, rep, party, racialGroup, voteMargin}, index) => (
                         <tr key = {dNum} className = {`h-8 ${index%2==0? 'bg-gray-100':''}`} >
-                                <td>{dNum}</td>
+                                <td className = 'pl-5'>{dNum}</td>
                                 <td>{rep}</td>
                                 <td >
                                     <span className = {`text-xs rounded-sm p-1 font-bold text-white ${party == "democrat"? 'bg-blue-500' : 'bg-red-500'}`}>
