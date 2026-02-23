@@ -21,3 +21,22 @@ th{
     @apply divide-y divide-gray-300 border-y
   }
 }
+
+
+@keyframes slideInL {
+  from { transform: translateX(-100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.slideInL {
+  animation: slideInL 0.5s;
+}
+
+@keyframes slideInR {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0%); opacity: 1; }
+}
+
+.slideInR {
+  animation: slideInR  0.5s;
+}
