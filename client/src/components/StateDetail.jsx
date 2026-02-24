@@ -31,16 +31,19 @@ export default function StateDetail({expanded, onClick}){
     ];
 
      const reps = [
-        {repName: "Bob Dylan", party: 'republican'},
-        {repName: "Bob Dylan", party: 'republican'},
-        {repName: "Bob Dylan", party: 'democratic'},
-        {repName: "Bob Dylan", party: 'democratic'},
-        {repName: "Bob Dylan", party: 'republican'},
-        {repName: "Bob Dylan", party: 'republican'},
-        {repName: "Bob Dylan", party: 'democratic'},
-        {repName: "Bob Dylan", party: 'republican'},
-        {repName: "Bob Dylan", party: 'democratic'},
-        {repName: "Bob Dylan", party: 'democratic'},
+        {dNum: 1, repName: "Bob Dylan", party: 'republican', imgID: 'ga-01'},
+        {dNum: 2, repName: "Bob Dylan", party: 'republican', imgID: 'ga-02'},
+        {dNum: 3, repName: "Bob Dylan", party: 'democratic', imgID: 'ga-03'},
+        {dNum: 4, repName: "Bob Dylan", party: 'democratic', imgID: 'ga-04'},
+        {dNum: 5, repName: "Bob Dylan", party: 'republican', imgID: 'ga-05'},
+        {dNum: 6, repName: "Bob Dylan", party: 'republican', imgID: 'ga-06'},
+        {dNum: 7, repName: "Bob Dylan", party: 'democratic', imgID: 'ga-07'},
+        {dNum: 8, repName: "Bob Dylan", party: 'republican', imgID: 'ga-08'},
+        {dNum: 9, repName: "Bob Dylan", party: 'democratic', imgID: 'ga-09'},
+        {dNum: 10, repName: "Bob Dylan", party: 'democratic', imgID: 'ga-10'},
+        {dNum: 11, repName: "Barry Loudermilk", party: 'republican', imgID: 'ga-11'},
+        {dNum: 12, repName: "Bob Dylan", party: 'democratic', imgID: 'ga-12'},
+        {dNum: 13, repName: "Bob Dylan", party: 'democratic', imgID: 'ga-13'}
     ]
 
     const partyControl = "Democrat";
@@ -154,12 +157,13 @@ function CongressRepDetail({repArr, onClick}){
     return(
     <div className = 'grid grid-cols-2 gap-5 p-5' onClick = {onClick}>
 
-        {repArr.map(({repName, party})=>(
-            <div className = 'flex gap-2'>
-                <UserIcon className = 'w-8'/>
-                <div className = 'flex flex-col gap-1'>
-                    <div className = 'text-sm'>{repName}</div>
-                    <div className = {`text-xs capitalize ${party == "republican"? 'text-red-500' : 'text-blue-500'}`}>{party} Party</div>
+        {repArr.map(({dNum, repName, party, imgID})=>(
+            <div className = 'flex gap-2' key = {repName}>
+                <img src = {`/representatives/${imgID}.jpg`} className = 'w-16 object-cover rounded-md'/>
+                <div className = 'flex flex-col gap-0.5 justify-center'>
+                    <div className = 'text-sm font-semibold'>{repName}</div>
+                    <div className = 'text-xs text-gray-500'>District {dNum}</div>
+                    <div className = {`text-xs capitalize rounded-xl ${party == "republican"? 'text-red-500' : 'text-blue-500'}`}>{party}</div>
                 </div>
             </div>
         ))}
