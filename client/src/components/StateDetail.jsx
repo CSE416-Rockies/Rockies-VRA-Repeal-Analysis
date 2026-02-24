@@ -1,5 +1,4 @@
 import { ChevronRightIcon, ChevronLeftIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid'
-import {UserIcon} from '@heroicons/react/24/solid'
 import {useState, useRef} from 'react'
 
 
