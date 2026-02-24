@@ -1,0 +1,1 @@
+data/Georgia/Precinct/ga_nyt.geojson filter=lfs diff=lfs merge=lfs -text
