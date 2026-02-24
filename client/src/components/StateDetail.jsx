@@ -65,21 +65,14 @@ export default function StateDetail({expanded, onClick}){
                 {!repDetail ? 
                     (<div className = 'flex flex-col gap-5'>
                         <DefaultDetail races = {races} stateVoterDist = {stateVoterDist} partyControl = {partyControl}/>
-                        <div className = 'group flex text-gray-500 justify-between cursor-pointer hover:bg-gray-100 -mx-5 p-5' onClick = {toReps}>
-                            <span className = 'group-hover:translate-x-2'>Congressional Representatives</span>
-                            <ChevronRightIcon className = 'w-5 group-hover:translate-x-2 '/>
-                        </div>
+                        <RepDetailButton chevronDir = 'R' toWhere = {toReps}/>
                     </div>)
-                
+
                     :
 
                     (<div className = 'flex flex-col'>
-                        <div className = 'group flex text-gray-500 justify-between cursor-pointer hover:bg-gray-100 -mx-5 p-5' onClick = {toDef}>
-                            <ChevronLeftIcon className = 'w-5 group-hover:-translate-x-2 '/>
-                            <span className = 'group-hover:-translate-x-2'>Congressional Representatives</span>
-                        </div>
+                        <RepDetailButton chevronDir = 'L' toWhere = {toDef}/>
                         <CongressRepDetail repArr = {reps} />
-                        
                     </div>)
                 }
                 </div>
@@ -168,5 +161,23 @@ function CongressRepDetail({repArr, onClick}){
             </div>
         ))}
     </div>
+    )
+}
+
+
+/* "Congressional Represenatives > " button logic */
+
+function RepDetailButton({chevronDir, toWhere}){
+    const isLeft = (chevronDir == 'L');
+    return(
+        <div className = 'group flex text-gray-500 justify-between cursor-pointer hover:bg-gray-100 -mx-5 p-5' onClick = {toWhere}
+            style = {{flexDirection: isLeft? "row-reverse" : "row"}}>
+            <span className = {`transition-transform duration-300 ${isLeft ? 'group-hover:-translate-x-2' : 'group-hover:translate-x-2'}`}>Congressional Representatives</span>
+            {isLeft  ? 
+            (<ChevronLeftIcon className = 'w-5 transition-transform duration-300 group-hover:-translate-x-2 '/>)
+            :
+            (<ChevronRightIcon className = 'w-5 transition-transform duration-300  group-hover:translate-x-2 '/>)
+            } 
+        </div>
     )
 }
