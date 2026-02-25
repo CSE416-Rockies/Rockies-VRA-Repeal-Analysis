@@ -1,13 +1,27 @@
 import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
+import { useNavigate } from "react-router-dom";
+import { MapContainer, TileLayer, GeoJSON, } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
 export default function Map() {
   const [stateLines, setStateLines] = useState(null);
+  const navigate = useNavigate();
+
   const usBounds = [
     [24.396308, -124.848974],
     [49.384358, -66.885444]   
   ];
+
+  const stateBounds = {
+    Delaware: [
+      [38.451, -75.789],
+      [39.839, -75.048],
+    ],
+    Georgia: [
+      [30.357, -85.605],
+      [35.000, -80.751],
+    ],
+  };
   
   /* US State Lines Style */
   const lineStyle = (feature) => {
@@ -54,8 +68,26 @@ export default function Map() {
         mouseout: (e) => {
           e.target.setStyle(lineStyle(feature));
         },
-        click: () => {
-          // add navigate to MapView later
+        click: (e) => {
+          const stateName = feature.properties.NAME;
+          const bounds = stateBounds[stateName];
+          e.target.setStyle({
+            fillOpacity: 0,
+            weight: 1,
+            color: "#cccccc",
+          });
+
+          if (bounds) {
+            const map = e.target._map;
+
+            map.flyToBounds(bounds, {
+              duration: 1,
+            });
+
+            setTimeout(() => {
+              navigate(`/map/${stateName}`);
+            }, 1000);
+          }
         },
       });
     }

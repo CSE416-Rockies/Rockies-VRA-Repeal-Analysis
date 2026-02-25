@@ -19,7 +19,7 @@ function App() {
      
       <Routes>
         <Route path = "/" element = {<Map/>}></Route>
-        <Route path = "/map" element = {<MapView />}></Route> 
+        <Route path = "/map/:name" element = {<MapView />}></Route> 
         <Route path = "/scatterplot"></Route>
         <Route path = "/eiAnalysis"></Route>
         <Route path = "/ensembleSplits"></Route>

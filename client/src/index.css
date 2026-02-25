@@ -47,3 +47,7 @@ th{
   box-shadow: none !important;
   padding: 0 !important;
 }
+
+.leaflet-interactive:focus {
+  outline: none !important;
+}
