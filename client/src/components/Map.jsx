@@ -10,10 +10,55 @@ export default function Map() {
   ];
   
   /* US State Lines Style */
-  const lineStyle = {
-    fillOpacity: 0,
-    weight: 1,
-    color: "#cccccc",
+  const lineStyle = (feature) => {
+    if (feature.properties.NAME === "Delaware" || feature.properties.NAME === "Georgia") {
+      return {
+        fillColor: "#d8d8d8", 
+        color: "#6b7280",     
+        weight: 2,
+        fillOpacity: 1,
+      };
+    }
+
+    return {
+      fillOpacity: 0,
+      weight: 1,
+      color: "#cccccc",
+    };
+  };
+
+  const highlightStyle = {
+    fillColor: "#D3E6DC", 
+    color: "#10B981",     
+    weight: 2,
+    fillOpacity: 1,
+  }
+
+  const onEachState = (feature, layer) => {
+    if (feature.properties.NAME === "Delaware" || feature.properties.NAME === "Georgia") {
+      layer.bindTooltip(
+        `<div class="px-3 py-2 rounded-xl bg-white shadow-lg text-sm font-medium text-gray-800">
+          <strong>${feature.properties.NAME}</strong><br/>
+          Click to explore
+        </div>`,
+      {
+        permanent: false,
+        sticky: true,
+        direction: "top",
+      });
+
+      layer.on({
+        mouseover: (e) => {
+          e.target.setStyle(highlightStyle);
+        },
+        mouseout: (e) => {
+          e.target.setStyle(lineStyle(feature));
+        },
+        click: () => {
+          // add navigate to MapView later
+        },
+      });
+    }
   };
 
   useEffect(() => {
@@ -33,7 +78,7 @@ export default function Map() {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>'
       />
 
-      {stateLines && <GeoJSON data={stateLines} style={lineStyle}/>}
+      {stateLines && <GeoJSON data={stateLines} style={lineStyle} onEachFeature={onEachState}/>}
     </MapContainer>
   );
 }
