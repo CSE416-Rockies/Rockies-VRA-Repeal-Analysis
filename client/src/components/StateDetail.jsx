@@ -49,35 +49,36 @@ export default function StateDetail({expanded, onClick}){
 
 
     return(
-        <div className = 'bg-white rounded-2xl shadow-md flex flex-col w-full py-5 text-sm overflow-hidden min-h-0 transition-all duration-700 ease-in-out border-divide' 
+        <div className = 'bg-white rounded-2xl shadow-md flex flex-col w-full pt-5 text-sm overflow-hidden min-h-0 transition-all duration-700 ease-in-out border-divide' 
              style={{ flex: expanded ? 1 : '0 0 auto'}}
         >
             
-            <div className = 'flex bg-white w-full justify-between text-xl px-5 text-gray-500 cursor-pointer' onClick = {onClick} >
+            <div className = 'flex bg-white w-full justify-between text-xl px-5 pb-5 text-gray-500 cursor-pointer' onClick = {onClick} >
                 <div>State Detail</div>
                 { expanded ? <ChevronUpIcon className = 'w-5'/> : <ChevronDownIcon className = 'w-5'/> }
             </div>
 
-            <div ref = {repTopRef} className={`relative gap-10 px-5 overflow-y-scroll overflow-x-hidden ${expanded ? 'opacity-100' : 'max-h-0 opacity-0'}`}>
-                <div className = {` ${repDetail ? 'slideInR': 'slideInL'}`}>
 
-                {!repDetail ? 
-                    (<div className = 'flex flex-col gap-5'>
-                        <DefaultDetail races = {races} stateVoterDist = {stateVoterDist} partyControl = {partyControl}/>
-                        <RepDetailButton chevronDir = 'R' toWhere = {toReps}/>
-                    </div>)
+                <div ref = {repTopRef} className={`relative gap-10 px-5 overflow-y-auto overflow-x-hidden ${expanded ? 'opacity-100' : 'max-h-0 opacity-0'}`}>
+                    <div className = {` ${repDetail ? 'slideInR': 'slideInL'}`}>
 
-                    :
+                    {!repDetail ? 
+                        (<div className = 'flex flex-col gap-5'>
+                            <DefaultDetail races = {races} stateVoterDist = {stateVoterDist} partyControl = {partyControl}/>
+                            <RepDetailButton chevronDir = 'R' toWhere = {toReps}/>
+                        </div>)
 
-                    (<div className = 'flex flex-col'>
-                        <RepDetailButton chevronDir = 'L' toWhere = {toDef}/>
-                        <CongressRepDetail repArr = {reps} />
-                    </div>)
-                }
+                        :
+
+                        (<div className = 'flex flex-col'>
+                            <RepDetailButton chevronDir = 'L' toWhere = {toDef}/>
+                            <CongressRepDetail repArr = {reps} />
+                        </div>)
+                    }
+                    </div>
+
+                    
                 </div>
-
-                
-            </div>
         </div>
 
    )
@@ -101,7 +102,7 @@ function BarFill({percent, color}){
 function BarSection({title, arr}){
 
     return(
-    <div className = 'flex flex-col gap-2 text-gray-500'>
+    <div className = 'flex flex-col gap-2 text-gray-500 pt-5'>
        <span>{title}</span>
                 
         <div className = 'flex flex-col gap-5 w-full text-sm'>
@@ -129,18 +130,18 @@ function BarSection({title, arr}){
 function DefaultDetail({races, stateVoterDist, partyControl}){
 
     return(
-    <>
+    <div className = 'flex flex-col border-divide gap-5'>
         <div className = 'flex text-gray-500 justify-between pt-5'>
             <span>State Population</span>
             <span className = "text-emerald-500 font-bold">3,200,000</span>
         </div>
         <BarSection title = "Racial Population" arr = {races.map(ele=> ({label: ele.race, sublabel: ele.popNumber, color: 'bg-emerald-500', percent: ele.percent}))} />
-        <div className = 'flex text-gray-500 justify-between'>
+        <div className = 'flex text-gray-500 justify-between pt-5'>
             <span>Party Control</span>
             <span className = {`font-bold ${partyControl == "Republican"? 'text-red-500' : 'text-blue-500'}`}>{partyControl}</span>
         </div>
         <BarSection title = "State Voter Distribution" arr = {stateVoterDist.map(ele=> ({label: ele.party, sublabel: "", color: ele.partyColor, percent: ele.percent}))} />
-    </>
+    </div>
     )
 }
 
