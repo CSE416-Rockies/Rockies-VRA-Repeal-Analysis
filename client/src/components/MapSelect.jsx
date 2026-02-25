@@ -10,7 +10,7 @@ export default function MapSelect(){
     const options = [{id: 'district',  label: 'District plan'}, {id: 'precinct', label: 'Precinct'}]
 
     return(
-        <div className = 'flex z-40 absolute top-5 left-24 gap-5 text-gray-500 pointer-events-auto'>
+        <div className = 'flex items-center z-40 absolute top-5 left-24 gap-5 text-gray-500 pointer-events-auto'>
             <div className = 'flex items-center gap-5'>
                 { options.map(({id, label})=>(
                     <button key = {id} className = 'flex gap-2 text-lg py-3 items-center cursor-pointer group' onClick = {()=> setSelectMap(id)}>
