@@ -45,7 +45,7 @@ export default function DistrictDetail({expanded, onClick}){
                                 <td className = 'pl-5'>{dNum}</td>
                                 <td>{rep}</td>
                                 <td >
-                                    <span className = {`text-xs rounded-sm p-1 font-bold text-white ${party == "democrat"? 'bg-blue-500' : 'bg-red-500'}`}>
+                                    <span className = {`text-xs rounded-sm p-1 font-bold text-white ${party == "democrat"? 'bg-blue-500' : 'bg-red-500'} w-8 inline-flex justify-center`}>
                                         {party == 'democrat'? 'DEM':'REP'}
                                     </span>                    
                                 </td>
