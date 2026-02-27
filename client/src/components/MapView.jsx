@@ -54,16 +54,6 @@ export default function MapView(){
             .catch((err) => console.error("Error loading geojson:", err));
     }, [name]);
 
-    /* BELOW IS GEOJSON FILE USEEFFECT THAT'S NOT IN USE  */
-    // useEffect(() => {
-    //     if(store.mapMode === 'precinct' && !precinctData) {
-    //         fetch(`/geojson/${name}_precincts.geojson`) //(put path of precinct geojsons)
-    //             .then((data) => setPrecinctData(data))
-    //             .catch((err) => console.error("Error loading geojson:", err));
-    //     }
-    // }, [store.mapMode, precinctData]);
-
-
     useEffect(() => {
         if(store.mapMode === 'precinct' && !precinctData) {
             fetch(`/geojson/${name}_precincts_topo.topojson`) //(put path of precinct geojsons)
