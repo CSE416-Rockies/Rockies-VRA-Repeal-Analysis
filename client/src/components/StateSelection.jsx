@@ -20,7 +20,7 @@ export default function StateSelection({ onClose }){
         onClose();
     };
 
-    const options = [{id: 'Georgia',  label: 'Georgia'}, {id: 'Delaware', label: 'Delaware'}]
+    const options = [{id: 'Delaware', label: 'Delaware'}, {id: 'Georgia',  label: 'Georgia'}]
 
     return(
 
