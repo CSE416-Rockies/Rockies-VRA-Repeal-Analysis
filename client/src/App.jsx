@@ -11,12 +11,14 @@ import MapView from './components/MapView.jsx';
 function App() {
   const location = useLocation();
   const showNavBar = location.pathname !== "/";
+  const showStateSelection = location.pathname === "/" || location.pathname.startsWith("/map/");
+
 
   /*remember to route to specific stateID*/
   return (
     <GlobalStoreContextProvider>
       {showNavBar && <NavBar/>}
-      <StateSelection/>
+      {showStateSelection && <StateSelection/>}
      
       <Routes>
         <Route path = "/" element = {<Map/>}></Route>
