@@ -1,0 +1,49 @@
+import { useContext, useState } from "react";
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
+import GlobalStoreContext from "../store";
+
+export default function StateDropdown({onSelect, options}){
+    const { store } = useContext(GlobalStoreContext);
+    const [open, setOpen] = useState(false);
+
+    const handleSelect = (value)=>{
+        if(onSelect){
+            console.log("selected: ", value);
+            onSelect(value);
+        }
+        setOpen(false);
+    };
+    return (
+        <div className="relative w-60">
+            <button
+                className="flex items-center justify-between w-full px-4 py-0 bg-white rounded-xl text-lg hover:text-gray-400 transition-all duration-100"
+                onClick={() => setOpen(!open)}
+            >
+                <span className="flex-1 text-gray-400 text-xl">
+                </span>
+
+                <ChevronDownIcon
+                    className={`w-5 transition-transform duration-200 ml-2 mt-1 ${
+                        open ? "rotate-180" : ""
+                    }`}
+                />
+            </button>
+
+            {open && (
+                <ul className="absolute top-full mt-1 bg-white cursor-pointer rounded-xl shadow-md w-full py-2 z-50">
+                    {options.map((option) => (
+                        <li
+                            key={option.id || option}
+                            className="px-5 py-2 hover:bg-gray-100 transition-all duration-100 ease-in capitalize text-gray-400 text-xl"
+                            onClick={() =>
+                                handleSelect(option.id || option)
+                            }
+                        >
+                            {option.label || option}
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
+    );
+}

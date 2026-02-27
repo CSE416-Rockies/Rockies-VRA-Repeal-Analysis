@@ -2,13 +2,15 @@ import { useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON, } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import { useRef } from "react";
 
 import GlobalStoreContext from "../store";
 
 export default function Map() {
-  const { setSelectedState } = useContext(GlobalStoreContext);
+  const { store, setSelectedState } = useContext(GlobalStoreContext);
   const [stateLines, setStateLines] = useState(null);
   const navigate = useNavigate();
+  const mapRef = useRef(null);
 
   const usBounds = [
     [24.396308, -124.848974],
@@ -84,7 +86,7 @@ export default function Map() {
 
           if (bounds) {
             const map = e.target._map;
-
+            console.log("doing zooming effect");
             map.flyToBounds(bounds, {
               duration: 1,
             });
@@ -98,6 +100,14 @@ export default function Map() {
     }
   };
 
+  useEffect( () => {
+      const selectedState = store.selectedState;
+      if(!selectedState) return;
+      const bounds = stateBounds[selectedState]
+      if(!bounds) return;
+      navigate(`/map/${selectedState}`);
+  }, [store.selectedState]);
+
   useEffect(() => {
     fetch("/geojson/2024_us_state_lines.json")
       .then((res) => res.json())
@@ -109,6 +119,9 @@ export default function Map() {
     <MapContainer
       bounds={usBounds}
       className="fixed inset-0 h-screen w-full"
+      whenCreated={(mapInstance) => {
+        mapRef.current = mapInstance;
+      }}
     >
       <TileLayer
         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"

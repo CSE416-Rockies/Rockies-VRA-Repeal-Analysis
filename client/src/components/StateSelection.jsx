@@ -2,10 +2,11 @@ import { XCircleIcon } from '@heroicons/react/24/solid'
 import { useParams } from 'react-router-dom'
 import { useContext } from 'react';
 import GlobalStoreContext from '../store';
+import StateDropdown from './StateDropdown';
 
 export default function StateSelection({ onClose }){
     const {name} = useParams();
-    // console.log("state name: ", name);
+    // console.log("state name: ", name)
 
     const { setSelectedState, setMapMode } = useContext(GlobalStoreContext);
     
@@ -15,15 +16,19 @@ export default function StateSelection({ onClose }){
         onClose();
     };
 
+    const options = [{id: 'Georgia',  label: 'Georgia'}, {id: 'Delaware', label: 'Delaware'}]
+
     return(
 
         <div className = "fixed right-5 top-5 z-50 flex flex-col bg-white rounded-2xl shadow-md w-1/3 pt-4 border-divide">
 
-            <div className = "flex justify-between items-center pb-4 px-4 text-xl">
+            <div className = "flex justify-between items-center pb-4 px-4 text-xl w-full">
                 <span className = 'flex gap-2'>
-                    <span className = "text-gray-400">Selected:</span>
-                    <span className = "font-bold">{name}</span>
+                    <span className = "text-gray-400">{name ? 'Selected:' : 'Select a State:'}</span>
+                    
+                    {name && (<span className = "font-bold">{name}</span>)}
                 </span>
+                {!name && <StateDropdown options={options} onSelect={(state)=> setSelectedState(state)} />}
                 {name && <XCircleIcon className = 'cursor-pointer text-red-500 w-7 transition-transform duration-500 ease-in-out hover:scale-125'
                 onClick={backToMap}
                 />}

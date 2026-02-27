@@ -54,21 +54,10 @@ export default function MapView(){
             .catch((err) => console.error("Error loading geojson:", err));
     }, [name]);
 
-    /* ADD PATH TO PRECINCT GEOJSONS AND UNCOMMENT WHEN YOU WANT TO USE */
+    /* BELOW IS GEOJSON FILE USEEFFECT THAT'S NOT IN USE  */
     // useEffect(() => {
     //     if(store.mapMode === 'precinct' && !precinctData) {
     //         fetch(`/geojson/${name}_precincts.geojson`) //(put path of precinct geojsons)
-    //             .then((res) => res.json())
-    //             // .then(topology => {
-    //             //         console.log(Object.keys(topology.objects.data.geometries));
-    //             //         const geojson = feature(
-    //             //         topology,
-    //             //         topology.objects.data // name of object inside topojson
-    //             //     );
-
-    //             //     console.log("geojson: ", geojson);
-    //             //     setPrecinctData(geojson);
-    //             // })
     //             .then((data) => setPrecinctData(data))
     //             .catch((err) => console.error("Error loading geojson:", err));
     //     }
