@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { useParams } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
 
+import GlobalStoreContext from "../store/index.jsx";
 import StateDetail from './StateDetail.jsx';
 import DistrictDetail from './DistrictDetail.jsx';
 import MapSelect from './MapSelect.jsx';
 import StateSelection from "./StateSelection.jsx";
+import { CommandLineIcon } from "@heroicons/react/24/solid";
 
 
 const stateBounds = {
@@ -21,9 +23,12 @@ const stateBounds = {
 };
 
 export default function MapView(){
+    const { store } = useContext(GlobalStoreContext); 
+    const { name } = useParams();
+
     const [expanded, setExpanded] = useState(true);
     const [districtPlan, setDistrictPlan] = useState(null);
-    const { name } = useParams();
+    const [precinctData, setPrecinctData] = useState(null);
     const [map, setMap] = useState(null);
 
     const lineStyle = (feature) => {
@@ -46,6 +51,17 @@ export default function MapView(){
             .then((data) => setDistrictPlan(data))
             .catch((err) => console.error("Error loading geojson:", err));
     }, [name]);
+
+    /* ADD PATH TO PRECINCT GEOJSONS AND UNCOMMENT WHEN YOU WANT TO USE */
+    // useEffect(() => {
+    //     if(store.mapMode === 'precinct' && !precinctData) {
+    //         fetch(``) //(put path of precinct geojsons)
+    //             .then((res) => res.json())
+    //             .then((data) => setPrecinctData(data))
+    //             .catch((err) => console.error("Error loading geojson:", err));
+    //     }
+    // }, [store.mapMode, precinctData]);
+
     console.log("rendering MapContainer for", name);
     return(
         <>
@@ -66,7 +82,8 @@ export default function MapView(){
                         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>'
                     />
-                    {districtPlan && <GeoJSON data={districtPlan} style={lineStyle}/>}
+                    {store.mapMode === 'district' && districtPlan && (<GeoJSON data={districtPlan} style={lineStyle} />)}
+                    {store.mapMode === 'precinct' && precinctData && (<GeoJSON data={precinctData} style={lineStyle} />)}
                 </MapContainer>
     
             </div>
