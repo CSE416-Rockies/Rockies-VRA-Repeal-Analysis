@@ -48,7 +48,7 @@ export default function MapView(){
     };
 
     useEffect(() => {
-        fetch(`/geojson/${name}_Congressional_Districts.json`)
+        fetch(`/geojson/${name}_Congressional_Districts.geojson`)
             .then((res) => res.json())
             .then((data) => setDistrictPlan(data))
             .catch((err) => console.error("Error loading geojson:", err));
