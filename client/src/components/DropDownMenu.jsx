@@ -1,11 +1,14 @@
 import {useState} from 'react'
 import {UserGroupIcon, ChevronDownIcon, ChevronUpIcon} from '@heroicons/react/24/solid'
-
+import {useLocation} from 'react-router-dom';
 
 export default function DropDownMenu({options, onSelect}){
 
         const [open, setOpen] = useState(false);
         const [selected, setSelected] = useState(null);
+
+        const location = useLocation();
+        const isMapView = (location.pathname.startsWith("/map"));
 
         const chevronIcon = open? < ChevronUpIcon className = 'w-5'/> : < ChevronDownIcon className = 'w-5'/>
 
@@ -15,6 +18,8 @@ export default function DropDownMenu({options, onSelect}){
                 setOpen(false);
         }
 
+        const defaultText = isMapView? "Select minority group" : "Select racial group";
+
         return(
         
         <div className = 'flex flex-col py-2 relative bg-white shadow-md rounded-xl w-72 '>
@@ -22,7 +27,7 @@ export default function DropDownMenu({options, onSelect}){
                 <button className = 'flex items-center justify-between px-5 capitalize text-lg hover:text-gray-400 transition-all duration-100' onClick = {()=>setOpen(!open)}>
                         <div className = 'flex gap-2 items-center'>
                                 <UserGroupIcon className = 'w-7'/> 
-                                { selected ? selected : 'Select minority group'}
+                                { selected ? selected : defaultText }
                         </div>
                         {chevronIcon}
                 </button>

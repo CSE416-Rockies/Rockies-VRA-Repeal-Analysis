@@ -9,7 +9,7 @@ export default function StateSelection({ onClose }){
     // const {name} = useParams();
     // console.log("state name: ", name)
     const location = useLocation();
-    const showEnsembleSummary = (location.pathname.startsWith("/map"));
+    const isMapView = (location.pathname.startsWith("/map"));
 
     const { store, setSelectedState, setMapMode } = useContext(GlobalStoreContext);
     const selectedState = store?.selectedState || "";
@@ -37,7 +37,7 @@ export default function StateSelection({ onClose }){
                 onClick={backToMap}
                 />}
             </div>
-            { showEnsembleSummary && 
+            { isMapView && 
                 <div className = "flex justify-between divide-x divide-gray-300">
                     <div className = "px-4 pt-4 pb-4">
                         <div className = "text-gray-400 text-xs">DISTRICT PLANS</div>

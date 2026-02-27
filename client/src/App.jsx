@@ -12,7 +12,7 @@ function App() {
   const location = useLocation();
   const showNavBar = location.pathname !== "/";
   // const showStateSelection = location.pathname === "/" || location.pathname.startsWith("/map/");
-
+  const races = ["white", "black", "asian", "latino", "other"];
 
   /*remember to route to specific stateID*/
   return (
@@ -25,7 +25,7 @@ function App() {
           <Routes>
             <Route path = "/" element = {<Map/>}></Route>
             <Route path = "/map/:name" element = {<MapView />}></Route> 
-            <Route path = "/scatterplot" element = {<ScatterPlot width = {500} height = {500}/>}></Route>
+            <Route path = "/scatterplot" element = {<ScatterPlot races = {races}/>}></Route>
             <Route path = "/eiAnalysis"></Route>
             <Route path = "/ensembleSplits"></Route>
             <Route path = "/boxWhisker"></Route> 

@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { PARTY_COLORS } from "./constants";
 
 export function drawScatterPlot({ givenSVG, data, margin, minorityLabel }) {
 
@@ -50,7 +51,7 @@ export function drawScatterPlot({ givenSVG, data, margin, minorityLabel }) {
     // define color assignment by political party
     var color = d3.scaleOrdinal() 
         .domain(['rep', 'dem'])
-        .range(["#CC0000", "#0064CE"])
+        .range([PARTY_COLORS.rep, PARTY_COLORS.dem])
 
     // Scatter dots
     svg.append('g')
@@ -59,7 +60,7 @@ export function drawScatterPlot({ givenSVG, data, margin, minorityLabel }) {
         .join("circle")                                 // create circle
             .attr("cx", d => x(d.minority_pct))
             .attr("cy", d => y(d.vote_share) )
-            .attr("r", 1.5)
+            .attr("r", 2)
             .style("fill",  d => color(d.party))
     
 }
