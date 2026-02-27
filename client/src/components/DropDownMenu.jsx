@@ -2,7 +2,7 @@ import {useState} from 'react'
 import {UserGroupIcon, ChevronDownIcon, ChevronUpIcon} from '@heroicons/react/24/solid'
 
 
-export default function DropDownMenu({options}){
+export default function DropDownMenu({options, onSelect}){
 
         const [open, setOpen] = useState(false);
         const [selected, setSelected] = useState(null);
@@ -11,6 +11,7 @@ export default function DropDownMenu({options}){
 
         function selectFunc(option) {
                 setSelected(option);
+                onSelect(option);
                 setOpen(false);
         }
 

@@ -51,3 +51,15 @@ th{
 .leaflet-interactive:focus {
   outline: none !important;
 }
+
+/* ------------------------------------------- graph axis styling */
+.axisColor line, 
+.axisColor path{
+  stroke: #6B7280;
+  stroke-width: 2;
+}
+
+.axisColor text{
+  fill: #6B7280;
+  font-size: 16px;
+}

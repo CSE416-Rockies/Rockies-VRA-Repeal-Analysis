@@ -1,14 +1,18 @@
 import { XCircleIcon } from '@heroicons/react/24/solid'
-import { useParams } from 'react-router-dom'
+// import { useParams } from 'react-router-dom'
+import {useLocation} from 'react-router-dom'
 import { useContext } from 'react';
 import GlobalStoreContext from '../store';
 import StateDropdown from './StateDropdown';
 
 export default function StateSelection({ onClose }){
-    const {name} = useParams();
+    // const {name} = useParams();
     // console.log("state name: ", name)
+    const location = useLocation();
+    const showEnsembleSummary = (location.pathname.startsWith("/map"));
 
-    const { setSelectedState, setMapMode } = useContext(GlobalStoreContext);
+    const { store, setSelectedState, setMapMode } = useContext(GlobalStoreContext);
+    const selectedState = store?.selectedState || "";
     
     const backToMap = () => {
         setSelectedState(null);
@@ -24,27 +28,28 @@ export default function StateSelection({ onClose }){
 
             <div className = "flex justify-between items-center pb-4 px-4 text-xl w-full">
                 <span className = 'flex gap-2'>
-                    <span className = "text-gray-400">{name ? 'Selected:' : 'Select a State:'}</span>
+                    <span className = "text-gray-400">{selectedState ? 'Selected:' : 'Select a State:'}</span>
                     
-                    {name && (<span className = "font-bold">{name}</span>)}
+                    {selectedState && (<span className = "font-bold">{selectedState}</span>)}
                 </span>
-                {!name && <StateDropdown options={options} onSelect={(state)=> setSelectedState(state)} />}
-                {name && <XCircleIcon className = 'cursor-pointer text-red-500 w-7 transition-transform duration-500 ease-in-out hover:scale-125'
+                {!selectedState && <StateDropdown options={options} onSelect={(state)=> setSelectedState(state)} />}
+                {selectedState && <XCircleIcon className = 'cursor-pointer text-red-500 w-7 transition-transform duration-500 ease-in-out hover:scale-125'
                 onClick={backToMap}
                 />}
             </div>
+            { showEnsembleSummary && 
+                <div className = "flex justify-between divide-x divide-gray-300">
+                    <div className = "px-4 pt-4 pb-4">
+                        <div className = "text-gray-400 text-xs">DISTRICT PLANS</div>
+                        <div className = "font-bold text-lg">{selectedState ? (selectedState == 'Georgia' ? 25 : 15): '-'}</div>
+                    </div>
 
-            <div className = "flex justify-between divide-x divide-gray-300">
-                <div className = "px-4 pt-4 pb-4">
-                    <div className = "text-gray-400 text-xs">DISTRICT PLANS</div>
-                    <div className = "font-bold text-lg">{name ? (name == 'Georgia' ? 25 : 15): '-'}</div>
+                    <div className = "px-4 pt-4">
+                        <div className = "text-gray-400 text-xs">POPULATION THRESHOLD</div>
+                        <div className = "font-bold text-lg">{selectedState ? (selectedState == 'Georgia' ? 15 : 10): '-'}%</div>
+                    </div>
                 </div>
-
-                <div className = "px-4 pt-4">
-                    <div className = "text-gray-400 text-xs">POPULATION THRESHOLD</div>
-                    <div className = "font-bold text-lg">{name ? (name == 'Georgia' ? 15 : 10): '-'}%</div>
-                </div>
-            </div>
+                }
             
         </div>
     )
