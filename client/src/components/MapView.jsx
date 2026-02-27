@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react"
 import { useParams } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
+import { feature } from "topojson-client";
 
 import GlobalStoreContext from "../store/index.jsx";
 import StateDetail from './StateDetail.jsx';
@@ -31,6 +32,7 @@ export default function MapView(){
     const [precinctData, setPrecinctData] = useState(null);
     const [map, setMap] = useState(null);
 
+
     const lineStyle = (feature) => {
         return {
         fillOpacity: 0,
@@ -53,12 +55,40 @@ export default function MapView(){
     }, [name]);
 
     /* ADD PATH TO PRECINCT GEOJSONS AND UNCOMMENT WHEN YOU WANT TO USE */
+    // useEffect(() => {
+    //     if(store.mapMode === 'precinct' && !precinctData) {
+    //         fetch(`/geojson/${name}_precincts.geojson`) //(put path of precinct geojsons)
+    //             .then((res) => res.json())
+    //             // .then(topology => {
+    //             //         console.log(Object.keys(topology.objects.data.geometries));
+    //             //         const geojson = feature(
+    //             //         topology,
+    //             //         topology.objects.data // name of object inside topojson
+    //             //     );
+
+    //             //     console.log("geojson: ", geojson);
+    //             //     setPrecinctData(geojson);
+    //             // })
+    //             .then((data) => setPrecinctData(data))
+    //             .catch((err) => console.error("Error loading geojson:", err));
+    //     }
+    // }, [store.mapMode, precinctData]);
+
+
     useEffect(() => {
         if(store.mapMode === 'precinct' && !precinctData) {
-            
-            fetch(`/geojson/${name}_precincts.geojson`) //(put path of precinct geojsons)
+            fetch(`/geojson/${name}_precincts_topo.topojson`) //(put path of precinct geojsons)
                 .then((res) => res.json())
-                .then((data) => setPrecinctData(data))
+                .then(topology => {
+                        console.log(Object.keys(topology.objects.data.geometries));
+                        const geojson = feature(
+                        topology,
+                        topology.objects.data // name of object inside topojson
+                    );
+
+                    console.log("geojson: ", geojson);
+                    setPrecinctData(geojson);
+                })
                 .catch((err) => console.error("Error loading geojson:", err));
         }
     }, [store.mapMode, precinctData]);
