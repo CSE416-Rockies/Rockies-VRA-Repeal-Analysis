@@ -5,10 +5,10 @@ import DropDownMenu from "./DropDownMenu";
 import Legend from "./Legend";
 
 import { drawScatterPlot } from "../utils/drawScatterPlot";
-import { PARTY_LEGEND } from "../utils/constants"
+import { PARTY_LEGEND, RACES} from "../utils/constants"
 
 
-export default function ScatterPlot({races}){
+export default function ScatterPlot(){
     const { store } = useContext(GlobalStoreContext);
     const selectedState = store?.selectedState || "";
 
@@ -56,7 +56,7 @@ export default function ScatterPlot({races}){
     return(
         <div className = 'flex justify-center items-center w-full h-full bg-gray-200'>    
             <div className = 'flex flex-col gap-10 justify-center w-full h-full py-5 px-5 bg-gray-200'>    
-                <DropDownMenu options = {races} onSelect = {setMinority}/>
+                <DropDownMenu options = {RACES} onSelect = {setMinority}/>
                 <div className = 'flex flex-col w-full h-full px-15 py-10 justify-center items-center gap-5 bg-white rounded-xl'>
                     <div className = 'flex flex-col gap-5 justify-center items-center'>
                         <div className = 'text-3xl'>2024 Precinct-Level Presidential Election [{selectedState}]</div>

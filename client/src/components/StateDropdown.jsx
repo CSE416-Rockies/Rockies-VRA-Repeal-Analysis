@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import GlobalStoreContext from "../store";
 

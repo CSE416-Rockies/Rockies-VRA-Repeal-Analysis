@@ -1,11 +1,11 @@
-import {useState, useContext} from 'react'
+import { useContext} from 'react'
 import DropDownMenu from './DropDownMenu.jsx';
 
 import GlobalStoreContext from '../store/index.jsx';
+import { MINORITIES } from '../utils/constants.js';
 
 export default function MapSelect(){
     const { store, setMapMode } = useContext(GlobalStoreContext);
-    const minorities = ['asian', 'black', 'latino', 'other'];
 
     const options = [{id: 'district',  label: 'District plan'}, {id: 'precinct', label: 'Precinct'}]
 
@@ -25,7 +25,7 @@ export default function MapSelect(){
                 }
             </div>
 
-            { store.mapMode == 'precinct' &&  <DropDownMenu options = {minorities}/> }
+            { store.mapMode == 'precinct' &&  <DropDownMenu options = {MINORITIES}/> }
         </div>
     )
 }

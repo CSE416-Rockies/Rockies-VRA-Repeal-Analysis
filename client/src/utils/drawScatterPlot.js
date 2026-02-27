@@ -15,7 +15,7 @@ export function drawScatterPlot({ givenSVG, data, margin, minorityLabel }) {
     // Create x axis
     var x = d3.scaleLinear()
         .domain([0,100])        // axis ticks
-        .range([0,width]);     // graph width 
+        .range([0,width]);      // graph width 
     svg
         .append("g")
         .attr("class", "axisColor")
