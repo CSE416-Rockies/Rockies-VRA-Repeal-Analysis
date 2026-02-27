@@ -7,10 +7,11 @@ export default function StateSelection({ onClose }){
     const {name} = useParams();
     // console.log("state name: ", name);
 
-    const { setSelectedState } = useContext(GlobalStoreContext);
+    const { setSelectedState, setMapMode } = useContext(GlobalStoreContext);
     
     const backToMap = () => {
         setSelectedState(null);
+        setMapMode('district');
         onClose();
     };
 
