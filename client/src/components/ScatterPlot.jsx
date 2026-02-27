@@ -5,7 +5,7 @@ import DropDownMenu from "./DropDownMenu";
 import Legend from "./Legend";
 
 import { drawScatterPlot } from "../utils/drawScatterPlot";
-import { PARTY_LEGEND, RACES} from "../utils/constants"
+import { PRESIDENT_CAND_LEGEND, RACES} from "../utils/constants"
 
 
 export default function ScatterPlot(){
@@ -14,7 +14,7 @@ export default function ScatterPlot(){
 
     const [racialGroup, setRacialGroup] = useState('white');  
 
-    const ref = useRef();
+    const ref = useRef(null);
     const [data, setData] = useState(null);
 
     const margin = {top: 20, right: 20, bottom: 60, left: 80}
@@ -64,7 +64,7 @@ export default function ScatterPlot(){
                     </div>
                     <div className = 'flex w-full h-full px-20 items-center justify-between'>
                         <svg width = "100%" height = "100%" ref = {ref} />
-                        <Legend title = "Votes" items = {PARTY_LEGEND}/>
+                        <Legend title = "Votes" items = {PRESIDENT_CAND_LEGEND}/>
                     </div>
                 </div>
             </div>

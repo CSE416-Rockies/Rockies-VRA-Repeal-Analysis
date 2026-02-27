@@ -3,7 +3,10 @@ export const PARTY_COLORS = {
     dem: "#0064CE"
 }
 
-export const PARTY_LEGEND = [
-    {label: "Harris", color: PARTY_COLORS.dem},
-    {label: "Trump", color: PARTY_COLORS.rep}
+export const PRESIDENT_CAND_LEGEND = [
+    {label: "harris", color: PARTY_COLORS.dem},
+    {label: "trump", color: PARTY_COLORS.rep}
 ]
+
+export const RACES = ["white", "black", "latino", "other"];
+export const MINORITIES = ["black","latino", "other"];

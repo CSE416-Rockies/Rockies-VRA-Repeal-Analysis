@@ -6,7 +6,7 @@ export default function Legend({title, items}){
             {items.map(({label, color})=>(
                 <div key = {label} className = 'flex gap-2 items-center'>
                     <div className = 'rounded w-4 h-4' style = {{backgroundColor: color}}/>
-                    <div className = 'text-lg'>{label}</div>
+                    <div className = 'text-lg capitalize'>{label}</div>
                 </div> 
                 ))
             }
