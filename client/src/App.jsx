@@ -1,5 +1,6 @@
 // import { useState } from 'react'
 import './index.css'
+import { GlobalStoreContextProvider } from './store/';
 import { Routes, Route, useLocation} from 'react-router-dom';
 import Map from './components/Map.jsx';
 import NavBar from './components/NavBar.jsx';
@@ -13,7 +14,7 @@ function App() {
 
   /*remember to route to specific stateID*/
   return (
-    <>
+    <GlobalStoreContextProvider>
       {showNavBar && <NavBar/>}
       <StateSelection/>
      
@@ -25,7 +26,7 @@ function App() {
         <Route path = "/ensembleSplits"></Route>
         <Route path = "/boxWhisker"></Route> 
       </Routes>
-    </>
+    </GlobalStoreContextProvider>
   )
 }
 

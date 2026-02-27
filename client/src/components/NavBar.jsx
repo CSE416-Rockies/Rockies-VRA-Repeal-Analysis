@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { useState } from "react"
+import { useState, useContext } from "react"
 
 import MapIcon from '../assets/svgs/map.svg?react';
 import BarIcon from '../assets/svgs/bargraph.svg?react';
@@ -9,10 +9,14 @@ import ScatterIcon from '../assets/svgs/scatterplot.svg?react';
 
 import { Bars3Icon } from '@heroicons/react/24/solid'
 
+import { GlobalStoreContext } from "../store";
+
 export default function NavBar(){
+    const { store } = useContext(GlobalStoreContext);
+    const selectedStateName = store?.selectedState || "";
     const [expand, setExpand] = useState(false);
     const navItems = [
-        {to: "/map", id: "map-nav", icon: MapIcon, label: "Map"},
+        {to: `/map/${selectedStateName}`, id: "map-nav", icon: MapIcon, label: "Map"},
         {to: "/scatterplot", id: "scatter-nav", icon: ScatterIcon, label: "Scatterplot"},
         {to: "/eiAnalysis", id: "boxplot-nav", icon: EIAnalysisIcon, label: "EI Analysis"},
         {to: "/ensembleSplits", id: "ensemble-nav", icon: BarIcon, label: "Ensemble Splits"},

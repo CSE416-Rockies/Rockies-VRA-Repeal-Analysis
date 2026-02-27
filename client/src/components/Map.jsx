@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON, } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
+import GlobalStoreContext from "../store";
+
 export default function Map() {
+  const { setSelectedState } = useContext(GlobalStoreContext);
   const [stateLines, setStateLines] = useState(null);
   const navigate = useNavigate();
 
@@ -71,6 +74,8 @@ export default function Map() {
         click: (e) => {
           const stateName = feature.properties.NAME;
           const bounds = stateBounds[stateName];
+          setSelectedState(stateName);
+
           e.target.setStyle({
             fillOpacity: 0,
             weight: 1,
