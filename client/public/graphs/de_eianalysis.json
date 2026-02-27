@@ -1,0 +1,110 @@
+{
+  "state": "Delaware",
+  "election": {
+    "year": 2024,
+    "office": "U.S. Senate"
+  },
+  "candidates": [
+    {
+      "id": "cand_dem",
+      "name": "Jordan Carter",
+      "party": "Democratic",
+      "color": "#0064CE"
+    },
+    {
+      "id": "cand_rep",
+      "name": "Michael Grant",
+      "party": "Republican",
+      "color": "#CC0000"
+    }
+  ],
+  "groups": [
+    {
+      "id": "white",
+      "label": "White",
+      "type": "race",
+      "distributions": {
+        "cand_dem": [
+          { "x": 0.40, "y": 0.03 },
+          { "x": 0.45, "y": 0.08 },
+          { "x": 0.50, "y": 0.15 },
+          { "x": 0.55, "y": 0.22 },
+          { "x": 0.60, "y": 0.20 },
+          { "x": 0.65, "y": 0.12 }
+        ],
+        "cand_rep": [
+          { "x": 0.30, "y": 0.05 },
+          { "x": 0.35, "y": 0.12 },
+          { "x": 0.40, "y": 0.20 },
+          { "x": 0.45, "y": 0.22 },
+          { "x": 0.50, "y": 0.14 }
+        ]
+      }
+    },
+    {
+      "id": "black",
+      "label": "Black",
+      "type": "race",
+      "distributions": {
+        "cand_dem": [
+          { "x": 0.75, "y": 0.06 },
+          { "x": 0.80, "y": 0.18 },
+          { "x": 0.85, "y": 0.30 },
+          { "x": 0.90, "y": 0.26 },
+          { "x": 0.95, "y": 0.10 }
+        ],
+        "cand_rep": [
+          { "x": 0.05, "y": 0.16 },
+          { "x": 0.10, "y": 0.28 },
+          { "x": 0.15, "y": 0.22 },
+          { "x": 0.20, "y": 0.10 }
+        ]
+      }
+    },
+    {
+      "id": "hispanic",
+      "label": "Hispanic",
+      "type": "race",
+      "distributions": {
+        "cand_dem": [
+          { "x": 0.50, "y": 0.06 },
+          { "x": 0.55, "y": 0.14 },
+          { "x": 0.60, "y": 0.23 },
+          { "x": 0.65, "y": 0.24 },
+          { "x": 0.70, "y": 0.16 }
+        ],
+        "cand_rep": [
+          { "x": 0.30, "y": 0.10 },
+          { "x": 0.35, "y": 0.18 },
+          { "x": 0.40, "y": 0.21 },
+          { "x": 0.45, "y": 0.15 }
+        ]
+      }
+    },
+    {
+      "id": "spanish_lang",
+      "label": "Spanish-speaking",
+      "type": "language",
+      "distributions": {
+        "cand_dem": [
+          { "x": 0.55, "y": 0.07 },
+          { "x": 0.60, "y": 0.18 },
+          { "x": 0.65, "y": 0.26 },
+          { "x": 0.70, "y": 0.22 },
+          { "x": 0.75, "y": 0.12 }
+        ],
+        "cand_rep": [
+          { "x": 0.25, "y": 0.12 },
+          { "x": 0.30, "y": 0.22 },
+          { "x": 0.35, "y": 0.20 },
+          { "x": 0.40, "y": 0.10 }
+        ]
+      }
+    }
+  ],
+  "metadata": {
+    "method": "Bayesian Ecological Inference",
+    "credible_interval": 0.95,
+    "generated_at": "2026-02-27T18:00:00Z"
+  }
+}

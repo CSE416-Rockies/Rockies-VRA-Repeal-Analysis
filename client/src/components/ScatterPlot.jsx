@@ -22,8 +22,8 @@ export default function ScatterPlot(){
     // state change
     useEffect(()=>{
         const stateJson = selectedState == "Georgia" ? 
-                          "/scatterplot/ga_precincts.json" :  
-                          "/scatterplot/de_precincts.json";
+                          "/scatterplot/ga_gingles.json" :  
+                          "/scatterplot/de_gingles.json";
 
         d3.json(stateJson).then( rawData => { setData(rawData);}) 
                         .catch((err)=>console.error("Error loading geojson:", err));
@@ -63,7 +63,7 @@ export default function ScatterPlot(){
                         <div className = 'text-xl capitalize'>By {racialGroup} Population</div>
                     </div>
                     <div className = 'flex w-full h-full px-20 items-center justify-between'>
-                        <svg width = "100%" height = "100%" ref = {ref} />
+                        <svg className = 'flex-1' width = "100%" height = "100%" ref = {ref} />
                         <Legend title = "Votes" items = {PRESIDENT_CAND_LEGEND}/>
                     </div>
                 </div>

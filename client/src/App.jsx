@@ -7,6 +7,7 @@ import NavBar from './components/NavBar.jsx';
 import StateSelection from './components/StateSelection.jsx';
 import MapView from './components/MapView.jsx';
 import ScatterPlot from './components/ScatterPlot.jsx';
+import EIAnalysis from './components/EIAnalysis.jsx';
 
 function App() {
   const location = useLocation();
@@ -25,7 +26,7 @@ function App() {
             <Route path = "/" element = {<Map/>}></Route>
             <Route path = "/map/:name" element = {<MapView />}></Route> 
             <Route path = "/scatterplot" element = {<ScatterPlot/>}></Route>
-            <Route path = "/eiAnalysis"></Route>
+            <Route path = "/eiAnalysis" element = {<EIAnalysis/>}></Route>
             <Route path = "/ensembleSplits"></Route>
             <Route path = "/boxWhisker"></Route> 
           </Routes>
