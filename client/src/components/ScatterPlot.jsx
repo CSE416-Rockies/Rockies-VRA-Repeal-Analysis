@@ -46,7 +46,7 @@ export default function ScatterPlot(){
 
     return(
         <div className = 'flex justify-center items-center w-full h-full bg-gray-200'>    
-            <div className = 'flex flex-col gap-10 justify-center w-full h-full py-5 px-5 bg-red-500'>    
+            <div className = 'flex flex-col gap-10 justify-center w-full h-full py-5 px-5 bg-gray-200'>    
                 <DropDownMenu options = {races} onSelect = {setMinority}/>
                 <div className = 'flex flex-col w-full h-full px-15 py-20 justify-center items-center gap-10 bg-white rounded-xl'>
                     <div className = 'flex flex-col gap-5 justify-center items-center'>
