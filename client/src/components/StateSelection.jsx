@@ -23,7 +23,7 @@ export default function StateSelection({ onClose }){
                     <span className = "text-gray-400">Selected:</span>
                     <span className = "font-bold">{name}</span>
                 </span>
-                {name && <XCircleIcon className = 'text-red-500 w-7 transition-transform duration-500 ease-in-out hover:scale-125'
+                {name && <XCircleIcon className = 'cursor-pointer text-red-500 w-7 transition-transform duration-500 ease-in-out hover:scale-125'
                 onClick={backToMap}
                 />}
             </div>
