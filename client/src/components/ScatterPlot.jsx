@@ -2,7 +2,7 @@ import {useEffect, useRef, useState, useContext} from "react"
 import GlobalStoreContext from '../store';
 import * as d3 from "d3";
 import DropDownMenu from "./DropDownMenu";
-import Legend from "./Legend";
+import GraphView from "./GraphView";
 
 import { drawScatterPlot } from "../utils/drawScatterPlot";
 import { PRESIDENT_CAND_LEGEND, RACES} from "../utils/constants"
@@ -22,8 +22,8 @@ export default function ScatterPlot(){
     // state change
     useEffect(()=>{
         const stateJson = selectedState == "Georgia" ? 
-                          "/scatterplot/ga_gingles.json" :  
-                          "/scatterplot/de_gingles.json";
+                          "/graphs/ga_gingles.json" :  
+                          "/graphs/de_gingles.json";
 
         d3.json(stateJson).then( rawData => { setData(rawData);}) 
                         .catch((err)=>console.error("Error loading geojson:", err));
@@ -48,28 +48,23 @@ export default function ScatterPlot(){
 
         const obsvr = new ResizeObserver(redraw);
         obsvr.observe(ref.current);
+        redraw();
+
         return ()=> obsvr.disconnect();
 
     }), [data, racialGroup];
 
 
     return(
-        <div className = 'flex justify-center items-center w-full h-full bg-gray-200'>    
-            <div className = 'flex flex-col gap-10 justify-center w-full h-full py-5 px-5 bg-gray-200'>    
-                <DropDownMenu options = {RACES} onSelect = {setRacialGroup}/>
-                <div className = 'flex flex-col w-full h-full px-15 py-10 justify-center items-center gap-5 bg-white rounded-xl'>
-                    <div className = 'flex flex-col gap-5 justify-center items-center'>
-                        <div className = 'text-3xl'>2024 Precinct-Level Presidential Election [{selectedState}]</div>
-                        <div className = 'text-xl capitalize'>By {racialGroup} Population</div>
-                    </div>
-                    <div className = 'flex w-full h-full px-20 items-center justify-between'>
-                        <svg className = 'flex-1' width = "100%" height = "100%" ref = {ref} />
-                        <Legend title = "Votes" items = {PRESIDENT_CAND_LEGEND}/>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
+        
+        <GraphView 
+            title = {`2024 Precinct-Level Presidential Election [${selectedState}]`}
+            subtitle = {`By ${racialGroup} Population`}
+            svgRef = {ref}
+            legendTitle = "Votes"
+            legendItems = {PRESIDENT_CAND_LEGEND}
+            menus = {<DropDownMenu  options = {RACES} onSelect = {setRacialGroup}/>}
+        />
     )
     
     
