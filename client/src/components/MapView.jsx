@@ -41,6 +41,13 @@ export default function MapView(){
         };
     };
 
+    const highlightStyle = {
+        fillColor: "#d8d8d8", 
+        color: "#6b6b6b",     
+        weight: 2,
+        fillOpacity: 1,
+    }
+
     const navigate = useNavigate();
 
     const zoomOut = () =>{
@@ -72,6 +79,31 @@ export default function MapView(){
         }
     }, [store.mapMode, precinctData]);
 
+    const onEachState = (feature, layer) => {
+        if(store.mapMode === 'district' && districtPlan) {
+            layer.bindTooltip(
+                `<div class="px-3 py-2 rounded-xl bg-white shadow-lg text-sm font-medium text-gray-800">
+                <strong>${feature.properties.DISTRICT}</strong><br/>
+                </div>`,
+            {
+                permanent: false,
+                sticky: true,
+                direction: "top",
+            });
+            
+            layer.on({
+                mouseover: (e) => {
+                e.target.setStyle(highlightStyle);
+                },
+                mouseout: (e) => {
+                e.target.setStyle(lineStyle(feature));
+                },
+                // click: (e) => {
+                // }
+            });
+        }       
+    };
+
     console.log("rendering MapContainer for", name);
     return(
         <>
@@ -92,8 +124,8 @@ export default function MapView(){
                         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>'
                     />
-                    {store.mapMode === 'district' && districtPlan && (<GeoJSON data={districtPlan} style={lineStyle} />)}
-                    {store.mapMode === 'precinct' && precinctData && (<GeoJSON data={precinctData} style={lineStyle} />)}
+                    {store.mapMode === 'district' && districtPlan && (<GeoJSON data={districtPlan} style={lineStyle} onEachFeature={onEachState} />)}
+                    {store.mapMode === 'precinct' && precinctData && (<GeoJSON data={precinctData} style={lineStyle} onEachFeature={onEachState} />)}
                 </MapContainer>
     
             </div>
