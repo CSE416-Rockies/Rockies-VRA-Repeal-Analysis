@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { PARTY_COLORS } from "./constants";
 
-export function drawScatterPlot({ givenSVG, data, margin, minorityLabel }) {
+export function drawScatterPlot({ givenSVG, data, margin, racialLabel }) {
 
     // create svg element
     var svg = d3.select(givenSVG)
@@ -36,7 +36,7 @@ export function drawScatterPlot({ givenSVG, data, margin, minorityLabel }) {
         .attr("text-anchor", "middle")
         .attr("x", width/2)
         .attr("y", height + margin.bottom)
-        .text(`Percent ${minorityLabel}`);
+        .text(`Percent ${racialLabel}`);
 
     // Add Y axis label:
     svg.append("text")
@@ -58,7 +58,7 @@ export function drawScatterPlot({ givenSVG, data, margin, minorityLabel }) {
         .selectAll("dot")
         .data(data)                                     // bind data to dots
         .join("circle")                                 // create circle
-            .attr("cx", d => x(d.minority_pct))
+            .attr("cx", d => x(d.racial_pct))
             .attr("cy", d => y(d.vote_share) )
             .attr("r", 2)
             .style("fill",  d => color(d.party))
