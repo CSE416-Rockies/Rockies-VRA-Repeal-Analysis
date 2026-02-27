@@ -53,14 +53,15 @@ export default function MapView(){
     }, [name]);
 
     /* ADD PATH TO PRECINCT GEOJSONS AND UNCOMMENT WHEN YOU WANT TO USE */
-    // useEffect(() => {
-    //     if(store.mapMode === 'precinct' && !precinctData) {
-    //         fetch(``) //(put path of precinct geojsons)
-    //             .then((res) => res.json())
-    //             .then((data) => setPrecinctData(data))
-    //             .catch((err) => console.error("Error loading geojson:", err));
-    //     }
-    // }, [store.mapMode, precinctData]);
+    useEffect(() => {
+        if(store.mapMode === 'precinct' && !precinctData) {
+            
+            fetch(`/geojson/${name}_precincts.geojson`) //(put path of precinct geojsons)
+                .then((res) => res.json())
+                .then((data) => setPrecinctData(data))
+                .catch((err) => console.error("Error loading geojson:", err));
+        }
+    }, [store.mapMode, precinctData]);
 
     console.log("rendering MapContainer for", name);
     return(
