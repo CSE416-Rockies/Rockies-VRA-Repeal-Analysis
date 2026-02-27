@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
+import { useNavigate } from "react-router-dom";
 
 import StateDetail from './StateDetail.jsx';
 import DistrictDetail from './DistrictDetail.jsx';
 import MapSelect from './MapSelect.jsx';
+import StateSelection from "./StateSelection.jsx";
+
 
 const stateBounds = {
     Delaware: [
@@ -21,6 +24,7 @@ export default function MapView(){
     const [expanded, setExpanded] = useState(true);
     const [districtPlan, setDistrictPlan] = useState(null);
     const { name } = useParams();
+    const [map, setMap] = useState(null);
 
     const lineStyle = (feature) => {
         return {
@@ -30,16 +34,22 @@ export default function MapView(){
         };
     };
 
+    const navigate = useNavigate();
+
+    const zoomOut = () =>{
+        navigate(`/`);
+    };
+
     useEffect(() => {
         fetch(`/geojson/${name}_Congressional_Districts.json`)
             .then((res) => res.json())
             .then((data) => setDistrictPlan(data))
             .catch((err) => console.error("Error loading geojson:", err));
     }, [name]);
-
+    console.log("rendering MapContainer for", name);
     return(
         <>
-            
+            <StateSelection onClose={zoomOut} />
             <div className = 'flex fixed inset-0 h-screen w-full pointer-events-none'>
                 <MapSelect/>
                 <div className = 'flex flex-col absolute gap-5 w-1/3 my-5 top-40 bottom-5 z-50 right-5 pointer-events-auto'>
@@ -49,8 +59,9 @@ export default function MapView(){
 
                 <MapContainer
                     bounds={stateBounds[name]}
+                    whenCreated = {setMap}
                     className="fixed inset-0 h-screen w-full"
-                >
+                >  
                     <TileLayer
                         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>'
