@@ -152,7 +152,7 @@ function CongressRepDetail({repArr, onClick}){
 
         {repArr.map(({dNum, repName, party, imgID})=>(
             <div className = 'flex gap-2' key = {repName}>
-                <img src = {`/representatives/${imgID}.jpg`} className = 'w-16 object-cover rounded-md'/>
+                <img src = {`/representatives/${imgID}.jpg`} className = 'w-16 h-20 object-cover rounded-md'/>
                 <div className = 'flex flex-col gap-0.5 justify-center'>
                     <div className = 'text-sm font-semibold'>{repName}</div>
                     <div className = 'text-xs text-gray-500'>District {dNum}</div>
