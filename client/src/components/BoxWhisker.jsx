@@ -5,7 +5,7 @@ import DropDownMenu from './DropDownMenu';
 import GraphView from './GraphView';
 import GlobalStoreContext from "../store";
 import { Squares2X2Icon, UserGroupIcon, InformationCircleIcon } from "@heroicons/react/24/solid";
-import { SelectionPlaceholder } from '../utils/selectionPlaceholder';
+import { SelectionPlaceholder } from './selectionPlaceholder';
 import Legend from './Legend';
 
 import { ENSEMBLES, RACES, PRESIDENT_CAND_LEGEND } from "../utils/constants"
