@@ -21,3 +21,8 @@ export const BOX_WHISKER_LEGEND = [
     { label: "Ensemble", color: "black" },
     { label: "Enacted", color: "#10B981" },
 ]
+
+export const ENSEMBLE_LEGEND = [
+    {label: "race-blind", color: "#10B981"},
+    {label: "VRA", color: "#6EE7B7"},
+]

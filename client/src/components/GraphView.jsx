@@ -14,7 +14,7 @@ export default function GraphView({title, subtitle, legendTitle, legendItems, sv
                         </div>
                         <div className = 'flex w-full h-full px-20 items-center justify-between'>
                             <svg className = 'flex-1' width = "100%" height = "100%" ref = {svgRef} />
-                            <Legend title = {legendTitle} items = {legendItems}/>
+                            {legendItems.length > 0 && <Legend title={legendTitle} items={legendItems} />}
                         </div>
                     </>
                     }
