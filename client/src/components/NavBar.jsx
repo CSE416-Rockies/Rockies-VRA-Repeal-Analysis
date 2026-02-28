@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { useState, useContext } from "react"
 
 import MapIcon from '../assets/svgs/map.svg?react';
@@ -13,6 +13,8 @@ import { GlobalStoreContext } from "../store";
 
 export default function NavBar(){
     const { store } = useContext(GlobalStoreContext);
+    const location = useLocation();
+    
     const selectedStateName = store?.selectedState || "";
     const [expand, setExpand] = useState(false);
     const navItems = [
@@ -35,16 +37,20 @@ export default function NavBar(){
             
             
             <div className = "w-full border-divide border-gray-300 my-5 overflow-hidden whitespace-nowrap">
-                
+            
+                {navItems.map(({to, id, icon: Icon, label})=> {
+                    const active = location.pathname == to;
 
-                {navItems.map(({to, id, icon: Icon, label})=> (
-                    <Link key = {id} to = {to} id = {id} className = "nav-link group">
-                        <div className="flex items-center justify-center w-12">
-                            <Icon className="nav-icon"/>
-                        </div>
-                        <div className = {`nav-label p-4 transition-opacity duration-500 ${expand? 'opacity-100' : 'opacity-0'}`}>{label}</div>
-                    </Link>
-                ))}
+                    return(
+                        <Link key = {id} to = {to} id = {id} className = "nav-link group">
+                            <div className= "flex items-center justify-center w-12">
+                                <Icon className= {`nav-icon ${active ? "text-emerald-500":""}`}/>
+                            </div>
+                            <div className = {`nav-label p-4 transition-opacity duration-500 ${active? 'text-emerald-500':""} ${expand? 'opacity-100' : 'opacity-0'}`}>{label}</div>
+                        </Link>
+                    )
+
+                })}
             </div>
             
             
