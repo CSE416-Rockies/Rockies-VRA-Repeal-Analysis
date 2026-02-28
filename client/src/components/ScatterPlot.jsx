@@ -6,6 +6,7 @@ import GraphView from "./GraphView";
 
 import { drawScatterPlot } from "../utils/drawScatterPlot";
 import { PRESIDENT_CAND_LEGEND, RACES} from "../utils/constants"
+import { UserGroupIcon } from "@heroicons/react/24/solid";
 
 
 export default function ScatterPlot(){
@@ -63,7 +64,7 @@ export default function ScatterPlot(){
             svgRef = {ref}
             legendTitle = "Votes"
             legendItems = {PRESIDENT_CAND_LEGEND}
-            menus = {<DropDownMenu  options = {RACES} onSelect = {setRacialGroup}/>}
+            menus = {<DropDownMenu  options = {RACES} onSelect = {setRacialGroup} icon={UserGroupIcon}/>}
         />
     )
     

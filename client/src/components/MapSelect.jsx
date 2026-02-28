@@ -3,6 +3,7 @@ import DropDownMenu from './DropDownMenu.jsx';
 
 import GlobalStoreContext from '../store/index.jsx';
 import { MINORITIES } from '../utils/constants.js';
+import { UserGroupIcon } from '@heroicons/react/24/solid';
 
 export default function MapSelect(){
     const { store, setMapMode } = useContext(GlobalStoreContext);
@@ -25,7 +26,7 @@ export default function MapSelect(){
                 }
             </div>
 
-            { store.mapMode == 'precinct' &&  <DropDownMenu options = {MINORITIES}/> }
+            { store.mapMode == 'precinct' &&  <DropDownMenu options = {MINORITIES} icon = {UserGroupIcon}/> }
         </div>
     )
 }

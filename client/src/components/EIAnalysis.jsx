@@ -1,5 +1,6 @@
 import {useRef, useState, useContext} from 'react'
 import DropDownMenu from './DropDownMenu';
+import { UserGroupIcon } from '@heroicons/react/24/solid';
 import GlobalStoreContext from "../store";
 import Legend from './Legend';
 
@@ -20,7 +21,7 @@ export default function EIAnalysis(){
         <div className = 'flex justify-center items-center w-full h-full bg-gray-200'>    
             <div className = 'flex flex-col gap-10 justify-center w-full h-full py-5 px-5 bg-gray-200'>    
                 <div className = 'flex gap-5 text-gray-500 items-center'>
-                    <DropDownMenu options = {RACES} onSelect = {setRacialGroup}/>
+                    <DropDownMenu options = {RACES} onSelect = {setRacialGroup} icon = {UserGroupIcon}/>
                     <div className = 'flex items-center gap-5'>
                         {PRESIDENT_CAND_LEGEND.map(({label})=>(
                                 <button key = {label} className = 'flex gap-2 text-lg py-3 items-center cursor-pointer group' onClick = {() => setCandView(label)}>

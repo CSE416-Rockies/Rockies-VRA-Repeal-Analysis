@@ -8,6 +8,7 @@ import StateSelection from './components/StateSelection.jsx';
 import MapView from './components/MapView.jsx';
 import ScatterPlot from './components/ScatterPlot.jsx';
 import EIAnalysis from './components/EIAnalysis.jsx';
+import BoxWhisker from './components/BoxWhisker.jsx';
 
 function App() {
   const location = useLocation();
@@ -28,7 +29,7 @@ function App() {
             <Route path = "/scatterplot" element = {<ScatterPlot/>}></Route>
             <Route path = "/eiAnalysis" element = {<EIAnalysis/>}></Route>
             <Route path = "/ensembleSplits"></Route>
-            <Route path = "/boxWhisker"></Route> 
+            <Route path = "/boxWhisker" element = {<BoxWhisker/>}></Route> 
           </Routes>
         </div>
       </div>
