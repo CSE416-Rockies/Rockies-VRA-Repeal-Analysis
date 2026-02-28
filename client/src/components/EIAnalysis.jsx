@@ -5,7 +5,7 @@ import DropDownMenu from './DropDownMenu';
 import GlobalStoreContext from "../store";
 import GraphView from './GraphView';
 import { SelectionPlaceholder } from './selectionPlaceholder';
-
+import { UserGroupIcon } from '@heroicons/react/24/solid';
 
 import { drawEIAnalysis } from '../utils/drawEIAnalysis';
 import { RACES, PRESIDENT_CAND_LEGEND, getPrimarySecondaryColors } from "../utils/constants"
@@ -38,10 +38,10 @@ export default function EIAnalysis(){
         if(!data || !racialGroup|| !ref.current) return;
 
         function redraw(){
-                // Draw d3 scatterplot
-                d3.select(ref.current).selectAll("*").remove();                // prevent rendering on top of each other
-                drawEIAnalysis({givenSVG: ref.current, data: data, margin, racialLabel: racialGroup, candView});
-            }
+            // Draw d3 scatterplot
+            d3.select(ref.current).selectAll("*").remove();                // prevent rendering on top of each other
+            drawEIAnalysis({givenSVG: ref.current, data: data, margin, racialLabel: racialGroup, candView});
+        }
         
         const obsvr = new ResizeObserver(redraw);
         obsvr.observe(ref.current);
@@ -53,11 +53,11 @@ export default function EIAnalysis(){
     
 
     const choiceMenu = 
-        <div className = 'flex gap-5  items-center'>
-            <DropDownMenu options = {RACES} onSelect = {setRacialGroup}/>
+        <div className = 'flex gap-5 items-center'>
+            <DropDownMenu options = {RACES} onSelect = {setRacialGroup} icon = {UserGroupIcon}/>
             <div className = 'flex items-center text-gray-500 gap-5'>
                 {PRESIDENT_CAND_LEGEND.map(({label})=>(
-                        <button key = {label} className = 'flex gap-2 text-lg py-3 items-center cursor-pointer group' onClick = {() => setCandView(label)}>
+                        <button key = {label} className = 'flex gap-2 text-lg items-center cursor-pointer group' onClick = {() => setCandView(label)}>
                             <div className = {`rounded-md border-2 w-5 h-5 border-gray-500 capitalize ${candView == label? 'bg-gray-500 ': 'group-hover:bg-gray-300'}`}>  </div>
                             <div className = 'capitalize'>{label}</div>
                         </button>
