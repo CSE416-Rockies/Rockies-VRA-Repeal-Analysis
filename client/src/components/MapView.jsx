@@ -10,6 +10,7 @@ import DistrictDetail from './DistrictDetail.jsx';
 import MapSelect from './MapSelect.jsx';
 import StateSelection from "./StateSelection.jsx";
 import { CommandLineIcon } from "@heroicons/react/24/solid";
+import Heatmap_Legend from "./Heatmap_Legend.jsx";
 
 
 const stateBounds = {
@@ -22,6 +23,15 @@ const stateBounds = {
         [35.000, -80.751],
     ],
 };
+
+const legend_items = [
+    {label: "0-5%", color: "#ECFDF5"},
+    {label: "5-10%", color: "#D1FAE5"},
+    {label: "10-25%", color: "#6EE7B7"},
+    {label: "25-50%", color: "#10B981"},
+    {label: "50-75%", color: "#047857"},
+    {label: "75-100%", color: "#063E2F"},
+]
 
 export default function MapView(){
     const { store } = useContext(GlobalStoreContext); 
@@ -80,7 +90,7 @@ export default function MapView(){
     }, [store.mapMode, precinctData]);
 
     const onEachState = (feature, layer) => {
-        if(store.mapMode === 'district' && districtPlan) {
+        if(store.mapMode === 'district' && districtPlan) {  //district tootip
             layer.bindTooltip(
                 `<div class="px-3 py-2 rounded-xl bg-white shadow-lg text-sm font-medium text-gray-800">
                 <strong>${feature.properties.DISTRICT}</strong><br/>
@@ -101,7 +111,30 @@ export default function MapView(){
                 // click: (e) => {
                 // }
             });
-        }       
+        }
+
+        if(store.mapMode=="precinct" && precinctData){  //precincts tootip
+            layer.bindTooltip(
+                `<div class="px-3 py-2 rounded-xl bg-white shadow-lg text-sm font-medium text-gray-800">
+                <strong>${feature.properties.precicnt}</strong><br/>
+                </div>`,
+            {
+                permanent: false,
+                sticky: true,
+                direction: "top",
+            });
+            
+            layer.on({
+                mouseover: (e) => {
+                e.target.setStyle(highlightStyle);
+                },
+                mouseout: (e) => {
+                layer.setStyle(lineStyle(feature));
+                },
+                // click: (e) => {
+                // }
+            });
+        }
     };
 
     console.log("rendering MapContainer for", name);
@@ -126,8 +159,10 @@ export default function MapView(){
                     />
                     {store.mapMode === 'district' && districtPlan && (<GeoJSON data={districtPlan} style={lineStyle} onEachFeature={onEachState} />)}
                     {store.mapMode === 'precinct' && precinctData && (<GeoJSON data={precinctData} style={lineStyle} onEachFeature={onEachState} />)}
+                    
                 </MapContainer>
-    
+                {store.mapMode == "precinct" && <Heatmap_Legend titles="" items = {legend_items} />}
+                
             </div>
         </>
     )
