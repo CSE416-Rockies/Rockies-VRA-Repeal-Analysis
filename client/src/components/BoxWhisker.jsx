@@ -5,6 +5,7 @@ import DropDownMenu from './DropDownMenu';
 import GraphView from './GraphView';
 import GlobalStoreContext from "../store";
 import { Squares2X2Icon, UserGroupIcon, InformationCircleIcon } from "@heroicons/react/24/solid";
+import { SelectionPlaceholder } from '../utils/selectionPlaceholder';
 import Legend from './Legend';
 
 import { ENSEMBLES, RACES, PRESIDENT_CAND_LEGEND } from "../utils/constants"
@@ -22,15 +23,6 @@ export default function BoxWhisker(){
     const [data, setData] = useState(null);
     
     const margin = {top: 20, right: 20, bottom: 60, left: 80}
-
-    const SelectionPlaceholder = ({ message }) => (
-        <div className="flex flex-col w-full items-center justify-center h-full text-gray-500 gap-4">
-            <div className="flex items-center gap-1 p-6 bg-gray-50 rounded-full border border-gray-100 shadow-sm">
-                <InformationCircleIcon className="w-12 h-12 text-gray-400" />
-                <p className="text-xl font-medium">{message}</p>
-            </div>
-        </div>
-    );
     
     // state change
     useEffect(()=>{
