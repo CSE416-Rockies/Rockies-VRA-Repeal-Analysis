@@ -1,7 +1,11 @@
 import {ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid'
+import PageControls from './PageControls';
+
+import { usePaginate } from '../hooks/paginate';
 
 export default function DistrictDetail({expanded, onClick}){
-
+    const perPage = 7;
+    
     const districtArr = [
         {dNum: 1, rep: "Jane Doe", party: "republican", racialGroup: "white", voteMargin: 30.81},
         {dNum: 2, rep: "Jane Doe", party: "republican", racialGroup: "white", voteMargin: 30.81},
@@ -18,6 +22,8 @@ export default function DistrictDetail({expanded, onClick}){
         {dNum: 14, rep: "Jane Doe", party: "republican", racialGroup: "latino", voteMargin: 30.81}
     ];
 
+    const {onPage, currPage, goPrev, goNext, hasPrev, hasNext, _ } = usePaginate(districtArr, perPage);
+    
     return(
 
         <div className = 'bg-white rounded-2xl shadow-md flex flex-col w-full py-5 text-sm overflow-hidden min-h-0 transition-all duration-700 ease-in-out' 
@@ -28,7 +34,7 @@ export default function DistrictDetail({expanded, onClick}){
                 { expanded ? <ChevronUpIcon className = 'w-5'/> : <ChevronDownIcon className = 'w-5'/> }
             </div>
         
-            <div className={`flex justify-center overflow-y-scroll ${expanded ? 'opacity-100 pt-5' : 'max-h-0 opacity-0'}`}>
+            <div className={`flex flex-col justify-center items-center gap-5 overflow-y-auto ${expanded ? 'opacity-100 pt-5' : 'max-h-0 opacity-0'}`}>
                 <table className = 'w-full'>
                     <thead className = 'text-left text-gray-400 '>
                         <tr>
@@ -40,7 +46,7 @@ export default function DistrictDetail({expanded, onClick}){
                         </tr>
                     </thead>
                     <tbody>
-                        {districtArr.map(({dNum, rep, party, racialGroup, voteMargin}, index) => (
+                        {onPage.map(({dNum, rep, party, racialGroup, voteMargin}, index) => (
                         <tr key = {dNum} className = {`h-8 ${index%2==0? 'bg-gray-100':''}`} >
                                 <td className = 'pl-5'>{dNum}</td>
                                 <td>{rep}</td>
@@ -55,6 +61,8 @@ export default function DistrictDetail({expanded, onClick}){
                         ))}
                     </tbody>
                 </table>
+
+                <PageControls currPage = {currPage} prev = {goPrev} next = {goNext} hasPrev = {hasPrev} hasNext = {hasNext} />
             </div>
             
         </div>
