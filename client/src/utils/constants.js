@@ -7,6 +7,10 @@ export const PRESIDENT_CAND_LEGEND = [
     {label: "harris", color: PARTY_COLORS.dem},
     {label: "trump", color: PARTY_COLORS.rep}
 ]
+export const getPrimarySecondaryColors = (racialGroup) => [
+    {label: racialGroup, color: "#10B981"}, 
+    {label: `Not ${racialGroup}`, color: "#D1FAE5"}
+]
 
 export const RACES = ["white", "black", "latino", "other"];
 export const MINORITIES = ["black","latino", "other"];
