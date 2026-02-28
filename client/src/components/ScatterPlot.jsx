@@ -7,13 +7,14 @@ import GraphView from "./GraphView";
 import { drawScatterPlot } from "../utils/drawScatterPlot";
 import { PRESIDENT_CAND_LEGEND, RACES} from "../utils/constants"
 import { UserGroupIcon } from "@heroicons/react/24/solid";
+import { SelectionPlaceholder } from './selectionPlaceholder';
 
 
 export default function ScatterPlot(){
     const { store } = useContext(GlobalStoreContext);
     const selectedState = store?.selectedState || "";
 
-    const [racialGroup, setRacialGroup] = useState('white');  
+    const [racialGroup, setRacialGroup] = useState(null);  
 
     const ref = useRef(null);
     const [data, setData] = useState(null);
@@ -33,18 +34,23 @@ export default function ScatterPlot(){
 
     // racialGroup or resize change
     useEffect(()=>{
-        if(!data) return;
+        if(!data || !racialGroup) return;
 
-        const racialPct = `${racialGroup}_pct`;
-        const flatData =  data.flatMap(d=>[
-            {precinct: d.precinct, racial_pct: d[racialPct], vote_share: d.dem_share, party: "dem"},
-            {precinct: d.precinct, racial_pct: d[racialPct], vote_share: d.rep_share, party: "rep" }
-        ])
+        const flatData =  data.precincts.flatMap(d=>[
+            {precinct: d.id, racial_pct: d[racialGroup].pct_demo*100, vote_share: d[racialGroup].harris*100, party: "dem"},
+            {precinct: d.id, racial_pct: d[racialGroup].pct_demo*100, vote_share: d[racialGroup].trump*100, party: "rep" }
+        ]);
+        const regression = {
+            [racialGroup]: {
+                dem: { b0: data.regression.fits[racialGroup].harris.b0, b1: data.regression.fits[racialGroup].harris.b1 },
+                rep: { b0: data.regression.fits[racialGroup].trump.b0,  b1: data.regression.fits[racialGroup].trump.b1  }
+            }
+        };
 
         function redraw(){
             // Draw d3 scatterplot
             d3.select(ref.current).selectAll("*").remove();                // prevent rednering on top of each other
-            drawScatterPlot({givenSVG: ref.current, data: flatData, margin, racialLabel: racialGroup});
+            drawScatterPlot({givenSVG: ref.current, data: flatData, margin, racialLabel: racialGroup, regression});
         }
 
         const obsvr = new ResizeObserver(redraw);
@@ -53,7 +59,7 @@ export default function ScatterPlot(){
 
         return ()=> obsvr.disconnect();
 
-    }), [data, racialGroup];
+    }, [data, racialGroup]);
 
 
     return(
@@ -65,7 +71,13 @@ export default function ScatterPlot(){
             legendTitle = "Votes"
             legendItems = {PRESIDENT_CAND_LEGEND}
             menus = {<DropDownMenu  options = {RACES} onSelect = {setRacialGroup} icon={UserGroupIcon}/>}
-        />
+        >{(!racialGroup) && (
+            <SelectionPlaceholder 
+                message={`Please select a racial group`} 
+            />
+        )}
+        </GraphView>   
+    
     )
     
     

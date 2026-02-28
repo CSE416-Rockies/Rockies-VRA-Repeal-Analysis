@@ -81,7 +81,7 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
         .attr("fill", primaryColor)
         .attr("opacity", ".8")
         .attr("stroke", "#000")
-        .attr("stroke-width", 1)
+        .attr("stroke-width", 2)
         .attr("stroke-linejoin", "round")
         .attr("d", areaGen);
 
@@ -93,7 +93,7 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
         .attr("fill", secondaryColor)
         .attr("opacity", ".8")
         .attr("stroke", "#000")
-        .attr("stroke-width", 1)
+        .attr("stroke-width", 2)
         .attr("stroke-linejoin", "round")
         .attr("d", areaGen);
 }

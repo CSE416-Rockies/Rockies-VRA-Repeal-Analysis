@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { PARTY_COLORS } from "./constants";
 
-export function drawScatterPlot({ givenSVG, data, margin, racialLabel }) {
+export function drawScatterPlot({ givenSVG, data, margin, racialLabel, regression }) {
 
     // create svg element
     var svg = d3.select(givenSVG)
@@ -62,5 +62,27 @@ export function drawScatterPlot({ givenSVG, data, margin, racialLabel }) {
             .attr("cy", d => y(d.vote_share) )
             .attr("r", 2)
             .style("fill",  d => color(d.party))
+            .style("fill-opacity", 0.3)
+
+    /* Draw regression lines from coefficients */
+    const raceRegression = regression[racialLabel];
+
+    ['dem', 'rep'].forEach(party => {
+        // sigmoid
+        const { b0, b1 } = raceRegression[party];
+        // divide x by 100 -> coefficients 0–1 scale to 0 - 100
+        const predict = (x) => (1 / (1 + Math.exp(-(b0 + b1 * (x / 100))))) * 100;
+        const lineData = d3.range(0, 101, 1).map(x => ({
+            x,
+            y: Math.min(100, Math.max(0, predict(x)))
+        }));
+
+        svg.append("path")
+            .datum(lineData)
+            .attr("fill", "none")
+            .attr("stroke", color(party))
+            .attr("stroke-width", 2.5)
+            .attr("d", d3.line().x(d => x(d.x)).y(d => y(d.y)).curve(d3.curveBasis));
+    });
     
 }
