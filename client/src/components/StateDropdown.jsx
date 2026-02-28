@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import GlobalStoreContext from "../store";
 
 export default function StateDropdown({onSelect, options}){
     const [open, setOpen] = useState(false);
+    const { store } = useContext(GlobalStoreContext);
+
+    const selectedState = store?.selectedState;
+
+    const filterOptions = options.filter((option) => (option.label || option) !== selectedState);
 
     const handleSelect = (value)=>{
         if(onSelect){
@@ -27,7 +32,7 @@ export default function StateDropdown({onSelect, options}){
 
             {open && (
                 <ul className="absolute inset-x-0 top-full mt-1 bg-white cursor-pointer rounded-xl shadow-md w-full py-2 z-50">
-                    {options.map((option) => (
+                    {filterOptions.map((option) => (
                         <li
                             key={option.id || option}
                             className="px-5 py-2 hover:bg-gray-100 transition-all duration-100 ease-in capitalize text-gray-400 text-xl"

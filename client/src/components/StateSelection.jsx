@@ -10,6 +10,7 @@ export default function StateSelection({ onClose }){
     // console.log("state name: ", name)
     const location = useLocation();
     const isMapView = (location.pathname.startsWith("/map"));
+    const isGraph = ((location.pathname !== "/") && !isMapView);
 
     const { store, setSelectedState, setMapMode } = useContext(GlobalStoreContext);
     const selectedState = store?.selectedState || "";
@@ -32,8 +33,8 @@ export default function StateSelection({ onClose }){
                     
                     {selectedState && (<span className = "font-bold">{selectedState}</span>)}
                 </span>
-                {!selectedState && <StateDropdown options={options} onSelect={(state)=> setSelectedState(state)} />}
-                {selectedState && <XCircleIcon className = 'cursor-pointer text-red-500 w-7 transition-transform duration-500 ease-in-out hover:scale-125'
+                {(!selectedState || isGraph) && <StateDropdown options={options} onSelect={(state)=> setSelectedState(state)} />}
+                {selectedState && !isGraph && <XCircleIcon className = 'cursor-pointer text-red-500 w-7 transition-transform duration-500 ease-in-out hover:scale-125'
                 onClick={backToMap}
                 />}
             </div>
