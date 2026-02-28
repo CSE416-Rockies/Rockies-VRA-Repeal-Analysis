@@ -9,7 +9,7 @@ export default function GraphView({title, subtitle, legendTitle, legendItems, sv
                     { (children) ? children :
                     <>
                         <div className = 'flex flex-col gap-5 justify-center items-center'>
-                            <div className = 'text-3xl'>{title}</div>
+                            <div className = 'text-3xl capitalize'>{title}</div>
                             <div className = 'text-xl capitalize'>{subtitle}</div>
                         </div>
                         <div className = 'flex w-full h-full px-20 items-center justify-between'>

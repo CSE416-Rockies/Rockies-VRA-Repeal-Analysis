@@ -1,14 +1,13 @@
 import {useRef, useState, useEffect, useContext} from 'react'
 import * as d3 from "d3";
-import { drawScatterPlot } from "../utils/drawScatterPlot";
+import { drawBoxWhisker } from "../utils/drawBoxWhisker";
 import DropDownMenu from './DropDownMenu';
 import GraphView from './GraphView';
 import GlobalStoreContext from "../store";
-import { Squares2X2Icon, UserGroupIcon, InformationCircleIcon } from "@heroicons/react/24/solid";
+import { Squares2X2Icon, UserGroupIcon, } from "@heroicons/react/24/solid";
 import { SelectionPlaceholder } from './selectionPlaceholder';
-import Legend from './Legend';
 
-import { ENSEMBLES, RACES, PRESIDENT_CAND_LEGEND } from "../utils/constants"
+import { ENSEMBLES, RACES, BOX_WHISKER_LEGEND  } from "../utils/constants"
 
 
 export default function BoxWhisker(){
@@ -27,8 +26,8 @@ export default function BoxWhisker(){
     // state change
     useEffect(()=>{
         const stateJson = selectedState == "Georgia" ? 
-                        "/graphs/ga_gingles.json" :  
-                        "/graphs/de_gingles.json";
+                        "/boxwhisker/ga_box_whisker.json" :  
+                        "/boxwhisker/de_box_whisker.json";
     
         d3.json(stateJson).then( rawData => { setData(rawData);}) 
             .catch((err)=>console.error("Error loading geojson:", err));
@@ -38,16 +37,19 @@ export default function BoxWhisker(){
     useEffect(()=>{
         if (!data || !racialGroup || !ensemble || !ref.current) return;
 
-        const racialPct = `${racialGroup}_pct`;
-        const flatData =  data.flatMap(d=>[
-            {precinct: d.precinct, racial_pct: d[racialPct], vote_share: d.dem_share, party: "dem"},
-            {precinct: d.precinct, racial_pct: d[racialPct], vote_share: d.rep_share, party: "rep" }
-        ])
+        const filteredData = data[ensemble]?.[racialGroup];
+        console.log(filteredData);
 
         function redraw(){
             // Draw d3 scatterplot
             d3.select(ref.current).selectAll("*").remove();                // prevent rednering on top of each other
-            drawScatterPlot({givenSVG: ref.current, data: flatData, margin, racialLabel: racialGroup});
+            drawBoxWhisker({
+                givenSVG: ref.current,
+                data: filteredData,
+                margin,
+                racialLabel: racialGroup,
+                showProposed: !!filteredData[0]?.proposed
+            });
         }
 
         const obsvr = new ResizeObserver(redraw);
@@ -56,17 +58,16 @@ export default function BoxWhisker(){
 
         return ()=> obsvr.disconnect();
 
-    });
+    }, [data, racialGroup, ensemble]);
 
 
     return(
-        
         <GraphView 
-            title = {`2024 Precinct-Level Presidential Election [${selectedState}]`}
-            subtitle = {`By ${racialGroup} Population`}
-            svgRef = {ref}
-            legendTitle = "Votes"
-            legendItems = {PRESIDENT_CAND_LEGEND}
+            title = {`${racialGroup} Population Share [${selectedState}]`}
+            subtitle = {ensemble ? `${ensemble}` : ""}
+            svgRef={ref} 
+            legendItems = {BOX_WHISKER_LEGEND}
+            legendTitle = "Plan"
             menus = {
                     <div className='flex gap-5'>
                         <DropDownMenu  options = {ENSEMBLES} onSelect = {setEnsemble} text={"Set Ensemble"} icon={Squares2X2Icon}/>
