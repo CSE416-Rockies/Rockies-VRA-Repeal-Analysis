@@ -51,12 +51,21 @@ export default function MapView(){
         };
     };
 
+    const choroplethStyle = (feature) => ({
+        fillColor: getColor(feature),
+        fillOpacity: 1,
+        color: "#6b6b6b",
+        weight: 1,
+    });
+
     const highlightStyle = {
         fillColor: "#d8d8d8", 
         color: "#6b6b6b",     
         weight: 2,
         fillOpacity: 1,
     }
+
+    const getStyle = (feature) => store.minorityGroup ? choroplethStyle(feature) : lineStyle(feature);
 
     const navigate = useNavigate();
 
@@ -106,7 +115,7 @@ export default function MapView(){
                 e.target.setStyle(highlightStyle);
                 },
                 mouseout: (e) => {
-                e.target.setStyle(lineStyle(feature));
+                e.target.setStyle(lineStyle(layer.feature));
                 },
                 // click: (e) => {
                 // }
@@ -116,26 +125,54 @@ export default function MapView(){
         if(store.mapMode=="precinct" && precinctData){  //precincts tootip
             layer.bindTooltip(
                 `<div class="px-3 py-2 rounded-xl bg-white shadow-lg text-sm font-medium text-gray-800">
-                <strong>${feature.properties.precicnt}</strong><br/>
+                <strong>${feature.properties.precinct}</strong><br/>
                 </div>`,
             {
                 permanent: false,
                 sticky: true,
                 direction: "top",
+                opacity: 0.9,
             });
             
             layer.on({
                 mouseover: (e) => {
-                e.target.setStyle(highlightStyle);
+                    const currentStyle = getStyle(layer.feature);
+                    e.target.setStyle({
+                        ...currentStyle,           
+                        fillColor: "#d8d8d8", 
+                        color: "#6b6b6b",   
+                        weight: 2.5,
+                        fillOpacity: 0.9,
+                    });
+                    e.target.bringToFront();
                 },
                 mouseout: (e) => {
-                layer.setStyle(lineStyle(feature));
+                    if (store.minorityGroup) {
+                        console.log("choroplethstyle after mouseout");
+                        e.target.setStyle(choroplethStyle(layer.feature));
+                    } else {
+                        console.log("linestyle after mouseout");
+                        e.target.setStyle(lineStyle(layer.feature));
+                    }
                 },
                 // click: (e) => {
                 // }
             });
         }
     };
+
+    const getColor = (feature) =>{
+        if(!store.minorityGroup) return "#ffffff";
+        const group = store.minorityGroup;
+        const key = `${group}_percentage`;
+        const value = feature.properties[key] || 0;
+        return value > 75 ? "#063E2F" :
+         value > 50 ? "#047857" :
+         value > 25 ? "#10B981" :
+         value > 10 ? "#6EE7B7" :
+         value > 5  ? "#D1FAE5" :
+                    "#ECFDF5";
+    }
 
     console.log("rendering MapContainer for", name);
     return(
@@ -158,8 +195,8 @@ export default function MapView(){
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>'
                     />
                     {store.mapMode === 'district' && districtPlan && (<GeoJSON data={districtPlan} style={lineStyle} onEachFeature={onEachState} />)}
-                    {store.mapMode === 'precinct' && precinctData && (<GeoJSON data={precinctData} style={lineStyle} onEachFeature={onEachState} />)}
-                    
+                    {store.mapMode === 'precinct' && precinctData && (<GeoJSON data={precinctData} key={store.minorityGroup} style={getStyle} onEachFeature={onEachState} />)}
+
                 </MapContainer>
                 {store.mapMode == "precinct" && <Heatmap_Legend titles="" items = {legend_items} />}
                 

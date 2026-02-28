@@ -6,13 +6,21 @@ import { MINORITIES } from '../utils/constants.js';
 import { UserGroupIcon } from '@heroicons/react/24/solid';
 
 export default function MapSelect(){
-    const { store, setMapMode } = useContext(GlobalStoreContext);
+    const { store, setMapMode, setMinorityGroup } = useContext(GlobalStoreContext);
 
     const options = [{id: 'district',  label: 'District plan'}, {id: 'precinct', label: 'Precinct'}]
 
     const handleToggle = (mode) => {
+        setMinorityGroup(null);
         setMapMode(mode);
     }
+
+
+    function handleSelect(option){
+        setMinorityGroup(option);
+    }
+
+
 
     return(
         <div className = 'flex items-center z-40 absolute top-5 left-24 gap-5 text-gray-500 pointer-events-auto'>
@@ -26,7 +34,7 @@ export default function MapSelect(){
                 }
             </div>
 
-            { store.mapMode == 'precinct' &&  <DropDownMenu options = {MINORITIES} icon = {UserGroupIcon}/> }
+            { store.mapMode == 'precinct' &&  <DropDownMenu options = {MINORITIES} icon = {UserGroupIcon} onSelect={handleSelect}/> }
         </div>
     )
 }

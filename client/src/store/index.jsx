@@ -5,6 +5,7 @@ export const GlobalStoreContext = createContext({});
 export const GlobalStoreActionType = {
     SELECT_STATE: "SELECT_STATE",
     SET_MAP_MODE: "SET_MAP_MODE",
+    SET_MINORITY_GROUP: "SET_MINORITY_GROUP"
 };
 
 function storeReducer(store, action) {
@@ -22,6 +23,13 @@ function storeReducer(store, action) {
                 mapMode: payload,
             }
         }
+        case GlobalStoreActionType.SET_MINORITY_GROUP: {
+            return {
+                ...store,
+                minorityGroup: payload,
+            }
+        }
+
         default:
             return store;
     }
@@ -31,6 +39,7 @@ export function GlobalStoreContextProvider(props) {
     const [store, dispatch] = useReducer(storeReducer, {
         selectedState: null,
         mapMode: 'district',
+        minorityGroup: null,
     });
 
     const storeContextValue = useMemo(() => ({
@@ -47,6 +56,12 @@ export function GlobalStoreContextProvider(props) {
                 payload: mapMode
             })
         },
+        setMinorityGroup: (minorityGroup) => {
+            dispatch({
+                type: GlobalStoreActionType.SET_MINORITY_GROUP,
+                payload: minorityGroup
+            })
+        }
     }), [store]);
 
     return (
