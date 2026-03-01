@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react"
+import { useState, useEffect, useContext, useRef } from "react"
 import { useParams } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
@@ -41,6 +41,7 @@ export default function MapView(){
     const [districtPlan, setDistrictPlan] = useState(null);
     const [precinctData, setPrecinctData] = useState(null);
     const [map, setMap] = useState(null);
+    const hoveredLayer = useRef(null);
 
 
     const lineStyle = (feature) => {
@@ -85,13 +86,13 @@ export default function MapView(){
             fetch(`/geojson/${name}_precincts_topo.topojson`) //(put path of precinct geojsons)
                 .then((res) => res.json())
                 .then(topology => {
-                        console.log(Object.keys(topology.objects.data.geometries));
+                        // console.log(Object.keys(topology.objects.data.geometries));
                         const geojson = feature(
                         topology,
                         topology.objects.data // name of object inside topojson
                     );
 
-                    console.log("geojson: ", geojson);
+                    // console.log("geojson: ", geojson);
                     setPrecinctData(geojson);
                 })
                 .catch((err) => console.error("Error loading geojson:", err));
@@ -136,6 +137,15 @@ export default function MapView(){
             
             layer.on({
                 mouseover: (e) => {
+                    if (hoveredLayer.current && hoveredLayer.current !== e.target) {
+                        hoveredLayer.current.closeTooltip();
+                        if (store.minorityGroup) {
+                            hoveredLayer.current.setStyle(choroplethStyle(hoveredLayer.current.feature));
+                        } else {
+                            hoveredLayer.current.setStyle(lineStyle(hoveredLayer.current.feature));
+                        }
+                    }
+                    hoveredLayer.current = e.target;
                     const currentStyle = getStyle(layer.feature);
                     e.target.setStyle({
                         ...currentStyle,           
@@ -147,11 +157,13 @@ export default function MapView(){
                     e.target.bringToFront();
                 },
                 mouseout: (e) => {
+                    hoveredLayer.current = null;
+                    e.target.closeTooltip();
                     if (store.minorityGroup) {
-                        console.log("choroplethstyle after mouseout");
+                        // console.log("choroplethstyle after mouseout");
                         e.target.setStyle(choroplethStyle(layer.feature));
                     } else {
-                        console.log("linestyle after mouseout");
+                        // console.log("linestyle after mouseout");
                         e.target.setStyle(lineStyle(layer.feature));
                     }
                 },
@@ -174,7 +186,7 @@ export default function MapView(){
                     "#ECFDF5";
     }
 
-    console.log("rendering MapContainer for", name);
+    // console.log("rendering MapContainer for", name);
     return(
         <>
             <StateSelection onClose={zoomOut} />

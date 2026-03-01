@@ -14,14 +14,14 @@ export default function DistrictDetail({expanded, onClick}){
 
     useEffect(()=>{
         if(!expanded) return;
-        console.log("in expanded, calculating perpage");
+        // console.log("in expanded, calculating perpage");
 
         const calculate = () =>{
-            console.log("running caluclate()");
-            console.log("containerRef.current:", containerRef.current.clientHeight);
-            console.log("theadRef.current:", theadRef.current.clientHeight);
-            console.log("rowRef.current:", rowRef.current.clientHeight);
-            console.log("pageRef.current.clientHeight:", pageRef.current.clientHeight);
+            // console.log("running caluclate()");
+            // console.log("containerRef.current:", containerRef.current.clientHeight);
+            // console.log("theadRef.current:", theadRef.current.clientHeight);
+            // console.log("rowRef.current:", rowRef.current.clientHeight);
+            // console.log("pageRef.current.clientHeight:", pageRef.current.clientHeight);
             if(containerRef.current && theadRef.current && rowRef.current && pageRef.current && titleRef.current){
                 const header_height = theadRef.current.clientHeight;
                 const title_height = titleRef.current.clientHeight;
@@ -30,10 +30,10 @@ export default function DistrictDetail({expanded, onClick}){
                 const padding = 20;
                 const gap = 20;
                 const outerPadding = 40;
-                const available = containerRef.current.clientHeight - page_height - title_height - header_height - padding - gap ;
+                const available = containerRef.current.clientHeight - page_height - title_height - header_height - padding - gap;
                 const rows = Math.max(1, Math.floor(available / row_height));
                 setPerPage(rows);
-                console.log("rows per page: ", rows);
+                // console.log("rows per page: ", rows);
             }
         }
         const timeout = setTimeout(calculate, 700);
