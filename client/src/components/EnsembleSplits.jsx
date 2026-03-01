@@ -36,17 +36,26 @@ export default function EnsembleSplits(){
 
     useEffect(() =>{
         if(!ref.current || !data || !candView) return;
-        d3.select(ref.current).selectAll("*").remove();
-        d3.selectAll(".tooltip-ensemble").remove();
-        const stateKey = Object.keys(data)[0];
-        const stateData = data[stateKey];
+        
 
-        drawEnsembleSplits({
-            givenSVG: ref.current,
-            data: stateData,
-            margin,
-            candView,
-        });
+        const draw = () =>{
+            if(!ref.current) return;
+            d3.select(ref.current).selectAll("*").remove();
+            d3.selectAll(".tooltip-ensemble").remove();
+            const stateKey = Object.keys(data)[0];
+            const stateData = data[stateKey];
+
+            drawEnsembleSplits({
+                givenSVG: ref.current,
+                data: stateData,
+                margin,
+                candView,
+            });
+        };
+        const observer = new ResizeObserver(draw);
+        observer.observe(ref.current);
+        return () => observer.disconnect();
+        
     }, [candView, data]);
 
     const choiceMenu = 
