@@ -9,7 +9,7 @@ export function usePaginate(arr, perPage){
     function goToSpecific(idx){
         setPage(Math.ceil((idx+1)/perPage));
     }
-
+    
     return{
         totalPages,
         onPage,

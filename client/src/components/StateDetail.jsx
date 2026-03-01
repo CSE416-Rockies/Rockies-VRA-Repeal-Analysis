@@ -1,21 +1,13 @@
 import { ChevronRightIcon, ChevronLeftIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid'
-import {useState, useRef} from 'react'
+import {useState} from 'react'
+import { usePaginate } from '../hooks/paginate';
+import PageControls from './PageControls';
 
 
 export default function StateDetail({expanded, onClick}){
     
     const [repDetail, setRepDetail] = useState(false);
-    const repTopRef = useRef(null);
 
-    function toReps(){
-        setRepDetail(true);
-        repTopRef.current.scrollTo({ top: 0 });
-    }
-
-    function toDef(){
-        setRepDetail(false);
-        repTopRef.current.scrollTo({ top: 0 });
-    }
 
     const races = [
         {race: "White", percent: 39.78, popNumber: 700000},
@@ -59,19 +51,19 @@ export default function StateDetail({expanded, onClick}){
             </div>
 
 
-                <div ref = {repTopRef} className={`relative gap-10 px-5 overflow-y-auto overflow-x-hidden ${expanded ? 'opacity-100' : 'max-h-0 opacity-0'}`}>
-                    <div className = {` ${repDetail ? 'slideInR': 'slideInL'}`}>
+                <div className={`flex-1 relative gap-10 px-5 overflow-y-auto overflow-x-hidden ${expanded ? 'opacity-100' : 'max-h-0 opacity-0'}`}>
+                    <div className = {`h-full ${repDetail ? 'slideInR': 'slideInL'}`}>
 
                     {!repDetail ? 
-                        (<div className = 'flex flex-col gap-5'>
+                        (<div className = 'flex flex-col gap-5 h-full'>
                             <DefaultDetail races = {races} stateVoterDist = {stateVoterDist} partyControl = {partyControl}/>
-                            <RepDetailButton chevronDir = 'R' toWhere = {toReps}/>
+                            <RepDetailButton chevronDir = 'R' toWhere = {()=>setRepDetail(true)}/>
                         </div>)
 
                         :
 
-                        (<div className = 'flex flex-col'>
-                            <RepDetailButton chevronDir = 'L' toWhere = {toDef}/>
+                        (<div className = 'flex flex-col h-full gap-5'>
+                            <RepDetailButton chevronDir = 'L' toWhere = {()=>setRepDetail(false)}/>
                             <CongressRepDetail repArr = {reps} />
                         </div>)
                     }
@@ -112,7 +104,7 @@ function BarSection({title, arr}){
                     <span>{label}</span>
                     <span className = 'flex gap-2'>
                         <span className = 'text-gray-400'>{sublabel}</span>
-                        <span className = 'font-bold'>{percent.toFixed(2)}</span>
+                        <span className = 'font-bold'>{percent.toFixed(2)}%</span>
                     </span>
                 </div>
                 
@@ -146,21 +138,26 @@ function DefaultDetail({races, stateVoterDist, partyControl}){
 }
 
 function CongressRepDetail({repArr, onClick}){
+    const perPage = 4;
+    const {onPage, currPage, goPrev, goNext, hasPrev, hasNext, _ } = usePaginate(repArr, perPage);
 
     return(
-    <div className = 'grid grid-cols-2 gap-5 p-5' onClick = {onClick}>
+        <div className = 'flex flex-col gap-5 justify-between items-center px-2'>
+            <div className = 'grid grid-cols-2 gap-5 w-full' onClick = {onClick}>
 
-        {repArr.map(({dNum, repName, party, imgID})=>(
-            <div className = 'flex gap-2' key = {repName}>
-                <img src = {`/representatives/${imgID}.jpg`} className = 'w-16 h-20 object-cover rounded-md'/>
-                <div className = 'flex flex-col gap-0.5 justify-center'>
-                    <div className = 'text-sm font-semibold'>{repName}</div>
-                    <div className = 'text-xs text-gray-500'>District {dNum}</div>
-                    <div className = {`text-xs capitalize rounded-xl ${party == "republican"? 'text-red-500' : 'text-blue-500'}`}>{party}</div>
-                </div>
+                {onPage.map(({dNum, repName, party, imgID})=>(
+                    <div className = 'flex gap-2' key = {`${imgID}-${currPage}`}>
+                        <img src = {`/representatives/${imgID}.jpg`} className = 'w-16 h-20 object-cover rounded-md'/>
+                        <div className = 'flex flex-col gap-0.5 justify-center'>
+                            <div className = 'text-sm font-semibold'>{repName}</div>
+                            <div className = 'text-xs text-gray-500'>District {dNum}</div>
+                            <div className = {`text-xs capitalize rounded-xl ${party == "republican"? 'text-red-500' : 'text-blue-500'}`}>{party}</div>
+                        </div>
+                    </div>
+                ))}
             </div>
-        ))}
-    </div>
+                <PageControls currPage = {currPage} prev = {goPrev} next = {goNext} hasPrev = {hasPrev} hasNext = {hasNext}/>
+        </div>
     )
 }
 
