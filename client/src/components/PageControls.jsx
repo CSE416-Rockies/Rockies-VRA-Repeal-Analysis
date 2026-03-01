@@ -1,10 +1,10 @@
 import { ForwardIcon, BackwardIcon } from "@heroicons/react/24/solid"
+import { forwardRef } from 'react';
 
-export default function PageControls({currPage, prev, next, hasPrev, hasNext}){
-
+const PageControls = forwardRef(({ currPage, prev, next, hasPrev, hasNext }, ref) => {
     return(
 
-        <div className = 'flex items-center absolute bottom-5 justify-center gap-5 rounded-lg text-gray-700 bg-white border-2 border-gray-200 px-5'>
+        <div ref={ref} className = 'flex items-center absolute bottom-4 justify-center gap-5 rounded-lg text-gray-700 bg-white border-2 border-gray-200 px-5'>
             <button onClick = {prev} className = {`${hasPrev ? " hover:text-gray-500 p-1" : "text-gray-300 pointer-events-none"}`}>
                 <BackwardIcon className = 'w-5'/>
             </button>
@@ -13,5 +13,7 @@ export default function PageControls({currPage, prev, next, hasPrev, hasNext}){
                 <ForwardIcon className = 'w-5'/>
             </button>
         </div>
-    )
-}
+    );
+});
+
+export default PageControls;
