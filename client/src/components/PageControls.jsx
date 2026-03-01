@@ -14,5 +14,4 @@ export default function PageControls({currPage, prev, next, hasPrev, hasNext}){
             </button>
         </div>
     )
-
 }

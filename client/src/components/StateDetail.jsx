@@ -6,7 +6,7 @@ import PageControls from './PageControls';
 
 export default function StateDetail({expanded, onClick}){
     
-    const [repDetail, setRepDetail] = useState(false);
+    const [view, setView] = useState('page1');
 
 
     const races = [
@@ -52,27 +52,25 @@ export default function StateDetail({expanded, onClick}){
 
 
                 <div className={`flex-1 relative gap-10 px-5 overflow-y-auto overflow-x-hidden ${expanded ? 'opacity-100' : 'max-h-0 opacity-0'}`}>
-                    <div className = {`h-full ${repDetail ? 'slideInR': 'slideInL'}`}>
+                    <div className = {`h-full ${view == 'reps' ? 'slideInR': 'slideInL'}`}>
 
-                    {!repDetail ? 
-                        (<div className = 'flex flex-col gap-5 h-full'>
-                            <DefaultDetail races = {races} stateVoterDist = {stateVoterDist} partyControl = {partyControl}/>
-                            <RepDetailButton chevronDir = 'R' toWhere = {()=>setRepDetail(true)}/>
-                        </div>)
-
-                        :
-
-                        (<div className = 'flex flex-col h-full gap-5'>
-                            <RepDetailButton chevronDir = 'L' toWhere = {()=>setRepDetail(false)}/>
+                    { view == 'reps' ? 
+                        <div className = 'flex flex-col h-full gap-5 w-full'>
+                            <RepDetailButton chevronDir = 'L' toWhere = {()=>setView('page2')}/>
                             <CongressRepDetail repArr = {reps} />
-                        </div>)
+                        </div>
+                    :
+                        <div className = 'flex flex-col gap-5 h-full w-full'>
+                            <DefaultDetail races = {races} stateVoterDist = {stateVoterDist} partyControl = {partyControl} pageNum = {view}/>
+                            {view=='page2' && <RepDetailButton chevronDir = 'R' toWhere = {()=>setView('reps')}/> }
+                            <PageNum pageNum = {view} setPageNum = {setView}/>
+                        </div>
                     }
                     </div>
 
                     
                 </div>
         </div>
-
    )
 
 }
@@ -97,7 +95,7 @@ function BarSection({title, arr}){
     <div className = 'flex flex-col gap-2 text-gray-500 pt-5'>
        <span>{title}</span>
                 
-        <div className = 'flex flex-col gap-5 w-full text-sm'>
+        <div className = 'flex flex-col gap-3 w-full text-sm'>
             {arr.map(({label, percent, color, sublabel}) => (
             <div key = {label} className = 'w-full'>
                 <div className = 'flex justify-between'>
@@ -119,20 +117,27 @@ function BarSection({title, arr}){
 }    
 
 /* Default state information component*/
-function DefaultDetail({races, stateVoterDist, partyControl}){
+function DefaultDetail({races, stateVoterDist, partyControl, pageNum}){
 
     return(
-    <div className = 'flex flex-col border-divide gap-5'>
-        <div className = 'flex text-gray-500 justify-between pt-5'>
-            <span>State Population</span>
-            <span className = "text-emerald-500 font-bold">3,200,000</span>
-        </div>
-        <BarSection title = "Racial Population" arr = {races.map(ele=> ({label: ele.race, sublabel: ele.popNumber, color: 'bg-emerald-500', percent: ele.percent}))} />
-        <div className = 'flex text-gray-500 justify-between pt-5'>
+    <div className = 'flex flex-col border-divide gap-3 w-full'>
+        {pageNum == 'page1' ?
+            <>
+            <div className = 'flex text-gray-500 justify-between pt-3'>
+                <span>State Population</span>
+                <span className = "text-emerald-500 font-bold">3,200,000</span>
+            </div>
+            <BarSection title = "Racial Population" arr = {races.map(ele=> ({label: ele.race, sublabel: ele.popNumber, color: 'bg-emerald-500', percent: ele.percent}))} />
+            </>
+        :
+        <>
+        <div className = 'flex text-gray-500 justify-between pt-3'>
             <span>Party Control</span>
             <span className = {`font-bold ${partyControl == "Republican"? 'text-red-500' : 'text-blue-500'}`}>{partyControl}</span>
         </div>
         <BarSection title = "State Voter Distribution" arr = {stateVoterDist.map(ele=> ({label: ele.party, sublabel: "", color: ele.partyColor, percent: ele.percent}))} />
+         </>
+        }
     </div>
     )
 }
@@ -155,6 +160,7 @@ function CongressRepDetail({repArr, onClick}){
                         </div>
                     </div>
                 ))}
+
             </div>
                 <PageControls currPage = {currPage} prev = {goPrev} next = {goNext} hasPrev = {hasPrev} hasNext = {hasNext}/>
         </div>
@@ -167,7 +173,7 @@ function CongressRepDetail({repArr, onClick}){
 function RepDetailButton({chevronDir, toWhere}){
     const isLeft = (chevronDir == 'L');
     return(
-        <div className = 'group flex text-gray-500 justify-between cursor-pointer hover:bg-gray-100 -mx-5 p-5' onClick = {toWhere}
+        <div className = 'group flex text-gray-500 justify-between cursor-pointer hover:bg-gray-100 px-5 -mx-5 py-3' onClick = {toWhere}
             style = {{flexDirection: isLeft? "row-reverse" : "row"}}>
             <span className = {`transition-transform duration-300 ${isLeft ? 'group-hover:-translate-x-2' : 'group-hover:translate-x-2'}`}>Congressional Representatives</span>
             {isLeft  ? 
@@ -175,6 +181,17 @@ function RepDetailButton({chevronDir, toWhere}){
             :
             (<ChevronRightIcon className = 'w-5 transition-transform duration-300  group-hover:translate-x-2 '/>)
             } 
+        </div>
+    )
+}
+
+function PageNum({pageNum, setPageNum}){
+    const page = pageNum == "page1"? 1:2;
+
+    return(
+        <div className = 'flex items-center justify-center gap-2 w-full text-center cursor-pointer absolute bottom-5 left-0 right-0'>
+            <button onClick = {()=>setPageNum('page1')} className = {`rounded-md border-2 border-gray-200 py-1 w-7 hover:bg-gray-200 ${page == 1 ? 'bg-gray-200':''}`}>1</button>
+            <button onClick = {()=>setPageNum('page2')} className = {`rounded-md border-2 border-gray-200 py-1 w-7 hover:bg-gray-200 ${page == 2 ? 'bg-gray-200':''}`}>2</button>
         </div>
     )
 }
