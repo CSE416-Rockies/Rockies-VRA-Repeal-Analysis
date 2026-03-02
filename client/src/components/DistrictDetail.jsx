@@ -2,7 +2,8 @@ import {ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid'
 import PageControls from './PageControls';
 
 import { usePaginate } from '../hooks/paginate';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
+import GlobalStoreContext from '../store';
 
 export default function DistrictDetail({expanded, onClick}){
     const theadRef = useRef(null);
@@ -11,17 +12,29 @@ export default function DistrictDetail({expanded, onClick}){
     const containerRef = useRef(null);
     const titleRef = useRef(null);
     const [perPage, setPerPage] = useState(7);
+    const [districtArr, setDistrictArr] = useState([]);
+
+    const { store } = useContext(GlobalStoreContext);
+    const selectedState = store?.selectedState || "";
+
+
+    useEffect(() => {
+        if(!selectedState) return;
+
+        fetch(`/representatives/Representatives.json`)
+            .then((res) => res.json())
+            .then((data) => {
+                const stateData = data.find(e=>e.state === selectedState);
+                setDistrictArr(stateData? stateData.representatives: [])
+            })
+            .catch((err) => console.error("Error loading representative json:", err));
+    }, [selectedState]);
 
     useEffect(()=>{
         if(!expanded) return;
         // console.log("in expanded, calculating perpage");
 
         const calculate = () =>{
-            // console.log("running caluclate()");
-            // console.log("containerRef.current:", containerRef.current.clientHeight);
-            // console.log("theadRef.current:", theadRef.current.clientHeight);
-            // console.log("rowRef.current:", rowRef.current.clientHeight);
-            // console.log("pageRef.current.clientHeight:", pageRef.current.clientHeight);
             if(containerRef.current && theadRef.current && rowRef.current && pageRef.current && titleRef.current){
                 const header_height = theadRef.current.clientHeight;
                 const title_height = titleRef.current.clientHeight;
@@ -29,11 +42,9 @@ export default function DistrictDetail({expanded, onClick}){
                 const page_height = pageRef.current.clientHeight
                 const padding = 20;
                 const gap = 20;
-                const outerPadding = 40;
                 const available = containerRef.current.clientHeight - page_height - title_height - header_height - padding - gap;
                 const rows = Math.max(1, Math.floor(available / row_height));
                 setPerPage(rows);
-                // console.log("rows per page: ", rows);
             }
         }
         const timeout = setTimeout(calculate, 700);
@@ -44,22 +55,6 @@ export default function DistrictDetail({expanded, onClick}){
             observer.disconnect();
         }
     }, [expanded]);
-    
-    const districtArr = [
-        {dNum: 1, rep: "Jane Doe", party: "republican", racialGroup: "white", voteMargin: 30.81},
-        {dNum: 2, rep: "Jane Doe", party: "republican", racialGroup: "white", voteMargin: 30.81},
-        {dNum: 3, rep: "Jane Doe", party: "republican", racialGroup: "white", voteMargin: 30.81},
-        {dNum: 4, rep: "Jane Doe", party: "democrat", racialGroup: "black", voteMargin: 30.81},
-        {dNum: 5, rep: "Jane Doe", party: "republican", racialGroup: "other", voteMargin: 30.81},
-        {dNum: 6, rep: "Jane Doe", party: "republican", racialGroup: "white", voteMargin: 30.81},
-        {dNum: 8, rep: "Jane Doe", party: "democrat", racialGroup: "black", voteMargin: 30.81},
-        {dNum: 9, rep: "Jane Doe", party: "republican", racialGroup: "black", voteMargin: 30.81},
-        {dNum: 10, rep: "Jane Doe", party: "democrat", racialGroup: "white", voteMargin: 30.81},
-        {dNum: 11, rep: "Jane Doe", party: "republican", racialGroup: "white", voteMargin: 30.81},
-        {dNum: 12, rep: "Jane Doe", party: "republican", racialGroup: "latino", voteMargin: 30.81},
-        {dNum: 13, rep: "Jane Doe", party: "republican", racialGroup: "white", voteMargin: 30.81},
-        {dNum: 14, rep: "Jane Doe", party: "republican", racialGroup: "latino", voteMargin: 30.81}
-    ];
 
     const {onPage, currPage, goPrev, goNext, hasPrev, hasNext, _ } = usePaginate(districtArr, perPage);
     
@@ -85,17 +80,18 @@ export default function DistrictDetail({expanded, onClick}){
                         </tr>
                     </thead>
                     <tbody>
-                        {onPage.map(({dNum, rep, party, racialGroup, voteMargin}, index) => (
-                        <tr key = {dNum} ref={index === 0 ? rowRef : null} className = {`h-8 ${index%2==0? 'bg-gray-100':''}`} >
-                                <td className = 'pl-5'>{dNum}</td>
-                                <td>{rep}</td>
+                        {onPage.map(({district_number, name, party, racial_ethnic_group, vote_margin_percent, status}, index) => (
+                        <tr key = {district_number} ref={index === 0 ? rowRef : null} className = {`h-8 ${index%2==0? 'bg-gray-100':''} ${status == "Vacant" ? 'text-gray-400' : ''}`} >
+                                <td className = 'pl-5'>{district_number}</td>
+                                <td>{name ?? "Vacant"}</td>
                                 <td >
-                                    <span className = {`text-xs rounded-sm p-1 font-bold text-white ${party == "democrat"? 'bg-blue-500' : 'bg-red-500'} w-8 inline-flex justify-center`}>
-                                        {party == 'democrat'? 'DEM':'REP'}
-                                    </span>                    
+                                    {party ?
+                                    (<span className = {`text-xs rounded-sm p-1 font-bold text-white ${party == "Democratic"? 'bg-blue-500' : 'bg-red-500'} w-8 inline-flex justify-center`}>
+                                        {party == 'Democratic'? 'DEM':'REP'}
+                                    </span>):'-'}                    
                                 </td>
-                                <td>{racialGroup}</td>
-                                <td>{voteMargin}%</td>
+                                <td>{racial_ethnic_group ?? "-"}</td>
+                                <td>{vote_margin_percent ?? "-"}%</td>
                             </tr>
                         ))}
                     </tbody>

@@ -1,13 +1,29 @@
-import { ChevronRightIcon, ChevronLeftIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid'
-import {useState} from 'react'
+import { ChevronRightIcon, ChevronLeftIcon, ChevronDownIcon, ChevronUpIcon, UserIcon } from '@heroicons/react/24/solid'
+import {useState, useEffect, useContext} from 'react'
 import { usePaginate } from '../hooks/paginate';
 import PageControls from './PageControls';
-
+import GlobalStoreContext from '../store';
 
 export default function StateDetail({expanded, onClick}){
-    
-    const [view, setView] = useState('page1');
 
+    const { store } = useContext(GlobalStoreContext);
+    const selectedState = store?.selectedState || "";
+
+    const [view, setView] = useState('page1');
+    const [repArr, setRepArr] = useState([]);
+    
+
+    useEffect(() => {
+        if(!selectedState) return;
+
+        fetch(`/representatives/Representatives.json`)
+            .then((res) => res.json())
+            .then((data) => {
+                const stateData = data.find(e=>e.state === selectedState);
+                setRepArr(stateData? stateData.representatives: [])
+            })
+            .catch((err) => console.error("Error loading representative json:", err));
+    }, [selectedState]);
 
     const races = [
         {race: "White", percent: 39.78, popNumber: 700000},
@@ -20,22 +36,6 @@ export default function StateDetail({expanded, onClick}){
         {party: "Republican", partyColor: 'bg-red-500', percent: 52.00},
         {party: "Other", partyColor: 'bg-gray-500', percent: .15},
     ];
-
-     const reps = [
-        {dNum: 1, repName: "Bob Dylan", party: 'republican', imgID: 'ga-01'},
-        {dNum: 2, repName: "Bob Dylan", party: 'republican', imgID: 'ga-02'},
-        {dNum: 3, repName: "Bob Dylan", party: 'democratic', imgID: 'ga-03'},
-        {dNum: 4, repName: "Bob Dylan", party: 'democratic', imgID: 'ga-04'},
-        {dNum: 5, repName: "Bob Dylan", party: 'republican', imgID: 'ga-05'},
-        {dNum: 6, repName: "Bob Dylan", party: 'republican', imgID: 'ga-06'},
-        {dNum: 7, repName: "Bob Dylan", party: 'democratic', imgID: 'ga-07'},
-        {dNum: 8, repName: "Bob Dylan", party: 'republican', imgID: 'ga-08'},
-        {dNum: 9, repName: "Bob Dylan", party: 'democratic', imgID: 'ga-09'},
-        {dNum: 10, repName: "Bob Dylan", party: 'democratic', imgID: 'ga-10'},
-        {dNum: 11, repName: "Barry Loudermilk", party: 'republican', imgID: 'ga-11'},
-        {dNum: 12, repName: "Bob Dylan", party: 'democratic', imgID: 'ga-12'},
-        {dNum: 13, repName: "Bob Dylan", party: 'democratic', imgID: 'ga-13'}
-    ]
 
     const partyControl = "Democrat";
 
@@ -57,7 +57,7 @@ export default function StateDetail({expanded, onClick}){
                     { view == 'reps' ? 
                         <div className = 'flex flex-col h-full gap-5 w-full'>
                             <RepDetailButton chevronDir = 'L' toWhere = {()=>setView('page2')}/>
-                            <CongressRepDetail repArr = {reps} />
+                            <CongressRepDetail repArr = {repArr} />
                         </div>
                     :
                         <div className = 'flex flex-col gap-5 h-full w-full'>
@@ -150,14 +150,19 @@ function CongressRepDetail({repArr, onClick}){
         <div className = 'flex flex-col gap-5 justify-between items-center px-2'>
             <div className = 'grid grid-cols-2 gap-5 w-full' onClick = {onClick}>
 
-                {onPage.map(({dNum, repName, party, imgID})=>(
-                    <div className = 'flex gap-2' key = {`${imgID}-${currPage}`}>
-                        <img src = {`/representatives/${imgID}.jpg`} className = 'w-16 h-20 object-cover rounded-md'/>
-                        <div className = 'flex flex-col gap-0.5 justify-center'>
-                            <div className = 'text-sm font-semibold'>{repName}</div>
-                            <div className = 'text-xs text-gray-500'>District {dNum}</div>
-                            <div className = {`text-xs capitalize rounded-xl ${party == "republican"? 'text-red-500' : 'text-blue-500'}`}>{party}</div>
+                {onPage.map(({district_number, name, party, image_id, status})=>(
+                    <div className = 'flex gap-2' key = {`${district_number}-${currPage}`}>
+                        { status == "Vacant" ? 
+                        <div className = 'flex justify-center items-center rounded-md w-16 h-20 bg-gray-200'>
+                            <UserIcon className = 'w-10 text-gray-500'/>
                         </div>
+                        : <img src = {`/representatives/${image_id}.jpg`} className = 'w-16 h-20 object-cover rounded-md'/>}
+                        <div className = 'flex flex-col gap-0.5 justify-center'>
+                            <div className = 'text-sm font-semibold'>{name ?? "Vacant"}</div>
+                            <div className = 'text-xs text-gray-500'>District {district_number}</div>
+                            <div className = {`text-xs capitalize rounded-xl ${party == "Republican"? 'text-red-500' : 'text-blue-500'}`}>{party ?? ""}</div>
+                        </div>
+                        
                     </div>
                 ))}
 
