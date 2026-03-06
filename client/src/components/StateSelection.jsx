@@ -29,7 +29,7 @@ export default function StateSelection({ onClose }){
 
             <div className = "flex justify-between items-center pb-4 px-4 text-xl w-full">
                 <span className = 'flex gap-2'>
-                    <span className = "text-gray-400">{selectedState ? 'Selected:' : 'Select a State:'}</span>
+                    <span className = "text-gray-500">{selectedState ? 'Selected:' : 'Select a State:'}</span>
                     
                     {selectedState && (<span className = "font-bold">{selectedState}</span>)}
                 </span>

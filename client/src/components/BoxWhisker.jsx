@@ -70,8 +70,8 @@ export default function BoxWhisker(){
             legendTitle = "Plan"
             menus = {
                     <div className='flex gap-5'>
-                        <DropDownMenu  options = {ENSEMBLES} onSelect = {setEnsemble} text={"Set Ensemble"} icon={Squares2X2Icon}/>
                         <DropDownMenu  options = {RACES} onSelect = {setRacialGroup} icon={UserGroupIcon}/>
+                        <DropDownMenu  options = {ENSEMBLES} onSelect = {setEnsemble} text={"Set Ensemble"} icon={Squares2X2Icon}/>
                     </div>
             }
         > 

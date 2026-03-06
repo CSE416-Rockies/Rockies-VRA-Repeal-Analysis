@@ -24,7 +24,7 @@ export default function DropDownMenu({options, onSelect, icon: Icon, text}){
 
         return(
         
-        <div className = 'flex flex-col py-2 relative bg-white shadow-md rounded-xl w-72 '>
+        <div className = 'flex flex-col py-2 relative bg-white shadow-md rounded-xl w-72 text-gray-600'>
 
                 <button className = 'flex items-center justify-between px-5 capitalize text-lg hover:text-gray-400 transition-all duration-100' onClick = {()=>setOpen(!open)}>
                         <div className = 'flex gap-2 items-center'>
