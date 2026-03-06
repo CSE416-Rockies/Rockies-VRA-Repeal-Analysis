@@ -11,6 +11,10 @@ export default function StateDetail({expanded, onClick}){
 
     const [view, setView] = useState('page1');
     const [repArr, setRepArr] = useState([]);
+    const [voterDist, setVoterDist] = useState([]);
+    const [raceArr, setRaceArr] = useState([]);
+    const [statePopulation, setStatePopulation] = useState(0);
+    const [partyControl, setPartyControl] = useState("");
     
 
     useEffect(() => {
@@ -20,25 +24,23 @@ export default function StateDetail({expanded, onClick}){
             .then((res) => res.json())
             .then((data) => {
                 const stateData = data.find(e=>e.state === selectedState);
-                setRepArr(stateData? stateData.representatives: [])
+                setRepArr(stateData? stateData.representatives: []);
             })
             .catch((err) => console.error("Error loading representative json:", err));
+        console.log("Loading next");
+        fetch(`/stateinfo/stateDetail.json`)
+            .then((res) => res.json())
+            .then((data) => {
+                const stateData = data.find(e=>e.state === selectedState);
+                console.log(stateData);
+                setVoterDist(stateData? stateData.stateVoterDist: []);
+                setRaceArr(stateData? stateData.races: []);
+                setStatePopulation(stateData ? stateData.population: "");
+                setPartyControl(stateData ? stateData.partyControl: "");
+            })
+            .catch((err) => console.error("Error loading state detail json:", err));
+
     }, [selectedState]);
-
-    const races = [
-        {race: "White", percent: 39.78, popNumber: 700000},
-        {race: "Black", percent: 20.14, popNumber: 300000},
-        {race: "Latino", percent: 19.98, popNumber: 250000},
-        {race: "Other", percent: 2.03, popNumber: 1000},
-    ];
-    const stateVoterDist = [
-        {party: "Democrat", partyColor: 'bg-blue-500', percent: 48.85},
-        {party: "Republican", partyColor: 'bg-red-500', percent: 52.00},
-        {party: "Other", partyColor: 'bg-gray-500', percent: .15},
-    ];
-
-    const partyControl = "Democrat";
-
 
     return(
         <div className = 'bg-white rounded-2xl shadow-md flex flex-col w-full pt-5 text-sm overflow-hidden min-h-0 transition-all duration-700 ease-in-out border-divide' 
@@ -61,7 +63,7 @@ export default function StateDetail({expanded, onClick}){
                         </div>
                     :
                         <div className = 'flex flex-col gap-5 h-full w-full'>
-                            <DefaultDetail races = {races} stateVoterDist = {stateVoterDist} partyControl = {partyControl} pageNum = {view}/>
+                            <DefaultDetail races = {raceArr} stateVoterDist = {voterDist} partyControl = {partyControl} pageNum = {view} statePopulation = {statePopulation}/>
                             {view=='page2' && <RepDetailButton chevronDir = 'R' toWhere = {()=>setView('reps')}/> }
                             <PageNum pageNum = {view} setPageNum = {setView}/>
                         </div>
@@ -101,7 +103,7 @@ function BarSection({title, arr}){
                 <div className = 'flex justify-between'>
                     <span>{label}</span>
                     <span className = 'flex gap-2'>
-                        <span className = 'text-gray-400'>{sublabel}</span>
+                        <span className = 'text-gray-400'>{sublabel.toLocaleString()}</span>
                         <span className = 'font-bold'>{percent.toFixed(2)}%</span>
                     </span>
                 </div>
@@ -117,7 +119,7 @@ function BarSection({title, arr}){
 }    
 
 /* Default state information component*/
-function DefaultDetail({races, stateVoterDist, partyControl, pageNum}){
+function DefaultDetail({races, stateVoterDist, partyControl, pageNum, statePopulation}){
 
     return(
     <div className = 'flex flex-col border-divide gap-3 w-full'>
@@ -125,7 +127,7 @@ function DefaultDetail({races, stateVoterDist, partyControl, pageNum}){
             <>
             <div className = 'flex text-gray-500 justify-between pt-3'>
                 <span>State Population</span>
-                <span className = "text-emerald-500 font-bold">3,200,000</span>
+                <span className = "text-emerald-500 font-bold">{statePopulation.toLocaleString()}</span>
             </div>
             <BarSection title = "Racial Population" arr = {races.map(ele=> ({label: ele.race, sublabel: ele.popNumber, color: 'bg-emerald-500', percent: ele.percent}))} />
             </>
