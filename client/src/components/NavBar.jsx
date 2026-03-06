@@ -13,7 +13,8 @@ import { Bars3Icon } from '@heroicons/react/24/solid'
 import { GlobalStoreContext } from "../store";
 
 export default function NavBar(){
-    const { store } = useContext(GlobalStoreContext);
+    const { store, setMinorityGroup } = useContext(GlobalStoreContext);
+    
     const location = useLocation();
     
     const selectedStateName = store?.selectedState || "";
@@ -25,6 +26,10 @@ export default function NavBar(){
         {to: "/ensembleSplits", id: "ensemble-nav", icon: BarIcon, label: "Ensemble Splits"},
         {to: "/boxWhisker", id: "boxWhisker-nav", icon: BoxPlotIcon, label: "Box & Whisker Data"},
     ]
+
+    const handleClick = () =>{
+        setMinorityGroup("");
+    };
 
     return(
         <div id = "navbar" 
@@ -48,7 +53,7 @@ export default function NavBar(){
                     const active = location.pathname == to;
 
                     return(
-                        <Link key = {id} to = {to} id = {id} className = "nav-link group">
+                        <Link key = {id} to = {to} id = {id} className = "nav-link group" onClick={handleClick}>
                             <div className= "flex items-center justify-center w-12">
                                 <Icon className= {`nav-icon ${active ? "text-emerald-500":""}`}/>
                             </div>
