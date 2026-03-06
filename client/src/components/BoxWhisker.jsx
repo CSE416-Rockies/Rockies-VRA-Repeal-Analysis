@@ -63,7 +63,7 @@ export default function BoxWhisker(){
 
     return(
         <GraphView 
-            title = {`${racialGroup} Population Share [${selectedState}]`}
+            title = {`${racialGroup} Population Share`}
             subtitle = {ensemble ? `${ensemble}` : ""}
             svgRef={ref} 
             legendItems = {BOX_WHISKER_LEGEND}

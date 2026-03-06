@@ -71,7 +71,7 @@ export default function EIAnalysis(){
 
     return(
     <GraphView 
-        title = {`EI Analysis [${selectedState}]`}
+        title = {`Ecological Inference (EI) Analysis: Voting Probability`}
         subtitle = {`Support for ${candView}`}
         legendTitle = "Racial Groups"
         legendItems = {getPrimarySecondaryColors(racialGroup)}
