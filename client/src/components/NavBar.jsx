@@ -31,11 +31,11 @@ export default function NavBar(){
             onMouseEnter={() => setExpand(true)}
             onMouseLeave={() => setExpand(false)}
         >
-            <div id="hamburgerMenu" className="nav-link overflow-hidden whitespace-nowrap">
+            <div id="hamburgerMenu" className="flex items-center justify-start w-full h-20 p-2 overflow-hidden whitespace-nowrap">
                 <div className="flex items-center justify-center w-12 shrink-0">
                     <Bars3Icon className="nav-icon" />
                 </div>
-                <div className={`nav-label p-4 transition-opacity duration-500 ${expand ? 'opacity-100' : 'opacity-0'} font-bold`}>
+                <div className={`p-4 text-gray-500 transition-opacity duration-500 ${expand ? 'opacity-100' : 'opacity-0'} font-bold`}>
                     VRA Repeal Analysis
                 </div>
             </div>
