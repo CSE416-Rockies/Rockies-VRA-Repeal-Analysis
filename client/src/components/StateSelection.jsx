@@ -40,14 +40,17 @@ export default function StateSelection({ onClose }){
             </div>
             { isMapView && 
                 <div className = "flex justify-between divide-x divide-gray-300">
-                    <div className = "px-4 pt-4 pb-4">
-                        <div className = "text-gray-400 text-xs">DISTRICT PLANS</div>
-                        <div className = "font-bold text-lg">{selectedState ? (selectedState == 'Georgia' ? 25 : 15): '-'}</div>
+                    <div className = "px-4 pt-2 pb-4 flex-1 text-gray-500">
+                        <div className = "font-bold text-lg">Race-Blind</div>
+                        <div className = "text-gray-500 text-sm">District Plans: {selectedState ? (selectedState == 'Georgia' ? 14 : 1): '-'}</div>
+                        <div className = "text-gray-500 text-sm">Population Threshold: {selectedState ? (selectedState == 'Georgia' ? 1 : 1): '-'}</div>
                     </div>
 
-                    <div className = "px-4 pt-4">
-                        <div className = "text-gray-400 text-xs">POPULATION THRESHOLD</div>
-                        <div className = "font-bold text-lg">{selectedState ? (selectedState == 'Georgia' ? 15 : 10): '-'}%</div>
+
+                    <div className = "px-4 pt-2 flex-1">
+                        <div className = "font-bold text-lg text-gray-500">VRA</div>
+                        <div className = "text-gray-500 text-sm">District Plans: {selectedState ? (selectedState == 'Georgia' ? 14 : 1): '-'}</div>
+                        <div className = "text-gray-500 text-sm">Population Threshold: {selectedState ? (selectedState == 'Georgia' ? 1 : 1): '-'}</div>
                     </div>
                 </div>
                 }

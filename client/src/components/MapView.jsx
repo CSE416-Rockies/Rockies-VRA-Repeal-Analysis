@@ -211,7 +211,7 @@ export default function MapView(){
                     {store.mapMode === 'precinct' && precinctData && (<GeoJSON data={precinctData} key={store.minorityGroup} style={getStyle} onEachFeature={onEachState} />)}
 
                 </MapContainer>
-                {store.mapMode == "precinct" && <Heatmap_Legend title="Population Percentages" items = {legend_items} />}
+                {store.mapMode == "precinct" && <Heatmap_Legend title="Population Percentage" items = {legend_items} />}
                 
             </div>
         </>
