@@ -48,6 +48,7 @@ export default function ScatterPlot(){
 
         function redraw(){
             // Draw d3 scatterplot
+            if (!ref.current) return;
             d3.select(ref.current).selectAll("*").remove();                // prevent rednering on top of each other
             drawScatterPlot({givenSVG: ref.current, data: flatData, margin, racialLabel: racialGroup, regression});
         }

@@ -39,12 +39,11 @@ export default function EIAnalysis(){
         if(!data || !racialGroup|| !ref.current) return;
 
         function redraw(){
+            if (!ref.current) return;
             // Draw d3 scatterplot
             d3.select(ref.current).selectAll("*").remove();                // prevent rendering on top of each other
             drawEIAnalysis({givenSVG: ref.current, data: data, margin, racialLabel: racialGroup, candView});
         }
-
-        if (!ref.current) return;
         
         const obsvr = new ResizeObserver(redraw);
         obsvr.observe(ref.current);
