@@ -18,7 +18,12 @@ th{
   }
 
   .border-divide{
-    @apply divide-y divide-gray-300 border-b
+    @apply divide-y divide-gray-300 border-b;
+  }
+  .border-top{
+     @apply border-t border-gray-300;
+     border-top-width: 1px;
+
   }
 }
 
