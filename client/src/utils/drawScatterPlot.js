@@ -36,7 +36,8 @@ export function drawScatterPlot({ givenSVG, data, margin, racialLabel, regressio
         .attr("text-anchor", "middle")
         .attr("x", width/2)
         .attr("y", height + margin.bottom)
-        .text(`Percent ${racialLabel}`);
+        .text(`Percent ${racialLabel}`)
+        .attr("class", "capitalize-axis");
 
     // Add Y axis label:
     svg.append("text")

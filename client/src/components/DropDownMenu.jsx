@@ -46,7 +46,7 @@ export default function DropDownMenu({options, onSelect, icon: Icon, text, toolT
                         </button>
                         
                         { open && 
-                        <ul className = 'absolute top-full bg-white cursor-pointer rounded-xl shadow-md w-full py-2'>
+                        <ul className = 'absolute top-full bg-white cursor-pointer rounded-xl shadow-md w-full py-2 mt-1'>
                         { options.map((option)=> (
                                 <div key = {option} className = 'px-5 hover:bg-gray-100 transition-all duration-100 ease-in'>
                                         <li className = 'capitalize p-2' onClick = {()=>selectFunc(option)}> {option} </li>

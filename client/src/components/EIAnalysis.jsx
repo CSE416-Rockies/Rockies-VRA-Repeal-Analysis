@@ -71,7 +71,7 @@ export default function EIAnalysis(){
 
     return(
     <GraphView 
-        title = {`2024 Presidential Election EI Analysis [${selectedState}]`}
+        title = {`EI Analysis [${selectedState}]`}
         subtitle = {`Support for ${candView}`}
         legendTitle = "Racial Groups"
         legendItems = {getPrimarySecondaryColors(racialGroup)}

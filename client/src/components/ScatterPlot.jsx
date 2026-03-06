@@ -64,7 +64,7 @@ export default function ScatterPlot(){
     return(
         
         <GraphView 
-            title = {`2024 Precinct-Level Presidential Election [${selectedState}]`}
+            title = {`Gingles Analysis [${selectedState}]`}
             subtitle = {`By ${racialGroup} Population`}
             svgRef = {ref}
             legendTitle = "Votes"

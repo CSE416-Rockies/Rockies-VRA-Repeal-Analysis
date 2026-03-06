@@ -52,7 +52,8 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
         .attr("text-anchor", "middle")
         .attr("x", width/2)
         .attr("y", height + margin.bottom-5)
-        .text(`Proportion ${racialLabel}`);
+        .text(`Proportion ${racialLabel}`)
+        .attr("class", "capitalize-axis");
 
     // Add Y axis label:
     svg.append("text")
