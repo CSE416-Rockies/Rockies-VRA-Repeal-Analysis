@@ -34,7 +34,7 @@ export default function MapSelect(){
                 }
             </div>
 
-            { store.mapMode == 'precinct' &&  <DropDownMenu options = {MINORITIES} icon = {UserGroupIcon} onSelect={handleSelect}/> }
+            { store.mapMode == 'precinct' &&  <DropDownMenu options = {MINORITIES} icon = {UserGroupIcon} onSelect={handleSelect} toolTipDesc="Select group to show population"/> }
         </div>
     )
 }

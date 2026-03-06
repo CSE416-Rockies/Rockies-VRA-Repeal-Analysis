@@ -70,7 +70,7 @@ export default function ScatterPlot(){
             svgRef = {ref}
             legendTitle = "Votes"
             legendItems = {PRESIDENT_CAND_LEGEND}
-            menus = {<DropDownMenu  options = {RACES} onSelect = {setRacialGroup} icon={UserGroupIcon}/>}
+            menus = {<DropDownMenu  options = {RACES} onSelect = {setRacialGroup} icon={UserGroupIcon} toolTipDesc=""/>}
         >{(!racialGroup) && (
             <SelectionPlaceholder 
                 message={`Please select a racial group`} 
