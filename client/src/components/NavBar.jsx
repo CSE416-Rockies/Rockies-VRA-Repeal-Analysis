@@ -27,16 +27,21 @@ export default function NavBar(){
 
     return(
         <div id = "navbar" 
-            className = {`flex flex-col relative z-50 h-screen bg-white/30 backdrop-blur-sm shadow-md py-5 overflow-hidden transition-all duration-500 ease-in-out ${expand ? 'w-72' : 'w-16'}`}
+            className = {`flex flex-col relative z-50 h-screen bg-white/80 backdrop-blur-sm shadow-md  overflow-hidden transition-all duration-500 ease-in-out ${expand ? 'w-72' : 'w-16'}`}
             onMouseEnter={() => setExpand(true)}
             onMouseLeave={() => setExpand(false)}
         >
-            <div id = "hamburgerMenu" className = "flex items-center justify-start w-12 ml-2">
-                <Bars3Icon className = "nav-icon"/>
+            <div id="hamburgerMenu" className="nav-link overflow-hidden whitespace-nowrap">
+                <div className="flex items-center justify-center w-12 shrink-0">
+                    <Bars3Icon className="nav-icon" />
+                </div>
+                <div className={`nav-label p-4 transition-opacity duration-500 ${expand ? 'opacity-100' : 'opacity-0'} font-bold`}>
+                    VRA Repeal Analysis
+                </div>
             </div>
             
             
-            <div className = "w-full border-divide border-gray-300 my-5 overflow-hidden whitespace-nowrap">
+            <div className = "w-full border-divide border-gray-300 mb-2 overflow-hidden whitespace-nowrap border-top">
             
                 {navItems.map(({to, id, icon: Icon, label})=> {
                     const active = location.pathname == to;

@@ -199,6 +199,7 @@ export default function MapView(){
 
                 <MapContainer
                     bounds={stateBounds[name]}
+                    boundsOptions={{ paddingTopLeft: [-300, 0] }}
                     whenCreated = {setMap}
                     className="fixed inset-0 h-screen w-full"
                 >  
