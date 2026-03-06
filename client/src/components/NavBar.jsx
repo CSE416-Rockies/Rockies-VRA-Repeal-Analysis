@@ -6,6 +6,7 @@ import BarIcon from '../assets/svgs/bargraph.svg?react';
 import EIAnalysisIcon from '../assets/svgs/eiAnalysis.svg?react';
 import BoxPlotIcon from '../assets/svgs/boxandwhisker.svg?react';
 import ScatterIcon from '../assets/svgs/scatterplot.svg?react';
+import RockiesLogo from '../assets/rockies-logo2.svg?react';
 
 import { Bars3Icon } from '@heroicons/react/24/solid'
 
@@ -27,7 +28,7 @@ export default function NavBar(){
 
     return(
         <div id = "navbar" 
-            className = {`flex flex-col relative z-50 h-screen bg-white/80 backdrop-blur-sm shadow-md  overflow-hidden transition-all duration-500 ease-in-out ${expand ? 'w-72' : 'w-16'}`}
+            className = {`flex flex-col relative z-50 h-screen bg-white backdrop-blur-sm shadow-md  overflow-hidden transition-all duration-500 ease-in-out ${expand ? 'w-72' : 'w-16'}`}
             onMouseEnter={() => setExpand(true)}
             onMouseLeave={() => setExpand(false)}
         >
@@ -58,7 +59,15 @@ export default function NavBar(){
                 })}
             </div>
             
-            
+            <div className="flex absolute bottom-0 items-center justify-start w-full h-20 p-2 overflow-hidden whitespace-nowrap">
+                <div className={`flex w-8 ml-2 justify-center items-center transition-opacity duration-500 ${expand ? 'opacity-100' : 'opacity-0'}`}>
+                    <RockiesLogo className = 'nav-icon text-gray-400'/>
+                </div>
+                
+                <div className={`p-2 text-md text-gray-400 transition-opacity duration-500 ${expand ? 'opacity-100' : 'opacity-0'}`}>
+                    Rockies 2026
+                </div>
+            </div>
         </div>
     )
 }

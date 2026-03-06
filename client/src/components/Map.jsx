@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON, } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useRef } from "react";
+import RockiesLogo from '../assets/rockies-logo2.svg?react';
 
 import GlobalStoreContext from "../store";
 
@@ -116,19 +117,27 @@ export default function Map() {
   }, []);
 
   return (
-    <MapContainer
-      bounds={usBounds}
-      className="fixed inset-0 h-screen w-full"
-      whenCreated={(mapInstance) => {
-        mapRef.current = mapInstance;
-      }}
-    >
-      <TileLayer
-        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>'
-      />
+    <div className = 'relative h-screen w-screen'>
+      <MapContainer
+        bounds={usBounds}
+        className="fixed inset-0 h-screen w-full"
+        whenCreated={(mapInstance) => {
+          mapRef.current = mapInstance;
+        }}
+      >
+        <TileLayer
+          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>'
+        />
 
-      {stateLines && <GeoJSON data={stateLines} style={lineStyle} onEachFeature={onEachState}/>}
-    </MapContainer>
+        {stateLines && <GeoJSON data={stateLines} style={lineStyle} onEachFeature={onEachState}/>}
+      </MapContainer>
+      <div className='absolute bottom-5 left-5 z-[1000]  bg-white rounded-lg px-10 py-5 shadow-md'>
+        <div className = 'font-semibold text-3xl text-gray-600'>VRA Repeal Analysis </div>
+        <div className = 'flex items-center text-xl text-gray-500'>
+            Rockies 2026
+        </div>
+      </div>
+    </div>
   );
 }
