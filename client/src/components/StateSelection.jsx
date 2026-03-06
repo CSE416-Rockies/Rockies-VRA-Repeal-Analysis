@@ -27,7 +27,7 @@ export default function StateSelection({ onClose }){
 
         <div className = "fixed right-5 top-5 z-50 flex flex-col bg-white rounded-2xl shadow-md w-1/3 pt-4 border-divide">
 
-            <div className = "flex justify-between items-center pb-4 px-4 text-xl w-full">
+            <div className = "flex justify-between items-center pb-4 px-4 text-xl w-full relative">
                 <span className = 'flex gap-2'>
                     <span className = "text-gray-500">{selectedState ? 'Selected:' : 'Select a State:'}</span>
                     

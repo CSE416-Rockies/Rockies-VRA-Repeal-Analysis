@@ -18,10 +18,9 @@ export default function StateDropdown({onSelect, options}){
         setOpen(false);
     };
     return (
-        <div className="static">
+        <div className="absolute flex justify-end right-0 w-full h-full cursor-pointer" onClick={() => setOpen(!open)}>
             <button
-                className="flex items-center justify-between w-full px-4 py-0 bg-white rounded-xl text-lg hover:text-gray-400 transition-all duration-100"
-                onClick={() => setOpen(!open)}
+                className="flex items-center justify-end px-4 py-0 text-lg hover:text-gray-400 transition-all duration-100"
             >
                 <ChevronDownIcon
                     className={`w-5 transition-transform duration-200 ml-2 mt-1 ${
@@ -31,7 +30,7 @@ export default function StateDropdown({onSelect, options}){
             </button>
 
             {open && (
-                <ul className="absolute inset-x-0 top-full mt-1 bg-white cursor-pointer rounded-xl shadow-md w-full py-2 z-50">
+                <ul className="absolute inset-x-0 top-full mt-3 bg-white cursor-pointer rounded-xl shadow-md w-full py-2 z-50">
                     {filterOptions.map((option) => (
                         <li
                             key={option.id || option}
