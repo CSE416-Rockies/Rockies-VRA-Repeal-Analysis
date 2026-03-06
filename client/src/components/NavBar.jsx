@@ -28,7 +28,7 @@ export default function NavBar(){
     ]
 
     const handleClick = () =>{
-        setMinorityGroup("");
+        // setMinorityGroup("");
     };
 
     return(

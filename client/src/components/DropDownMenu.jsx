@@ -1,11 +1,12 @@
-import {useState} from 'react'
+import {useState, useContext, useEffect} from 'react'
 import {ChevronDownIcon, ChevronUpIcon} from '@heroicons/react/24/solid'
 import {useLocation} from 'react-router-dom';
 import Tooltip from './Tooltip';
+import GlobalStoreContext from '../store';
 
 
 export default function DropDownMenu({options, onSelect, icon: Icon, text, toolTipDesc}){
-
+        const { store } = useContext(GlobalStoreContext);
         const [open, setOpen] = useState(false);
         const [selected, setSelected] = useState(null);
 
@@ -20,7 +21,11 @@ export default function DropDownMenu({options, onSelect, icon: Icon, text, toolT
                 setOpen(false);
         }
 
-        const defaultText = isMapView? "Select minority group" : "Select racial group";
+        useEffect(() =>{
+                if(isMapView) setSelected(store.minorityGroup);
+        },[isMapView, setSelected]);
+
+        const defaultText = (isMapView)?( store.minorityGroup ? store.minorityGroup : "Select minority group" ): "Select racial group";
         const displayText = selected || text || defaultText;
 
         return(
