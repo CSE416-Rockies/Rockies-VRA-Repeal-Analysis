@@ -11,11 +11,11 @@ import { ENSEMBLES, RACES, BOX_WHISKER_LEGEND  } from "../utils/constants"
 
 
 export default function BoxWhisker(){
-    const { store } = useContext(GlobalStoreContext);
+    const { store, setRacialGroup, setEnsemble } = useContext(GlobalStoreContext);
     const selectedState = store?.selectedState || "";
 
-    const [racialGroup, setRacialGroup] = useState(null);
-    const [ensemble, setEnsemble] = useState(null); 
+    const racialGroup = store.racialGroup;
+    const ensemble = store.ensemble;
 
 
     const ref = useRef(null);

@@ -12,10 +12,11 @@ import { RACES, PRESIDENT_CAND_LEGEND, getPrimarySecondaryColors } from "../util
 
 
 export default function EIAnalysis(){
-    const { store } = useContext(GlobalStoreContext);
+    const { store, setRacialGroup } = useContext(GlobalStoreContext);
     const selectedState = store?.selectedState || "";
 
-    const [racialGroup, setRacialGroup] = useState(null); 
+    const racialGroup = store.racialGroup;
+    // console.log("EI Analysis racialGroup:", racialGroup);
     const [candView, setCandView] = useState('trump'); 
     const [data, setData] = useState(null); 
 
@@ -42,6 +43,8 @@ export default function EIAnalysis(){
             d3.select(ref.current).selectAll("*").remove();                // prevent rendering on top of each other
             drawEIAnalysis({givenSVG: ref.current, data: data, margin, racialLabel: racialGroup, candView});
         }
+
+        if (!ref.current) return;
         
         const obsvr = new ResizeObserver(redraw);
         obsvr.observe(ref.current);

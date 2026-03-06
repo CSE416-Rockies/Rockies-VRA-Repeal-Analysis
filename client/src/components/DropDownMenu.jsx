@@ -16,6 +16,7 @@ export default function DropDownMenu({options, onSelect, icon: Icon, text, toolT
         const chevronIcon = open? < ChevronUpIcon className = 'w-5'/> : < ChevronDownIcon className = 'w-5'/>
 
         function selectFunc(option) {
+                // console.log("in dropdown menu, option: ", option);
                 setSelected(option);
                 onSelect(option);
                 setOpen(false);
@@ -23,7 +24,10 @@ export default function DropDownMenu({options, onSelect, icon: Icon, text, toolT
 
         useEffect(() =>{
                 if(isMapView) setSelected(store.minorityGroup);
+                else if(text=="Set Ensemble") setSelected(store.ensemble);
+                else setSelected(store.racialGroup);
         },[isMapView, setSelected]);
+
 
         const defaultText = (isMapView)?( store.minorityGroup ? store.minorityGroup : "Select minority group" ): "Select racial group";
         const displayText = selected || text || defaultText;

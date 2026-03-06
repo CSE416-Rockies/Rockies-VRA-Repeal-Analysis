@@ -11,11 +11,10 @@ import { SelectionPlaceholder } from './selectionPlaceholder';
 
 
 export default function ScatterPlot(){
-    const { store } = useContext(GlobalStoreContext);
+    const { store, setRacialGroup } = useContext(GlobalStoreContext);
     const selectedState = store?.selectedState || "";
 
-    const [racialGroup, setRacialGroup] = useState(null);  
-
+    const racialGroup = store.racialGroup;
     const ref = useRef(null);
     const [data, setData] = useState(null);
 
@@ -29,11 +28,11 @@ export default function ScatterPlot(){
 
         d3.json(stateJson).then( rawData => { setData(rawData);}) 
                         .catch((err)=>console.error("Error loading geojson:", err));
-    }, [selectedState])
-
+    }, [selectedState]);
 
     // racialGroup or resize change
     useEffect(()=>{
+        console.log("racial gruop: ", racialGroup);
         if(!data || !racialGroup) return;
 
         const flatData =  data.precincts.flatMap(d=>[

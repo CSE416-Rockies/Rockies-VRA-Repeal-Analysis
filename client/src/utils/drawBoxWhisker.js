@@ -1,12 +1,14 @@
 import * as d3 from "d3";
 
 export function drawBoxWhisker({ givenSVG, data, margin, racialLabel }) {
-
+    if(!givenSVG) return;
     const svg = d3.select(givenSVG)
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
     /* ------------------------------------------------------------------ Dimensions */
+
+    // console.log("in draw boxwhisker, clientWidth: ", givenSVG.clientWidth, " clientHeight: ", givenSVG.clientHeight);
     const width  = givenSVG.clientWidth  - margin.left - margin.right;
     const height = givenSVG.clientHeight - margin.top  - margin.bottom;
 

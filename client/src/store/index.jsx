@@ -5,7 +5,9 @@ export const GlobalStoreContext = createContext({});
 export const GlobalStoreActionType = {
     SELECT_STATE: "SELECT_STATE",
     SET_MAP_MODE: "SET_MAP_MODE",
-    SET_MINORITY_GROUP: "SET_MINORITY_GROUP"
+    SET_MINORITY_GROUP: "SET_MINORITY_GROUP",
+    SET_RACIAL_GROUP: "SET_RACIAL_GROUP",
+    SET_ENSEMBLE: "SET_ENSEMBLE",
 };
 
 function storeReducer(store, action) {
@@ -29,6 +31,20 @@ function storeReducer(store, action) {
                 minorityGroup: payload,
             }
         }
+        case GlobalStoreActionType.SET_RACIAL_GROUP: {
+            return {
+                ...store,
+                racialGroup: payload,
+            }
+        }
+        case GlobalStoreActionType.SET_ENSEMBLE: {
+            return {
+                ...store,
+                ensemble: payload,
+            }
+        }
+        
+
 
         default:
             return store;
@@ -40,6 +56,8 @@ export function GlobalStoreContextProvider(props) {
         selectedState: null,
         mapMode: 'district',
         minorityGroup: null,
+        racialGroup: null,
+        ensemble: null,
     });
 
     const storeContextValue = useMemo(() => ({
@@ -60,6 +78,18 @@ export function GlobalStoreContextProvider(props) {
             dispatch({
                 type: GlobalStoreActionType.SET_MINORITY_GROUP,
                 payload: minorityGroup
+            })
+        },
+        setRacialGroup: (racialGroup) =>{
+            dispatch({
+                type: GlobalStoreActionType.SET_RACIAL_GROUP,
+                payload: racialGroup
+            })
+        },
+        setEnsemble: (ensemble) =>{
+            dispatch({
+                type: GlobalStoreActionType.SET_ENSEMBLE,
+                payload: ensemble
             })
         }
     }), [store]);
