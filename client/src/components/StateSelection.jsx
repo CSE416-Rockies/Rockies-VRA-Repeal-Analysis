@@ -4,7 +4,7 @@ import {useLocation} from 'react-router-dom'
 import { useContext, useEffect, useState } from 'react';
 import GlobalStoreContext from '../store';
 import StateDropdown from './StateDropdown';
-import axios from 'axios';
+import { getStateSummary } from '../api/api';
 
 export default function StateSelection({ onClose }){
     // const {name} = useParams();
@@ -25,9 +25,9 @@ export default function StateSelection({ onClose }){
 
     useEffect(()=>{
         if(selectedState){
-            axios.get(`http://localhost:8080/api/state/${selectedState}`)
+            getStateSummary(selectedState)
                 .then(res => {
-                    console.log("Data from server:", res.data);
+                    // console.log("Data from server:", res.data);
                     setEnsembleData(res.data);
 
                 })
