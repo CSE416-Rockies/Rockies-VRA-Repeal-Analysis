@@ -2,6 +2,7 @@ package com.rockies.vra_analysis.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection = "representatives")
 public class Representative {
@@ -9,12 +10,22 @@ public class Representative {
     private String id;
 
     private String state;
+
+    @Field("district_number")
     private int districtNumber;
+
     private String name;
     private String party;
+
+    @Field("racial_ethnic_group")
     private String racialEthnicGroup;
-    private double voteMarginPercent;
+
+    @Field("vote_margin_percent")
+    private Double voteMarginPercent;
+
+    @Field("image_id")
     private String imageId;
+
     private String status;
 
     public Representative(String state, int districtNumber, String name, String party, String racialEthnicGroup, double voteMarginPercent, String imageId, String status) {
