@@ -3,6 +3,7 @@ import {useState, useEffect, useContext} from 'react'
 import { usePaginate } from '../hooks/paginate';
 import PageControls from './PageControls';
 import GlobalStoreContext from '../store';
+import { getStateDetail } from '../api/api';
 
 export default function StateDetail({expanded, onClick}){
 
@@ -28,15 +29,29 @@ export default function StateDetail({expanded, onClick}){
             })
             .catch((err) => console.error("Error loading representative json:", err));
         console.log("Loading next");
-        fetch(`/stateinfo/stateDetail.json`)
-            .then((res) => res.json())
-            .then((data) => {
-                const stateData = data.find(e=>e.state === selectedState);
-                console.log(stateData);
-                setVoterDist(stateData? stateData.stateVoterDist: []);
-                setRaceArr(stateData? stateData.races: []);
-                setStatePopulation(stateData ? stateData.population: "");
-                setPartyControl(stateData ? stateData.partyControl: "");
+
+
+        getStateDetail(selectedState)
+            .then((res) => {
+                console.log("State detail from server:", res.data);
+                const data = res.data;
+                
+                setVoterDist([
+                    { party: "Democrat", partyColor: "bg-blue-500", percent: data.voterDistribution.democratPercentage },
+                    { party: "Republican", partyColor: "bg-red-500", percent: data.voterDistribution.republicanPercentage },
+                    { party: "Other", partyColor: "bg-gray-500", percent: data.voterDistribution.otherPercentage },
+                ]
+                );
+                setRaceArr([
+                    { race: "White", popNumber: data.racialPopulation.whitePopulation, percent: data.racialPopulation.whitePercentage },
+                    { race: "Black", popNumber: data.racialPopulation.blackPopulation, percent: data.racialPopulation.blackPercentage },
+                    { race: "Latino", popNumber: data.racialPopulation.latinoPopulation, percent: data.racialPopulation.latinoPercentage },
+                    { race: "Other", popNumber: data.racialPopulation.otherPopulation, percent: data.racialPopulation.otherPercentage },
+                ]);
+                setStatePopulation(data.racialPopulation.total);
+                console.log("race arr: ", raceArr);
+                console.log("total popualation:", statePopulation);
+                setPartyControl(data.voterDistribution.partyControl);
             })
             .catch((err) => console.error("Error loading state detail json:", err));
 

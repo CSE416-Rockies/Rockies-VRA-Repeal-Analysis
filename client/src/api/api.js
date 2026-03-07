@@ -7,5 +7,9 @@ const api = axios.create({
 });
 
 export const getStateSummary = (stateName) => {
-    return api.get(`/state/${stateName}`);
+    return api.get(`/state/${stateName}/ensemble`);
+}
+
+export const getStateDetail = (stateName) =>{
+    return api.get(`/state/${stateName}/detail`);
 }

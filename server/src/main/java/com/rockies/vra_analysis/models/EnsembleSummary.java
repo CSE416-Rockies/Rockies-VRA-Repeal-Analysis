@@ -1,11 +1,11 @@
 package com.rockies.vra_analysis.models;
 
 public class EnsembleSummary{
-    private String state;
-    private int raceBlindPlans;
-    private double raceBlindThreshold;
-    private int vraPlans;
-    private double vraThreshold;
+    private final String state;
+    private final int raceBlindPlans;
+    private final double raceBlindThreshold;
+    private final int vraPlans;
+    private final double vraThreshold;
 
     public EnsembleSummary(String state, int raceBlindPlans, double raceBlindThreshold, int vraPlans, double vraThreshold){
         this.state = state;
