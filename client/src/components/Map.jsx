@@ -135,7 +135,7 @@ export default function Map() {
       <div className='absolute bottom-5 left-5 z-[1000]  bg-white rounded-lg px-10 py-5 shadow-md'>
         <div className = 'font-semibold text-3xl text-gray-600'>VRA Repeal Analysis </div>
         <div className = 'flex items-center text-xl text-gray-500'>
-            Rockies 2026
+            <div>Rockies 2026</div>
         </div>
       </div>
     </div>

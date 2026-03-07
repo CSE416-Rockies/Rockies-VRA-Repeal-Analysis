@@ -1,9 +1,10 @@
 import { XCircleIcon } from '@heroicons/react/24/solid'
 // import { useParams } from 'react-router-dom'
 import {useLocation} from 'react-router-dom'
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import GlobalStoreContext from '../store';
 import StateDropdown from './StateDropdown';
+import axios from 'axios';
 
 export default function StateSelection({ onClose }){
     // const {name} = useParams();
@@ -11,6 +12,7 @@ export default function StateSelection({ onClose }){
     const location = useLocation();
     const isMapView = (location.pathname.startsWith("/map"));
     const isGraph = ((location.pathname !== "/") && !isMapView);
+    const [ensembleData, setEnsembleData] = useState(null);
 
     const { store, setSelectedState, setMapMode } = useContext(GlobalStoreContext);
     const selectedState = store?.selectedState || "";
@@ -20,6 +22,19 @@ export default function StateSelection({ onClose }){
         setMapMode('district');
         onClose();
     };
+
+    useEffect(()=>{
+        if(selectedState){
+            axios.get(`http://localhost:8080/api/state/${selectedState}`)
+                .then(res => {
+                    console.log("Data from server:", res.data);
+                    setEnsembleData(res.data);
+
+                })
+                .catch(err => console.log(err))
+        }
+        
+    },[selectedState]);
 
     const options = [{id: 'Delaware', label: 'Delaware'}, {id: 'Georgia',  label: 'Georgia'}]
 
@@ -40,17 +55,17 @@ export default function StateSelection({ onClose }){
             </div>
             { isMapView && 
                 <div className = "flex justify-between divide-x divide-gray-300">
-                    <div className = "px-4 pt-2 pb-4 flex-1 text-gray-500">
-                        <div className = "font-bold text-lg">Race-Blind</div>
-                        <div className = "text-gray-500 text-sm">District Plans: {selectedState ? (selectedState == 'Georgia' ? 14 : 1): '-'}</div>
-                        <div className = "text-gray-500 text-sm">Population Threshold: {selectedState ? (selectedState == 'Georgia' ? 1 : 1): '-'}</div>
+                    <div className = "px-4 pt-2 pb-4 flex-1">
+                        <div className = "font-bold text-lg text-gray-500">Race-Blind</div>
+                        <div className = "text-gray-500 text-sm">District Plans: {ensembleData ? ensembleData.raceBlindPlans: '-'}</div>
+                        <div className = "text-gray-500 text-sm">Population Threshold: ±{ensembleData ? ensembleData.raceBlindThreshold: '-'}%</div>
                     </div>
 
 
                     <div className = "px-4 pt-2 flex-1">
                         <div className = "font-bold text-lg text-gray-500">VRA</div>
-                        <div className = "text-gray-500 text-sm">District Plans: {selectedState ? (selectedState == 'Georgia' ? 14 : 1): '-'}</div>
-                        <div className = "text-gray-500 text-sm">Population Threshold: {selectedState ? (selectedState == 'Georgia' ? 1 : 1): '-'}</div>
+                        <div className = "text-gray-500 text-sm">District Plans: {ensembleData ? ensembleData.vraPlans: '-'}</div>
+                        <div className = "text-gray-500 text-sm">Population Threshold: ±{ensembleData ? ensembleData.vraThreshold: '-'}%</div>
                     </div>
                 </div>
                 }
