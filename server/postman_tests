@@ -25,6 +25,22 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "Get Georgia Representatives",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Get Delaware Representatives",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
     }
   ]
 }
