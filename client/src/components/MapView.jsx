@@ -54,8 +54,11 @@ export default function MapView(){
     };
 
     const districtStyle = (feature) => {
-        const mapDistrictValue = String(feature.properties.DISTRICT).replace(/\D/g, "");
+        const mapDistrictValue = feature.properties.DISTRICT === "Congressional District (at Large)" // account for delaware
+        ?   "0"
+        :   String(feature.properties.DISTRICT).replace(/\D/g, "");
 
+        console.log(feature.properties.DISTRICT);
         const representative = districtArr.find(
             (rep) => String(rep.districtNumber) === mapDistrictValue
         );
