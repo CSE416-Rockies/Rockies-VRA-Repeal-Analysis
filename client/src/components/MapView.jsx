@@ -11,6 +11,7 @@ import MapSelect from './MapSelect.jsx';
 import StateSelection from "./StateSelection.jsx";
 import { CommandLineIcon } from "@heroicons/react/24/solid";
 import Heatmap_Legend from "./Heatmap_Legend.jsx";
+import { PARTY_COLORS } from "../utils/constants.js";
 
 
 const stateBounds = {
@@ -40,15 +41,42 @@ export default function MapView(){
     const [expanded, setExpanded] = useState(true);
     const [districtPlan, setDistrictPlan] = useState(null);
     const [precinctData, setPrecinctData] = useState(null);
+    const [districtArr, setDistrictArr] = useState([]);
     const [map, setMap] = useState(null);
     const hoveredLayer = useRef(null);
-
+    const selectedState = store?.selectedState || "";
 
     const lineStyle = (feature) => {
         return {
         fillOpacity: 0,
         weight: 1,
         color: "#6b6b6b",
+        };
+    };
+
+    const districtStyle = (feature) => {
+        const mapDistrictValue = String(feature.properties.DISTRICT).replace(/\D/g, "");
+
+        const representative = districtArr.find(
+            /* TO DO: CHANGE rep.district_number to rep.districtNumber after integrating db */
+            (rep) => String(rep.district_number) === mapDistrictValue
+        );
+
+        let partyColor = "#d8d8d8"; 
+
+        if (representative) {
+            if (representative.party === "Republican") {
+                partyColor = PARTY_COLORS.rep;
+            } else if (representative.party === "Democratic") {
+                partyColor = PARTY_COLORS.dem; 
+            }
+        }
+
+        return {
+            fillColor: partyColor,
+            fillOpacity: 0.7,
+            weight: 1,
+            color: "#6b6b6b",
         };
     };
 
@@ -60,7 +88,6 @@ export default function MapView(){
     });
 
     const highlightStyle = {
-        fillColor: "#d8d8d8", 
         color: "#6b6b6b",     
         weight: 2,
         fillOpacity: 1,
@@ -73,6 +100,18 @@ export default function MapView(){
     const zoomOut = () =>{
         navigate(`/`);
     };
+
+    useEffect(() => {
+        if(!selectedState) return;
+
+        fetch(`/representatives/Representatives.json`)
+            .then((res) => res.json())
+            .then((data) => {
+                const stateData = data.find(e=>e.state === selectedState);
+                setDistrictArr(stateData? stateData.representatives: [])
+            })
+            .catch((err) => console.error("Error loading representative json:", err));
+    }, [selectedState]);
 
     useEffect(() => {
         fetch(`/geojson/${name}_Congressional_Districts.geojson`)
@@ -116,7 +155,7 @@ export default function MapView(){
                 e.target.setStyle(highlightStyle);
                 },
                 mouseout: (e) => {
-                e.target.setStyle(lineStyle(layer.feature));
+                e.target.setStyle(districtStyle(layer.feature));
                 },
                 // click: (e) => {
                 // }
@@ -207,7 +246,7 @@ export default function MapView(){
                         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>'
                     />
-                    {store.mapMode === 'district' && districtPlan && (<GeoJSON data={districtPlan} style={lineStyle} onEachFeature={onEachState} />)}
+                    {store.mapMode === 'district' && districtPlan && (<GeoJSON key={`districts-${selectedState}-${districtArr.length}`} data={districtPlan} style={districtStyle} onEachFeature={onEachState} />)}
                     {store.mapMode === 'precinct' && precinctData && (<GeoJSON data={precinctData} key={store.minorityGroup} style={getStyle} onEachFeature={onEachState} />)}
 
                 </MapContainer>
