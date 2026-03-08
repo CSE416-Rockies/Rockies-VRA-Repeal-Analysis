@@ -9,7 +9,6 @@ import StateDetail from './StateDetail.jsx';
 import DistrictDetail from './DistrictDetail.jsx';
 import MapSelect from './MapSelect.jsx';
 import StateSelection from "./StateSelection.jsx";
-import { CommandLineIcon } from "@heroicons/react/24/solid";
 import Heatmap_Legend from "./Heatmap_Legend.jsx";
 import { PARTY_COLORS } from "../utils/constants.js";
 
@@ -41,10 +40,10 @@ export default function MapView(){
     const [expanded, setExpanded] = useState(true);
     const [districtPlan, setDistrictPlan] = useState(null);
     const [precinctData, setPrecinctData] = useState(null);
-    const [districtArr, setDistrictArr] = useState([]);
     const [map, setMap] = useState(null);
     const hoveredLayer = useRef(null);
     const selectedState = store?.selectedState || "";
+    const districtArr = store?.representatives || [];
 
     const lineStyle = (feature) => {
         return {
@@ -58,17 +57,18 @@ export default function MapView(){
         const mapDistrictValue = String(feature.properties.DISTRICT).replace(/\D/g, "");
 
         const representative = districtArr.find(
-            /* TO DO: CHANGE rep.district_number to rep.districtNumber after integrating db */
-            (rep) => String(rep.district_number) === mapDistrictValue
+            (rep) => String(rep.districtNumber) === mapDistrictValue
         );
 
         let partyColor = "#d8d8d8"; 
 
         if (representative) {
             if (representative.party === "Republican") {
-                partyColor = PARTY_COLORS.rep;
+                partyColor = "#E03130";
             } else if (representative.party === "Democratic") {
-                partyColor = PARTY_COLORS.dem; 
+                partyColor = "#4375E0"; 
+            } else{
+                partyColor = "#d8d8d8";
             }
         }
 
@@ -100,18 +100,6 @@ export default function MapView(){
     const zoomOut = () =>{
         navigate(`/`);
     };
-
-    useEffect(() => {
-        if(!selectedState) return;
-
-        fetch(`/representatives/Representatives.json`)
-            .then((res) => res.json())
-            .then((data) => {
-                const stateData = data.find(e=>e.state === selectedState);
-                setDistrictArr(stateData? stateData.representatives: [])
-            })
-            .catch((err) => console.error("Error loading representative json:", err));
-    }, [selectedState]);
 
     useEffect(() => {
         fetch(`/geojson/${name}_Congressional_Districts.geojson`)
