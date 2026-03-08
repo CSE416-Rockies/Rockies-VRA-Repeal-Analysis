@@ -8,6 +8,7 @@ export const GlobalStoreActionType = {
     SET_MINORITY_GROUP: "SET_MINORITY_GROUP",
     SET_RACIAL_GROUP: "SET_RACIAL_GROUP",
     SET_ENSEMBLE: "SET_ENSEMBLE",
+    SET_REPRESENTATIVES: "SET_REPRESENTATIVES",
 };
 
 function storeReducer(store, action) {
@@ -43,6 +44,13 @@ function storeReducer(store, action) {
                 ensemble: payload,
             }
         }
+        case GlobalStoreActionType.SET_REPRESENTATIVES: {
+            return {
+                ...store,
+                representatives: payload,
+            }
+        }
+ 
         
 
 
@@ -58,6 +66,7 @@ export function GlobalStoreContextProvider(props) {
         minorityGroup: null,
         racialGroup: null,
         ensemble: null,
+        representatives: [],
     });
 
     const storeContextValue = useMemo(() => ({
@@ -90,6 +99,12 @@ export function GlobalStoreContextProvider(props) {
             dispatch({
                 type: GlobalStoreActionType.SET_ENSEMBLE,
                 payload: ensemble
+            })
+        },
+        setRepresentatives: (representatives) =>{
+            dispatch({
+                type: GlobalStoreActionType.SET_REPRESENTATIVES,
+                payload: representatives
             })
         }
     }), [store]);

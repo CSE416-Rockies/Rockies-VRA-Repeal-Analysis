@@ -4,17 +4,15 @@ import {useLocation} from 'react-router-dom'
 import { useContext, useEffect, useState } from 'react';
 import GlobalStoreContext from '../store';
 import StateDropdown from './StateDropdown';
-import { getStateSummary } from '../api/api';
+import { getStateSummary, getRepresentatives } from '../api/api';
 
 export default function StateSelection({ onClose }){
-    // const {name} = useParams();
-    // console.log("state name: ", name)
     const location = useLocation();
     const isMapView = (location.pathname.startsWith("/map"));
     const isGraph = ((location.pathname !== "/") && !isMapView);
     const [ensembleData, setEnsembleData] = useState(null);
 
-    const { store, setSelectedState, setMapMode } = useContext(GlobalStoreContext);
+    const { store, setSelectedState, setMapMode, setRepresentatives } = useContext(GlobalStoreContext);
     const selectedState = store?.selectedState || "";
     
     const backToMap = () => {
@@ -29,9 +27,11 @@ export default function StateSelection({ onClose }){
                 .then(res => {
                     // console.log("Data from server:", res.data);
                     setEnsembleData(res.data);
-
                 })
                 .catch(err => console.log(err))
+            getRepresentatives(selectedState)
+                .then((res) => setRepresentatives(res.data))
+                .catch((err)=>console.log("Error loading district detail: ", err));
         }
         
     },[selectedState]);

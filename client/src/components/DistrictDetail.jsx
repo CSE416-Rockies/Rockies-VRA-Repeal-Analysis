@@ -12,23 +12,9 @@ export default function DistrictDetail({expanded, onClick}){
     const containerRef = useRef(null);
     const titleRef = useRef(null);
     const [perPage, setPerPage] = useState(7);
-    const [districtArr, setDistrictArr] = useState([]);
 
     const { store } = useContext(GlobalStoreContext);
-    const selectedState = store?.selectedState || "";
-
-
-    useEffect(() => {
-        if(!selectedState) return;
-
-        fetch(`/representatives/Representatives.json`)
-            .then((res) => res.json())
-            .then((data) => {
-                const stateData = data.find(e=>e.state === selectedState);
-                setDistrictArr(stateData? stateData.representatives: [])
-            })
-            .catch((err) => console.error("Error loading representative json:", err));
-    }, [selectedState]);
+    const districtArr = store?.representatives || "";
 
     useEffect(()=>{
         if(!expanded) return;
@@ -80,9 +66,9 @@ export default function DistrictDetail({expanded, onClick}){
                         </tr>
                     </thead>
                     <tbody>
-                        {onPage.map(({district_number, name, party, racial_ethnic_group, vote_margin_percent, status}, index) => (
-                        <tr key = {district_number} ref={index === 0 ? rowRef : null} className = {`h-8 ${index%2==0? 'bg-gray-100':''} ${status == "Vacant" ? 'text-gray-400' : ''}`} >
-                                <td className = 'pl-5'>{district_number}</td>
+                        {onPage.map(({districtNumber, name, party, racialEthnicGroup, voteMarginPercent, status}, index) => (
+                        <tr key = {districtNumber} ref={index === 0 ? rowRef : null} className = {`h-8 ${index%2==0? 'bg-gray-100':''} ${status == "Vacant" ? 'text-gray-400' : ''}`} >
+                                <td className = 'pl-5'>{districtNumber}</td>
                                 <td>{name ?? "Vacant"}</td>
                                 <td >
                                     {party ?
@@ -90,8 +76,8 @@ export default function DistrictDetail({expanded, onClick}){
                                         {party == 'Democratic'? 'DEM':'REP'}
                                     </span>):'-'}                    
                                 </td>
-                                <td>{racial_ethnic_group ?? "-"}</td>
-                                <td>{vote_margin_percent ?? "-"}%</td>
+                                <td>{racialEthnicGroup ?? "-"}</td>
+                                <td>{voteMarginPercent ?? "-"}%</td>
                             </tr>
                         ))}
                     </tbody>

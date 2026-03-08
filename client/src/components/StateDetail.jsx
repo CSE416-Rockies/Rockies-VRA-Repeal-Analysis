@@ -9,9 +9,9 @@ export default function StateDetail({expanded, onClick}){
 
     const { store } = useContext(GlobalStoreContext);
     const selectedState = store?.selectedState || "";
+    const repArr = store?.representatives || [];
 
     const [view, setView] = useState('page1');
-    const [repArr, setRepArr] = useState([]);
     const [voterDist, setVoterDist] = useState([]);
     const [raceArr, setRaceArr] = useState([]);
     const [statePopulation, setStatePopulation] = useState(0);
@@ -20,15 +20,6 @@ export default function StateDetail({expanded, onClick}){
 
     useEffect(() => {
         if(!selectedState) return;
-
-        fetch(`/representatives/Representatives.json`)
-            .then((res) => res.json())
-            .then((data) => {
-                const stateData = data.find(e=>e.state === selectedState);
-                setRepArr(stateData? stateData.representatives: []);
-            })
-            .catch((err) => console.error("Error loading representative json:", err));
-        console.log("Loading next");
 
 
         getStateDetail(selectedState)
@@ -56,6 +47,7 @@ export default function StateDetail({expanded, onClick}){
             .catch((err) => console.error("Error loading state detail json:", err));
 
     }, [selectedState]);
+
 
     return(
         <div className = 'bg-white rounded-2xl shadow-md flex flex-col w-full pt-5 text-sm overflow-hidden min-h-0 transition-all duration-700 ease-in-out border-divide' 
@@ -113,8 +105,8 @@ function BarSection({title, arr}){
        <span>{title}</span>
                 
         <div className = 'flex flex-col gap-3 w-full text-sm'>
-            {arr.map(({label, percent, color, sublabel}) => (
-            <div key = {label} className = 'w-full'>
+            {arr.map(({label, percent, color, sublabel}, i) => (
+            <div key = {`${label}-${i}`} className = 'w-full'>
                 <div className = 'flex justify-between'>
                     <span>{label}</span>
                     <span className = 'flex gap-2'>
@@ -167,17 +159,17 @@ function CongressRepDetail({repArr, onClick}){
         <div className = 'flex flex-col gap-5 justify-between items-center px-2'>
             <div className = 'grid grid-cols-2 gap-5 w-full' onClick = {onClick}>
 
-                {onPage.map(({district_number, name, party, image_id, status})=>(
-                    <div className = 'flex gap-2' key = {`${district_number}-${currPage}`}>
+                {onPage.map(({districtNumber, name, party, imageId, status})=>(
+                    <div className = 'flex gap-2' key = {`${districtNumber}-${onPage}`}>
                         { status == "Vacant" ? 
                         <div className = 'flex justify-center items-center rounded-md w-16 h-20 bg-gray-200'>
                             <UserIcon className = 'w-10 text-gray-500'/>
                         </div>
-                        : <img src = {`/representatives/${image_id}.jpg`} className = 'w-16 h-20 object-cover rounded-md'/>}
+                        : <img src = {`/representatives/${imageId}.jpg`} className = 'w-16 h-20 object-cover rounded-md'/>}
                         <div className = 'flex flex-col gap-0.5 justify-center'>
                             <div className = 'text-sm font-semibold'>{name ?? "Vacant"}</div>
-                            <div className = 'text-xs text-gray-500'>District {district_number}</div>
-                            <div className = {`text-xs capitalize rounded-xl ${party == "Republican"? 'text-red-500' : 'text-blue-500'}`}>{party ?? ""}</div>
+                            <div className = 'text-xs text-gray-500'>District {districtNumber}</div>
+                            <div className = {`text-xs capitalize rounded-xl ${party === "Republican"? 'text-red-500' : 'text-blue-500'}`}>{party ?? ""}</div>
                         </div>
                         
                     </div>

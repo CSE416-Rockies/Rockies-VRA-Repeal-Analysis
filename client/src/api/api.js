@@ -13,3 +13,7 @@ export const getStateSummary = (stateName) => {
 export const getStateDetail = (stateName) =>{
     return api.get(`/state/${stateName}/detail`);
 }
+
+export const getRepresentatives = (stateName) =>{
+    return api.get(`/representatives/state/${stateName}`);
+}
