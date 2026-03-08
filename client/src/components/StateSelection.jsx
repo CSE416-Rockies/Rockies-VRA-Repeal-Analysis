@@ -25,7 +25,7 @@ export default function StateSelection({ onClose }){
         if(selectedState){
             getStateSummary(selectedState)
                 .then(res => {
-                    // console.log("Data from server:", res.data);
+                    console.log("Data from server:", res.data);
                     setEnsembleData(res.data);
                 })
                 .catch(err => console.log(err))

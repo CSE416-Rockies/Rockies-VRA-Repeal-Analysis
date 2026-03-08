@@ -1,12 +1,19 @@
 package com.rockies.vra_analysis.models;
 
+import org.springframework.data.mongodb.core.mapping.Field;
+
 public class VoterDistribution{
-    private final String partyControl;
-    private final double democratPercentage;
-    private final double republicanPercentage;
-    private final double otherPercentage;
+    private String partyControl;
+    @Field("democratPercent")
+    private double democratPercentage;
+    @Field("republicanPercent")
+    private double republicanPercentage;
+    @Field("otherPercent")
+    private double otherPercentage;
 
     //constructor
+    public VoterDistribution() {}
+
     public VoterDistribution(String party, double democrat, double republican, double other){
         this.partyControl = party;
         this.democratPercentage = democrat;

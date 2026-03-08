@@ -58,7 +58,7 @@ export default function MapView(){
         ?   "0"
         :   String(feature.properties.DISTRICT).replace(/\D/g, "");
 
-        console.log(feature.properties.DISTRICT);
+        // console.log(feature.properties.DISTRICT);
         const representative = districtArr.find(
             (rep) => String(rep.districtNumber) === mapDistrictValue
         );

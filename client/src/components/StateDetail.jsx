@@ -40,8 +40,6 @@ export default function StateDetail({expanded, onClick}){
                     { race: "Other", popNumber: data.racialPopulation.otherPopulation, percent: data.racialPopulation.otherPercentage },
                 ]);
                 setStatePopulation(data.racialPopulation.total);
-                console.log("race arr: ", raceArr);
-                console.log("total popualation:", statePopulation);
                 setPartyControl(data.voterDistribution.partyControl);
             })
             .catch((err) => console.error("Error loading state detail json:", err));
