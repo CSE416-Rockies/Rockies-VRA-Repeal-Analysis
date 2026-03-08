@@ -17,3 +17,11 @@ export const getStateDetail = (stateName) =>{
 export const getRepresentatives = (stateName) =>{
     return api.get(`/representatives/state/${stateName}`);
 }
+
+export const getPrecinctMap = (stateName) =>{
+    return axios.get(`http://localhost:8080/${stateName}_precincts_topo.topojson`);
+}
+
+export const getCongressionalMap = (stateName) =>{
+    return axios.get(`http://localhost:8080/${stateName}_Congressional_Districts.geojson`);
+}

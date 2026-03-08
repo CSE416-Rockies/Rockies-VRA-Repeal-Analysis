@@ -11,6 +11,7 @@ import MapSelect from './MapSelect.jsx';
 import StateSelection from "./StateSelection.jsx";
 import Heatmap_Legend from "./Heatmap_Legend.jsx";
 import { PARTY_COLORS } from "../utils/constants.js";
+import { getPrecinctMap, getCongressionalMap } from "../api/api.js";
 
 
 const stateBounds = {
@@ -105,16 +106,16 @@ export default function MapView(){
     };
 
     useEffect(() => {
-        fetch(`/geojson/${name}_Congressional_Districts.geojson`)
-            .then((res) => res.json())
+        getCongressionalMap(name)
+            .then((res) => res.data)
             .then((data) => setDistrictPlan(data))
             .catch((err) => console.error("Error loading geojson:", err));
     }, [name]);
 
     useEffect(() => {
         if(store.mapMode === 'precinct' && !precinctData) {
-            fetch(`/geojson/${name}_precincts_topo.topojson`) //(put path of precinct geojsons)
-                .then((res) => res.json())
+            getPrecinctMap(name) //(put path of precinct geojsons)
+                .then((res) => res.data)
                 .then(topology => {
                         // console.log(Object.keys(topology.objects.data.geometries));
                         const geojson = feature(
