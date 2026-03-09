@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { ENSEMBLE_LEGEND } from "./constants";
 
-export default function drawEnsembleSplits({ givenSVG, data, margin, candView}){
+export default function drawEnsembleSplits({ givenSVG, data, margin, candView, racialGroup}){
     // create svg element
         var svg = d3.select(givenSVG).append("g")
             .attr("transform", `translate(${margin.left},${margin.top})`);
@@ -15,8 +15,14 @@ export default function drawEnsembleSplits({ givenSVG, data, margin, candView}){
         : Object.entries(candView === "race-blind" ? data.raceBlind : data.vra);
 
         const allSeats = Array.from(new Set(entries.map(([k]) => +k))).sort((a, b) => a - b);
-        const maxCount = d3.max(entries, ([, v]) => v);
+
         const totalDistricts = data.totalDistricts;
+
+        const getCount = (v) =>{
+            if(!racialGroup) return 0;
+            return v[racialGroup];
+        }
+        const maxCount = d3.max(entries, ([, v]) => getCount(v));
 
         const x = d3.scaleBand()
         .domain(allSeats)
@@ -30,7 +36,7 @@ export default function drawEnsembleSplits({ givenSVG, data, margin, candView}){
             .call(d3.axisBottom(x).tickFormat(d=>`${d}R/${totalDistricts - d}D`));
 
         const y = d3.scaleLinear()
-            .domain([0, maxCount*1.1])
+            .domain([0, (maxCount || 1) *1.1])
             .range([height, 0]);
             
         svg
@@ -53,8 +59,9 @@ export default function drawEnsembleSplits({ givenSVG, data, margin, candView}){
             .attr("y", -margin.left + 20)
             .text("Count");
 
+
         const drawBars = (dataset, color, label, xOffset = 0, barWidth = x.bandwidth()) => {
-            const entries = Object.entries(dataset).map(([k, v]) => ({ seats: +k, count: v }));
+            const entries = Object.entries(dataset).map(([k, v]) => ({ seats: +k, count: getCount(v) }));
 
             const tooltip = d3.select("body").append("div")
                 .attr("class", "tooltip-ensemble") 

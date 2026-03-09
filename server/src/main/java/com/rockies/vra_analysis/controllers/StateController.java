@@ -7,11 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rockies.vra_analysis.models.EnsembleSummary;
-import com.rockies.vra_analysis.models.RacialPopulation;
 import com.rockies.vra_analysis.models.StateDetail;
-import com.rockies.vra_analysis.models.VoterDistribution;
+import com.rockies.vra_analysis.models.EnsembleSplits;
 import com.rockies.vra_analysis.repositories.EnsembleSummaryRepository;
 import com.rockies.vra_analysis.repositories.StateDetailRepository;
+import com.rockies.vra_analysis.repositories.EnsembleSplitsRepository;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ public class StateController {
     @Autowired
     private StateDetailRepository stateDetailRepo;
 
+    @Autowired EnsembleSplitsRepository splitsRepo;
 
     @GetMapping("/ensemble")
     public EnsembleSummary getEnsembleSummary(@PathVariable String stateName) {
@@ -40,7 +42,13 @@ public class StateController {
     @GetMapping("/detail")
     public StateDetail getStateDetail(@PathVariable String stateName) {
         StateDetail result = stateDetailRepo.findByState(stateName);
-        System.out.println("VoterDist: " + result.getVoterDistribution().getDemocratPercentage());
+        // System.out.println("VoterDist: " + result.getVoterDistribution().getDemocratPercentage());
+        return result;
+    }
+
+    @GetMapping("/ensembleSplits")
+    public EnsembleSplits getEnsembleSplits(@PathVariable String stateName) {
+        EnsembleSplits result = splitsRepo.findByState(stateName);
         return result;
     }
 

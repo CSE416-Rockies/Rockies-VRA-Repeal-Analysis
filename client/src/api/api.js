@@ -14,6 +14,11 @@ export const getStateDetail = (stateName) =>{
     return api.get(`/state/${stateName}/detail`);
 }
 
+export const getEnsembleSplits = (stateName) =>{
+    return api.get(`/state/${stateName}/ensembleSplits`);
+}
+
+
 export const getRepresentatives = (stateName) =>{
     return api.get(`/representatives/state/${stateName}`);
 }
