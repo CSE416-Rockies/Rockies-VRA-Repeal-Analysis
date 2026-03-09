@@ -1,8 +1,7 @@
 import * as d3 from "d3";
 import { PARTY_COLORS } from "./constants";
 
-export function drawScatterPlot({ givenSVG, data, margin, racialLabel, regression }) {
-
+export function drawScatterPlot({ givenSVG, data, margin, racialLabel, regression }) {    
     // create svg element
     var svg = d3.select(givenSVG)
         .append("g")

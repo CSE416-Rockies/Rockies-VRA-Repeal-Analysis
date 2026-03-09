@@ -65,6 +65,38 @@
             "header": []
           },
           "response": []
+        },
+        {
+          "name": "Get Georgia ScatterPlots",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Get Delaware ScatterPlots",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Get Delaware EI Analysis",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Get Georgia EI Analysis",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
         }
       ]
     }

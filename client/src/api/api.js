@@ -22,6 +22,14 @@ export const getBoxWhiskers = (stateName) => {
     return api.get(`/state/${stateName}/boxWhiskers`);
 }
 
+export const getEIAnalysis = (stateName) => {
+    return api.get(`/state/${stateName}/eiAnalysis`);
+}
+
+export const getGingles = (stateName) => {
+    return api.get(`/state/${stateName}/gingles`);
+}
+
 export const getRepresentatives = (stateName) =>{
     return api.get(`/representatives/state/${stateName}`);
 }
