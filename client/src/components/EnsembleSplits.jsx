@@ -86,7 +86,7 @@ export default function EnsembleSplits(){
     }
 
     return(
-        <GraphView title="Ensemble Splits" 
+        <GraphView title={`${candView} Ensemble Splits for ${racialGroup} `}
             subtitle={type} 
             legendTitle={(candView == "both") ? "Party" : ""} 
             legendItems={(candView == "both") ? ENSEMBLE_LEGEND : []}
