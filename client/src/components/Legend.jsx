@@ -14,7 +14,7 @@ export default function Legend({ title, items }) {
             </svg>
           ) : (
             <div
-              className="rounded w-4 h-4"
+              className="rounded-full w-4 h-4"
               style={{ backgroundColor: color }}
             />
           )}
