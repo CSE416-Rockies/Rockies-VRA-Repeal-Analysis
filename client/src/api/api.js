@@ -18,6 +18,9 @@ export const getEnsembleSplits = (stateName) =>{
     return api.get(`/state/${stateName}/ensembleSplits`);
 }
 
+export const getBoxWhiskers = (stateName) => {
+    return api.get(`/state/${stateName}/boxWhiskers`);
+}
 
 export const getRepresentatives = (stateName) =>{
     return api.get(`/representatives/state/${stateName}`);

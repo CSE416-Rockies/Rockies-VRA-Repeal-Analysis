@@ -15,7 +15,7 @@ export const getPrimarySecondaryColors = (racialGroup) => [
 export const RACES = ["white", "black", "latino", "other"];
 export const MINORITIES = ["black","latino", "other"];
 
-export const ENSEMBLES = ["Ensemble 1", "Ensemble 2", "Ensemble 3"];
+export const ENSEMBLES = ["VRA", "Race-Blind"];
 
 export const BOX_WHISKER_LEGEND = [
     { label: "Ensemble", color: "black" },

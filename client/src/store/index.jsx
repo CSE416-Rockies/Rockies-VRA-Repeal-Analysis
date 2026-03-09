@@ -8,6 +8,7 @@ export const GlobalStoreActionType = {
     SET_MINORITY_GROUP: "SET_MINORITY_GROUP",
     SET_RACIAL_GROUP: "SET_RACIAL_GROUP",
     SET_ENSEMBLE: "SET_ENSEMBLE",
+    SET_BOXWHISKER: "SET_BOXWHISKER",
     SET_REPRESENTATIVES: "SET_REPRESENTATIVES",
 };
 
@@ -44,6 +45,12 @@ function storeReducer(store, action) {
                 ensemble: payload,
             }
         }
+        case GlobalStoreActionType.SET_BOXWHISKER: {
+            return {
+                ...store,
+                boxWhisker: payload,
+            }
+        }
         case GlobalStoreActionType.SET_REPRESENTATIVES: {
             return {
                 ...store,
@@ -66,6 +73,7 @@ export function GlobalStoreContextProvider(props) {
         minorityGroup: null,
         racialGroup: null,
         ensemble: null,
+        boxWhisker: null,
         representatives: [],
     });
 
@@ -99,6 +107,12 @@ export function GlobalStoreContextProvider(props) {
             dispatch({
                 type: GlobalStoreActionType.SET_ENSEMBLE,
                 payload: ensemble
+            })
+        },
+        setBoxWhisker: (boxWhisker) => {
+            dispatch({
+                type: GlobalStoreActionType.SET_BOXWHISKER,
+                payload: boxWhisker
             })
         },
         setRepresentatives: (representatives) =>{
