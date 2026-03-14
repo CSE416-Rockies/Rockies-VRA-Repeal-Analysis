@@ -30,7 +30,7 @@ export function drawScatterPlot({ givenSVG, data, margin, racialLabel, regressio
         .attr("class", "axisColor")
         .call(d3.axisLeft(y).ticks(4).tickFormat(d=>`${d}%`));       // axis tick spread
         
-        // Add X axis label:
+    // Add X axis label:
     svg.append("text")
         .attr("text-anchor", "middle")
         .attr("x", width/2)
@@ -48,11 +48,6 @@ export function drawScatterPlot({ givenSVG, data, margin, racialLabel, regressio
             
     /* ------------------------------------------------------------------ Plot Point Rendering */
 
-    // define color assignment by political party
-    var color = d3.scaleOrdinal() 
-        .domain(['rep', 'dem'])
-        .range([PARTY_COLORS.rep, PARTY_COLORS.dem])
-
     // Scatter dots
     svg.append('g')
         .selectAll("dot")
@@ -61,7 +56,7 @@ export function drawScatterPlot({ givenSVG, data, margin, racialLabel, regressio
             .attr("cx", d => x(d.racial_pct))
             .attr("cy", d => y(d.vote_share) )
             .attr("r", 2)
-            .style("fill",  d => color(d.party))
+            .style("fill",  d => PARTY_COLORS[d.party])
             .style("fill-opacity", 0.3)
 
     /* Draw regression lines from coefficients */
@@ -80,7 +75,7 @@ export function drawScatterPlot({ givenSVG, data, margin, racialLabel, regressio
         svg.append("path")
             .datum(lineData)
             .attr("fill", "none")
-            .attr("stroke", color(party))
+            .attr("stroke", PARTY_COLORS[party])
             .attr("stroke-width", 2.5)
             .attr("d", d3.line().x(d => x(d.x)).y(d => y(d.y)).curve(d3.curveBasis));
     });
