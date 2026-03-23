@@ -4,7 +4,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.annotation.Id;
 import java.util.List;
-
+import java.util.Map;
 
 @Document("ei-analysis")
 
@@ -42,22 +42,21 @@ import java.util.List;
             private String id; 
             private String name;
             private String party;
-            private List<GroupResult> groups;
+            private Map<String, GroupResult> groups;
 
             public String getId() { return id; }
             public String getName() {return name; }
             public String getParty() { return party; }
-            public List<GroupResult> getGroups() { return groups; }
+            public Map<String, GroupResult> getGroups() {
+                return groups;
+            }
         }
 
         public static class GroupResult{
-            @Field("group")
-            private String group;
             private PosteriorMean posterior_mean;
             private CredibleInterval credible_interval_95;
             private Density density;
 
-            public String getGroup() { return group; }
             public PosteriorMean getPosteriorMean() { return posterior_mean; }
             public CredibleInterval getCredibleInterval95() { return credible_interval_95; }
             public Density getDensity() { return density; }
@@ -72,18 +71,18 @@ import java.util.List;
         }
 
         public static class CredibleInterval {
-            private List<Double> groups;
+            private List<Double> group;
             private List<Double> complement;
 
-            public List<Double> getGroup() { return groups; }
+            public List<Double> getGroup() { return group; }
             public List<Double> getComplement() { return complement; }
         }
 
         public static class Density{
-            private List<Point> target;
+            private List<Point> group;
             private List<Point> complement;
 
-            public List<Point> getTarget() { return target; }
+            public List<Point> getGroup() { return group; }
             public List<Point> getComplement() { return complement; }
         }
 

@@ -10,13 +10,13 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
         return;
     }
 
-    var groupData = candData.groups.find(e=> (e.group == racialLabel));
+    var groupData = candData.groups[racialLabel];
     if (!groupData){
         console.error("Group data not found: ", racialLabel);
         return;
     }
 
-    var raceDensity = groupData.density.target;
+    var raceDensity = groupData.density.group;
     var nonRaceDensity = groupData.density.complement;
 
 

@@ -4,6 +4,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.annotation.Id;
 import java.util.List;
+import java.util.Map;
 
 @Document("gingles")
 
@@ -64,20 +65,18 @@ import java.util.List;
 
         public static class Precinct{
             private int id;
-            private List<GroupPoint> groups;
+            private Map<String, GroupPoint> groups;
 
             public int getId() { return id; }
-            public List<GroupPoint> getGroups() { return groups;}
+            public Map<String, GroupPoint> getGroups() { return groups; }
         }
 
         public static class GroupPoint{
-            private String group;
             @Field("pct_demo")
             private double pctDemo;
             private double harris;
             private double trump;
 
-            public String getGroup() { return group; }
             public double getPctDemo() { return pctDemo;}
             public double getHarris() { return harris;}
             public double getTrump() { return trump;}

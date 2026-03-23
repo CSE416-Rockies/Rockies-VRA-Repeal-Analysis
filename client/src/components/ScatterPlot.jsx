@@ -32,15 +32,15 @@ export default function ScatterPlot(){
     useEffect(()=>{
         if(!data || !racialGroup) return;
 
-        const flatData =  data.precincts.flatMap(d=>{
-            const g = d.groups.find( g=> g.group === racialGroup);
+        const flatData = data.precincts.flatMap(d=>{
+            const g = d.groups[racialGroup];  // direct lookup
             if (!g){
-                console.err("Failed to find: ", racialGroup);
+                console.error("Failed to find: ", racialGroup);
                 return [];
             } 
             return [
                 {precinct: d.id, racial_pct: g.pctDemo*100, vote_share: g.harris*100, party: "dem"},
-                {precinct: d.id, racial_pct: g.pctDemo*100, vote_share: g.trump*100, party: "rep" }
+                {precinct: d.id, racial_pct: g.pctDemo*100, vote_share: g.trump*100, party: "rep"}
             ]
         });
 
