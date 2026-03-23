@@ -1,6 +1,24 @@
+export function normalizeParty(party) {
+    const partyName = party?.toLowerCase();
+    if (partyName.includes('rep')) return 'rep';
+    if (partyName.includes('dem')) return 'dem';
+    return 'other';
+}
+
 export const PARTY_COLORS = {
-    rep: "#CC0000",
-    dem: "#0064CE"
+    rep:  "#EF4444",
+    dem:  "#3B82F6",
+    other: '#6B7280',
+}
+
+export const MAP_PARTY_COLORS = {
+    rep:  "#E03130",
+    dem:  "#4375E0",
+    other: '#d8d8d8',
+}
+
+export const APP_COLORS = {
+    accentGreen: '#10B981'
 }
 
 export const PRESIDENT_CAND_LEGEND = [

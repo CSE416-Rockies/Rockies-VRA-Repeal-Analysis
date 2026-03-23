@@ -15,7 +15,7 @@ export default function DistrictDetail({expanded, onClick}){
     const [perPage, setPerPage] = useState(7);
 
     const { store } = useContext(GlobalStoreContext);
-    const districtArr = store?.representatives || "";
+    const districtArr = store?.representatives || [];
 
     useEffect(()=>{
         if(!expanded) return;
