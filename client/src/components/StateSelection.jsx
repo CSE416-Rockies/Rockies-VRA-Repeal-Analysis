@@ -30,7 +30,7 @@ export default function StateSelection({ onClose }){
                 })
                 .catch(err => console.log(err))
             getRepresentatives(selectedState)
-                .then((res) => setRepresentatives(res.data))
+                .then((res) => setRepresentatives(res.data.sort((a, b) => a.districtNumber - b.districtNumber)))
                 .catch((err)=>console.log("Error loading district detail: ", err));
         }
         

@@ -7,14 +7,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.rockies.vra_analysis.models.EnsembleSummary;
+import com.rockies.vra_analysis.models.Representative;
 import com.rockies.vra_analysis.models.StateDetail;
 import com.rockies.vra_analysis.models.BoxWhiskerPlots;
 import com.rockies.vra_analysis.models.EnsembleSplits;
 import com.rockies.vra_analysis.repositories.EnsembleSummaryRepository;
+import com.rockies.vra_analysis.repositories.RepresentativeRepository;
 import com.rockies.vra_analysis.repositories.StateDetailRepository;
 import com.rockies.vra_analysis.repositories.EnsembleSplitsRepository;
 import com.rockies.vra_analysis.repositories.BoxWhiskerPlotsRepository;
 
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.web.bind.annotation.*;
@@ -36,6 +39,9 @@ public class StateController {
 
     @Autowired
     private BoxWhiskerPlotsRepository boxRepo;
+
+    @Autowired
+    private RepresentativeRepository repository;
 
     @GetMapping("/ensemble")
     public EnsembleSummary getEnsembleSummary(@PathVariable String stateName) {
@@ -62,4 +68,10 @@ public class StateController {
         BoxWhiskerPlots result = boxRepo.findByState(stateName);
         return result;
     }
+
+    @GetMapping("/representatives")
+    public List<Representative> getByState(@PathVariable String stateName) {
+        List<Representative> result = repository.findByState(stateName);
+        return result;
+    }   
 }

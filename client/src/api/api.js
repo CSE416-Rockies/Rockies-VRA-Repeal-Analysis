@@ -23,7 +23,7 @@ export const getBoxWhiskers = (stateName) => {
 }
 
 export const getRepresentatives = (stateName) =>{
-    return api.get(`/representatives/state/${stateName}`);
+    return api.get(`/state/${stateName}/representatives`);
 }
 
 export const getPrecinctMap = (stateName) =>{
