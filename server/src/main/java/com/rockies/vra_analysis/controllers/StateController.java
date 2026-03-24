@@ -11,11 +11,15 @@ import com.rockies.vra_analysis.models.Representative;
 import com.rockies.vra_analysis.models.StateDetail;
 import com.rockies.vra_analysis.models.BoxWhiskerPlots;
 import com.rockies.vra_analysis.models.EnsembleSplits;
+import com.rockies.vra_analysis.models.Gingles;
+import com.rockies.vra_analysis.models.EIAnalysis;
 import com.rockies.vra_analysis.repositories.EnsembleSummaryRepository;
 import com.rockies.vra_analysis.repositories.RepresentativeRepository;
 import com.rockies.vra_analysis.repositories.StateDetailRepository;
 import com.rockies.vra_analysis.repositories.EnsembleSplitsRepository;
 import com.rockies.vra_analysis.repositories.BoxWhiskerPlotsRepository;
+import com.rockies.vra_analysis.repositories.EIAnalysisRepository;
+import com.rockies.vra_analysis.repositories.GinglesRepository;
 
 import java.util.List;
 
@@ -39,6 +43,13 @@ public class StateController {
 
     @Autowired
     private BoxWhiskerPlotsRepository boxRepo;
+
+    @Autowired
+    private GinglesRepository ginglesRepo;
+
+    @Autowired
+    private EIAnalysisRepository eiRepo;
+    
 
     @Autowired
     private RepresentativeRepository repository;
@@ -74,4 +85,16 @@ public class StateController {
         List<Representative> result = repository.findByState(stateName);
         return result;
     }   
+
+    @GetMapping("/gingles")
+    public Gingles getGingles(@PathVariable String stateName) {
+        Gingles result = ginglesRepo.findByState(stateName);
+        return result;
+    }
+
+    @GetMapping("/eiAnalysis")
+    public EIAnalysis getEIAnalysis(@PathVariable String stateName) {
+        EIAnalysis result = eiRepo.findByState(stateName);
+        return result;
+    }
 }

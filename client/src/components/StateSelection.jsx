@@ -1,13 +1,15 @@
 import { XCircleIcon } from '@heroicons/react/24/solid'
 // import { useParams } from 'react-router-dom'
 import {useLocation} from 'react-router-dom'
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
 import GlobalStoreContext from '../store';
 import StateDropdown from './StateDropdown';
 import { getStateSummary, getRepresentatives } from '../api/api';
 
 export default function StateSelection({ onClose }){
     const location = useLocation();
+    const ref = useRef(null);
+
     const isMapView = (location.pathname.startsWith("/map"));
     const isGraph = ((location.pathname !== "/") && !isMapView);
     const [ensembleData, setEnsembleData] = useState(null);
@@ -15,11 +17,27 @@ export default function StateSelection({ onClose }){
     const { store, setSelectedState, setMapMode, setRepresentatives } = useContext(GlobalStoreContext);
     const selectedState = store?.selectedState || "";
     
+        
     const backToMap = () => {
         setSelectedState(null);
         setMapMode('district');
         onClose();
     };
+
+    // read height of stateselection
+    useEffect(() => {
+        if (!ref.current) return;
+
+        const observer = new ResizeObserver(() => {
+            document.documentElement.style.setProperty(
+                '--state-selection-height',
+                `${ref.current.offsetHeight}px`
+            );
+        });
+
+        observer.observe(ref.current);
+        return () => observer.disconnect();
+    }, []); 
 
     useEffect(()=>{
         if(selectedState){
@@ -40,7 +58,7 @@ export default function StateSelection({ onClose }){
 
     return(
 
-        <div className = "fixed right-5 top-5 z-50 flex flex-col bg-white rounded-2xl shadow-md w-1/3 pt-4 border-divide">
+        <div ref={ref} className = "fixed right-5 top-5 z-50 flex flex-col bg-white rounded-2xl shadow-md w-1/3 pt-4 border-divide">
 
             <div className = "flex justify-between items-center pb-4 px-4 text-xl w-full relative">
                 <span className = 'flex gap-2'>

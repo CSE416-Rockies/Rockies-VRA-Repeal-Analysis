@@ -9,6 +9,7 @@ import { UserGroupIcon } from '@heroicons/react/24/solid';
 
 import { drawEIAnalysis } from '../utils/drawEIAnalysis';
 import { RACES, PRESIDENT_CAND_LEGEND, getPrimarySecondaryColors } from "../utils/constants"
+import { getEIAnalysis } from '../api/api';
 
 
 export default function EIAnalysis(){
@@ -16,7 +17,6 @@ export default function EIAnalysis(){
     const selectedState = store?.selectedState || "";
 
     const racialGroup = store.racialGroup;
-    // console.log("EI Analysis racialGroup:", racialGroup);
     const [candView, setCandView] = useState('trump'); 
     const [data, setData] = useState(null); 
 
@@ -25,15 +25,11 @@ export default function EIAnalysis(){
 
     // state change
     useEffect(()=>{
-        if (!selectedState) return;
-
-        const stateJson = selectedState == "Georgia" ? 
-                          "/graphs/ga_eianalysis.json" :  
-                          "/graphs/de_eianalysis.json";
-
-        d3.json(stateJson).then( rawData => { setData(rawData);}) 
-                        .catch((err)=>console.error("Error loading geojson:", err));
-    }, [selectedState])
+           if(!selectedState) return;
+           getEIAnalysis(selectedState)
+           .then(res => setData(res.data))
+           .catch(err => console.error("Error loading EI Analysis data:", err));
+    }, [selectedState]);
 
     useEffect(()=>{
         if(!data || !racialGroup|| !ref.current) return;

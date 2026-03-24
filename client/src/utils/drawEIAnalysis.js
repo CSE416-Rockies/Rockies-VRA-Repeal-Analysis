@@ -4,15 +4,21 @@ import { getPrimarySecondaryColors } from "./constants";
 export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }) {
 
     // find relevant racial group in file
-    const candData = data.candidates[candView];
-    var groupData = candData.groups.find(e=> (e.group == racialLabel));
-    var raceDensity = groupData.density[racialLabel];
-    var nonRaceDensity = groupData.density[groupData.complement];
+    const candData = data.candidates.find(c => c.id === candView.toLowerCase());
+    if (!candData) {
+        console.error("Candidate not found:", candView);
+        return;
+    }
 
-    if (!groupData) {
-    console.error(`No EI data found for group: "${racialLabel}"`);
-    return;
-}
+    var groupData = candData.groups[racialLabel];
+    if (!groupData){
+        console.error("Group data not found: ", racialLabel);
+        return;
+    }
+
+    var raceDensity = groupData.density.group;
+    var nonRaceDensity = groupData.density.complement;
+
 
     // create svg element
     var svg = d3.select(givenSVG)

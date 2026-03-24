@@ -4,6 +4,7 @@ import PageControls from './PageControls';
 import { usePaginate } from '../hooks/paginate';
 import { useEffect, useRef, useState, useContext } from 'react';
 import GlobalStoreContext from '../store';
+import { normalizeParty, PARTY_COLORS } from '../utils/constants';
 
 export default function DistrictDetail({expanded, onClick}){
     const theadRef = useRef(null);
@@ -14,7 +15,7 @@ export default function DistrictDetail({expanded, onClick}){
     const [perPage, setPerPage] = useState(7);
 
     const { store } = useContext(GlobalStoreContext);
-    const districtArr = store?.representatives || "";
+    const districtArr = store?.representatives || [];
 
     useEffect(()=>{
         if(!expanded) return;
@@ -71,8 +72,9 @@ export default function DistrictDetail({expanded, onClick}){
                                 <td className = 'pl-5'>{districtNumber}</td>
                                 <td>{name ?? "Vacant"}</td>
                                 <td >
-                                    {party ?
-                                    (<span className = {`text-xs rounded-sm p-1 font-bold text-white ${party == "Democratic"? 'bg-blue-500' : 'bg-red-500'} w-8 inline-flex justify-center`}>
+                                    {party && name !== "Vacant"?
+                                    (<span className = {`text-xs rounded-sm p-1 font-bold text-white w-8 inline-flex justify-center`}
+                                            style = {{backgroundColor: PARTY_COLORS[normalizeParty(party)] }}>
                                         {party == 'Democratic'? 'DEM':'REP'}
                                     </span>):'-'}                    
                                 </td>

@@ -4,6 +4,7 @@ import { usePaginate } from '../hooks/paginate';
 import PageControls from './PageControls';
 import GlobalStoreContext from '../store';
 import { getStateDetail } from '../api/api';
+import { PARTY_COLORS, APP_COLORS, normalizeParty } from '../utils/constants';
 
 export default function StateDetail({expanded, onClick}){
 
@@ -28,9 +29,9 @@ export default function StateDetail({expanded, onClick}){
                 const data = res.data;
                 
                 setVoterDist([
-                    { party: "Democrat", partyColor: "bg-blue-500", percent: data.voterDistribution.democratPercentage },
-                    { party: "Republican", partyColor: "bg-red-500", percent: data.voterDistribution.republicanPercentage },
-                    { party: "Other", partyColor: "bg-gray-500", percent: data.voterDistribution.otherPercentage },
+                    { party: "Democrat", partyColor: PARTY_COLORS.dem, percent: data.voterDistribution.democratPercentage },
+                    { party: "Republican", partyColor: PARTY_COLORS.rep, percent: data.voterDistribution.republicanPercentage },
+                    { party: "Other", partyColor: PARTY_COLORS.other, percent: data.voterDistribution.otherPercentage },
                 ]
                 );
                 setRaceArr([
@@ -87,8 +88,8 @@ function BarFill({percent, color}){
 
     return(
         <div className = "w-full bg-gray-100 rounded-md h-3">
-            <div className = {`${color} rounded-md h-3`} 
-                style = {{width: `${percent}%`}}>
+            <div className = {`rounded-md h-3`} 
+                style = {{width: `${percent}%`, backgroundColor: color}}>
             </div>
         </div>
 
@@ -134,13 +135,14 @@ function DefaultDetail({races, stateVoterDist, partyControl, pageNum, statePopul
                 <span>State Population</span>
                 <span className = "text-emerald-500 font-bold">{statePopulation.toLocaleString()}</span>
             </div>
-            <BarSection title = "Racial Population" arr = {races.map(ele=> ({label: ele.race, sublabel: ele.popNumber, color: 'bg-emerald-500', percent: ele.percent}))} />
+            <BarSection title = "Racial Population" arr = {races.map(ele=> ({label: ele.race, sublabel: ele.popNumber, color: APP_COLORS.accentGreen, percent: ele.percent}))} />
             </>
         :
         <>
         <div className = 'flex text-gray-500 justify-between pt-3'>
             <span>Party Control</span>
-            <span className = {`font-bold ${partyControl == "Republican"? 'text-red-500' : 'text-blue-500'}`}>{partyControl}</span>
+            <span className = {`font-bold`}
+                style = {{color: PARTY_COLORS[normalizeParty(partyControl)]}}>{partyControl}</span>
         </div>
         <BarSection title = "State Voter Distribution" arr = {stateVoterDist.map(ele=> ({label: ele.party, sublabel: "", color: ele.partyColor, percent: ele.percent}))} />
          </>
@@ -167,7 +169,10 @@ function CongressRepDetail({repArr, onClick}){
                         <div className = 'flex flex-col gap-0.5 justify-center'>
                             <div className = 'text-sm font-semibold'>{name ?? "Vacant"}</div>
                             <div className = 'text-xs text-gray-500'>District {districtNumber}</div>
-                            <div className = {`text-xs capitalize rounded-xl ${party === "Republican"? 'text-red-500' : 'text-blue-500'}`}>{party ?? ""}</div>
+                            <div className = "text-xs capitalize rounded-xl"
+                                style={{ color: PARTY_COLORS[normalizeParty(party)]}}>
+                                {party ?? ""}
+                            </div>
                         </div>
                         
                     </div>

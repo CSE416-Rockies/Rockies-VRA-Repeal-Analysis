@@ -10,9 +10,8 @@ import DistrictDetail from './DistrictDetail.jsx';
 import MapSelect from './MapSelect.jsx';
 import StateSelection from "./StateSelection.jsx";
 import Heatmap_Legend from "./Heatmap_Legend.jsx";
-import { PARTY_COLORS } from "../utils/constants.js";
 import { getPrecinctMap, getCongressionalMap } from "../api/api.js";
-
+import { PARTY_COLORS, normalizeParty, MAP_PARTY_COLORS} from "../utils/constants.js";
 
 const stateBounds = {
     Delaware: [
@@ -64,16 +63,9 @@ export default function MapView(){
             (rep) => String(rep.districtNumber) === mapDistrictValue
         );
 
-        let partyColor = "#d8d8d8"; 
-
-        if (representative) {
-            if (representative.party === "Republican") {
-                partyColor = "#E03130";
-            } else if (representative.party === "Democratic") {
-                partyColor = "#4375E0"; 
-            } else{
-                partyColor = "#d8d8d8";
-            }
+        let partyColor = MAP_PARTY_COLORS.other;
+        if (representative) { 
+            partyColor = MAP_PARTY_COLORS[normalizeParty(representative.party)];
         }
 
         return {
@@ -217,13 +209,13 @@ export default function MapView(){
                     "#ECFDF5";
     }
 
-    // console.log("rendering MapContainer for", name);
     return(
         <>
             <StateSelection onClose={zoomOut} />
             <div className = 'flex fixed inset-0 h-screen w-full pointer-events-none'>
                 <MapSelect/>
-                <div className = 'flex flex-col absolute gap-5 w-1/3 my-5 top-40 bottom-5 z-50 right-5 pointer-events-auto'>
+                <div style={{ top: 'calc(var(--state-selection-height) + 1.25rem)' }}
+                    className = 'flex flex-col absolute gap-5 w-1/3 my-5 bottom-5 z-50 right-5 pointer-events-auto'>
                     <StateDetail expanded = {expanded} onClick = {()=>setExpanded(!expanded)} className = 'absolute top-0 '/>
                     <DistrictDetail expanded = {!expanded} onClick = {()=>setExpanded(!expanded)} className = 'absolute bottom-0 '/>
                 </div>

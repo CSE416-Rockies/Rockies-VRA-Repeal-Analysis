@@ -8,7 +8,7 @@ import { drawScatterPlot } from "../utils/drawScatterPlot";
 import { PRESIDENT_CAND_LEGEND, RACES} from "../utils/constants"
 import { UserGroupIcon } from "@heroicons/react/24/solid";
 import { SelectionPlaceholder } from './selectionPlaceholder';
-
+import { getGingles } from "../api/api";
 
 export default function ScatterPlot(){
     const { store, setRacialGroup } = useContext(GlobalStoreContext);
@@ -22,27 +22,39 @@ export default function ScatterPlot(){
 
     // state change
     useEffect(()=>{
-        const stateJson = selectedState == "Georgia" ? 
-                          "/graphs/ga_gingles.json" :  
-                          "/graphs/de_gingles.json";
-
-        d3.json(stateJson).then( rawData => { setData(rawData);}) 
-                        .catch((err)=>console.error("Error loading geojson:", err));
+        if(!selectedState) return;
+        getGingles(selectedState)
+        .then(res => setData(res.data))
+        .catch(err => console.error("Error loading Gingles data:", err));
     }, [selectedState]);
 
     // racialGroup or resize change
     useEffect(()=>{
-        console.log("racial gruop: ", racialGroup);
         if(!data || !racialGroup) return;
 
-        const flatData =  data.precincts.flatMap(d=>[
-            {precinct: d.id, racial_pct: d[racialGroup].pct_demo*100, vote_share: d[racialGroup].harris*100, party: "dem"},
-            {precinct: d.id, racial_pct: d[racialGroup].pct_demo*100, vote_share: d[racialGroup].trump*100, party: "rep" }
-        ]);
+        const flatData = data.precincts.flatMap(d=>{
+            const g = d.groups[racialGroup];  // direct lookup
+            if (!g){
+                console.error("Failed to find: ", racialGroup);
+                return [];
+            } 
+            return [
+                {precinct: d.id, racial_pct: g.pctDemo*100, vote_share: g.harris*100, party: "dem"},
+                {precinct: d.id, racial_pct: g.pctDemo*100, vote_share: g.trump*100, party: "rep"}
+            ]
+        });
+
+        const fits = data.regression.fits.find(f => f.group === racialGroup);
+        if (!fits) return;
+
+        const harrisFit = fits.candidates.find(c => c.candidate === "harris");
+        const trumpFit = fits.candidates.find(c => c.candidate === "trump");
+        if (!harrisFit || !trumpFit) return;
+        
         const regression = {
             [racialGroup]: {
-                dem: { b0: data.regression.fits[racialGroup].harris.b0, b1: data.regression.fits[racialGroup].harris.b1 },
-                rep: { b0: data.regression.fits[racialGroup].trump.b0,  b1: data.regression.fits[racialGroup].trump.b1  }
+                dem: { b0: harrisFit.b0, b1: harrisFit.b1 },
+                rep: { b0: trumpFit.b0,  b1: trumpFit.b1  }
             }
         };
 
