@@ -1,21 +1,21 @@
 {
   "info": {
-    "_postman_id": "7ced2492-9bf1-48e5-867a-f29b57c882ea",
+    "_postman_id": "0d741148-ca68-4c6f-b156-85fd65b3481a",
     "name": "Backend Tests",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "48983540"
   },
   "item": [
     {
-      "name": "Repositories",
+      "name": "State",
       "item": [
         {
-          "name": "Get All Representatives",
+          "name": "Get Georgia Representatives",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/api/representatives",
+              "raw": "http://localhost:8080/api/state/Georgia/representatives",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -23,6 +23,8 @@
               "port": "8080",
               "path": [
                 "api",
+                "state",
+                "Georgia",
                 "representatives"
               ]
             }
@@ -30,18 +32,112 @@
           "response": []
         },
         {
-          "name": "Get Georgia Representatives",
+          "name": "Get Delaware Representatives",
           "request": {
             "method": "GET",
-            "header": []
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/Delaware/representatives",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "Delaware",
+                "representatives"
+              ]
+            }
           },
           "response": []
         },
         {
-          "name": "Get Delaware Representatives",
+          "name": "Get Georgia Ensemble Summary",
           "request": {
             "method": "GET",
-            "header": []
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/Georgia/ensemble",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "Georgia",
+                "ensemble"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Delaware Ensemble Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/Delaware/ensemble",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "Delaware",
+                "ensemble"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Georgia State Detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/Georgia/detail",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "Georgia",
+                "detail"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Delaware State Detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/Delaware/detail",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "Delaware",
+                "detail"
+              ]
+            }
           },
           "response": []
         }
@@ -51,18 +147,46 @@
       "name": "Graphs",
       "item": [
         {
-          "name": "Get Georgia BoxPlots",
+          "name": "Get Georgia BoxWhisker Plots",
           "request": {
             "method": "GET",
-            "header": []
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/Georgia/boxWhiskers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "Georgia",
+                "boxWhiskers"
+              ]
+            }
           },
           "response": []
         },
         {
-          "name": "Get Delaware BoxPlots",
+          "name": "Get Delaware BoxWhisker Plots",
           "request": {
             "method": "GET",
-            "header": []
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/Delaware/boxWhiskers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "Delaware",
+                "boxWhiskers"
+              ]
+            }
           },
           "response": []
         },
@@ -70,7 +194,21 @@
           "name": "Get Georgia ScatterPlots",
           "request": {
             "method": "GET",
-            "header": []
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/Georgia/gingles",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "Georgia",
+                "gingles"
+              ]
+            }
           },
           "response": []
         },
@@ -78,15 +216,21 @@
           "name": "Get Delaware ScatterPlots",
           "request": {
             "method": "GET",
-            "header": []
-          },
-          "response": []
-        },
-        {
-          "name": "Get Delaware EI Analysis",
-          "request": {
-            "method": "GET",
-            "header": []
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/Delaware/gingles",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "Delaware",
+                "gingles"
+              ]
+            }
           },
           "response": []
         },
@@ -94,7 +238,87 @@
           "name": "Get Georgia EI Analysis",
           "request": {
             "method": "GET",
-            "header": []
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/Georgia/eiAnalysis",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "Georgia",
+                "eiAnalysis"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Delaware EI Analysis",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/Delaware/eiAnalysis",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "Delaware",
+                "eiAnalysis"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Georgia Ensemble Splits",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/Georgia/ensembleSplits",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "Georgia",
+                "ensembleSplits"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Delaware Ensemble Splits",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/Delaware/ensembleSplits",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "Delaware",
+                "ensembleSplits"
+              ]
+            }
           },
           "response": []
         }
