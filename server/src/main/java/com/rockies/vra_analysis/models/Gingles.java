@@ -58,9 +58,9 @@ import java.util.Map;
             public String getCandidate() { return candidate; }
             public double getB0() { return b0; }
             public double getB1() { return b1; }
-            public double getSe_b0() { return se_b0; }
-            public double getSe_b1() { return se_b1; }
-            public double getR_squared() { return r_squared; }
+            public double getSeB0() { return se_b0; }
+            public double getSeB1() { return se_b1; }
+            public double getRSquared() { return r_squared; }
         }
 
         public static class Precinct{

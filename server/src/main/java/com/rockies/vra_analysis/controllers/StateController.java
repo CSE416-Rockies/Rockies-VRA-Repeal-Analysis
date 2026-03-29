@@ -10,16 +10,22 @@ import com.rockies.vra_analysis.models.EnsembleSummary;
 import com.rockies.vra_analysis.models.Representative;
 import com.rockies.vra_analysis.models.StateDetail;
 import com.rockies.vra_analysis.models.BoxWhiskerPlots;
+import com.rockies.vra_analysis.models.BoxWhiskerPlotsME;
 import com.rockies.vra_analysis.models.EnsembleSplits;
 import com.rockies.vra_analysis.models.Gingles;
 import com.rockies.vra_analysis.models.EIAnalysis;
+import com.rockies.vra_analysis.models.EnsembleHistogramME;
+
 import com.rockies.vra_analysis.repositories.EnsembleSummaryRepository;
 import com.rockies.vra_analysis.repositories.RepresentativeRepository;
 import com.rockies.vra_analysis.repositories.StateDetailRepository;
 import com.rockies.vra_analysis.repositories.EnsembleSplitsRepository;
 import com.rockies.vra_analysis.repositories.BoxWhiskerPlotsRepository;
+import com.rockies.vra_analysis.repositories.BoxWhiskerPlotsMERepository;
 import com.rockies.vra_analysis.repositories.EIAnalysisRepository;
 import com.rockies.vra_analysis.repositories.GinglesRepository;
+import com.rockies.vra_analysis.repositories.EnsembleHistogramMERepository;
+
 
 import java.util.List;
 
@@ -49,6 +55,12 @@ public class StateController {
 
     @Autowired
     private EIAnalysisRepository eiRepo;
+
+    @Autowired
+    private BoxWhiskerPlotsMERepository boxMERepo;
+
+    @Autowired
+    private EnsembleHistogramMERepository ensembleHistMERepo;
     
 
     @Autowired
@@ -95,6 +107,18 @@ public class StateController {
     @GetMapping("/eiAnalysis")
     public EIAnalysis getEIAnalysis(@PathVariable String stateName) {
         EIAnalysis result = eiRepo.findByState(stateName);
+        return result;
+    }
+
+    @GetMapping("/boxWhiskersME")
+    public BoxWhiskerPlotsME getBoxWhiskerME(@PathVariable String stateName) {
+        BoxWhiskerPlotsME result = boxMERepo.findByState(stateName);
+        return result;
+    }
+
+    @GetMapping("/ensembleHistogramME")
+    public EnsembleHistogramME getEnsembleHistME(@PathVariable String stateName) {
+        EnsembleHistogramME result = ensembleHistMERepo.findByState(stateName);
         return result;
     }
 }

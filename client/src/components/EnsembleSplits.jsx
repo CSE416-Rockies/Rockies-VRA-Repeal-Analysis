@@ -14,7 +14,6 @@ import { getEnsembleSplits } from '../api/api';
 
 export default function EnsembleSplits(){
     const {store, setRacialGroup } = useContext(GlobalStoreContext);
-    const [type, setType] = useState(null);
     const ref = useRef(null);
     const [candView, setCandView] = useState(null); 
     const [data, setData] = useState(null);
@@ -25,7 +24,7 @@ export default function EnsembleSplits(){
     const margin = {top: 20, right: 20, bottom: 60, left: 80}
 
 
-    const list = [{label:"race-blind"}, {label:"VRA"}, {label: "both"}]
+    const list = [{label:"raceBlind"}, {label:"vra"}, {label: "both"}]
 
     useEffect(()=>{
         if(!stateName) return;
@@ -73,8 +72,6 @@ export default function EnsembleSplits(){
 
     return(
         <GraphView title={`${candView} Ensemble Splits for ${racialGroup} `}
-            subtitle={type} 
-            legendTitle={(candView == "both") ? "Party" : ""} 
             legendItems={(candView == "both") ? ENSEMBLE_LEGEND : []}
             svgRef={ref}
             menus={choiceMenu}
