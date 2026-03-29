@@ -41,3 +41,12 @@ export const getPrecinctMap = (stateName) =>{
 export const getCongressionalMap = (stateName) =>{
     return axios.get(`http://localhost:8080/${stateName}_Congressional_Districts.geojson`);
 }
+
+export const getBoxWhiskersME = (stateName) => {
+    return api.get(`/state/${stateName}/boxWhiskersME`);
+}
+
+export const getEnsembleHistME = (stateName) => {
+    return api.get(`/state/${stateName}/ensembleHistogramME`);
+}
+

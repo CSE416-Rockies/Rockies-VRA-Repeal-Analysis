@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import { getPrimarySecondaryColors } from "./constants";
+import { drawAxes } from "./drawAxes";
 
 export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }) {
 
@@ -34,12 +35,6 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
     var x = d3.scaleLinear()
         .domain([0,1])        // axis ticks
         .range([0,width]);      // graph width 
-        
-    svg
-        .append("g")
-        .attr("class", "axisColor")
-        .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(x).ticks(4));      // axis tick spread
                 
     // Create y axis
     const allY = [...raceDensity, ...nonRaceDensity].map(d => d.y);
@@ -48,26 +43,14 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
         .domain([maxY, 0])
         .range([0, height]);
 
-    svg
-        .append("g")
-        .attr("class", "axisColor")
-        .call(d3.axisLeft(y).ticks(4));       // axis tick spread
-        
-    // Add X axis label:
-    svg.append("text")
-        .attr("text-anchor", "middle")
-        .attr("x", width/2)
-        .attr("y", height + margin.bottom-5)
-        .text(`Proportion ${racialLabel}`)
-        .attr("class", "capitalize-axis");
-
-    // Add Y axis label:
-    svg.append("text")
-        .attr("text-anchor", "middle")
-        .attr("transform", "rotate(-90)")
-        .attr("x", -height/2)
-        .attr("y", -margin.left + 20)
-        .text("Probability Value");
+  
+    drawAxes({
+        svg, width, height, margin, 
+        xLabel: `Proportion ${racialLabel}`,
+        yLabel: "Probability Value",
+        xConfig: d3.axisBottom(x).ticks(4),
+        yConfig: d3.axisLeft(y).ticks(4)
+    });
             
     /* ------------------------------------------------------------------ Plot Point Rendering */
 

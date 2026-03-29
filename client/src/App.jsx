@@ -10,6 +10,8 @@ import ScatterPlot from './components/ScatterPlot.jsx';
 import EIAnalysis from './components/EIAnalysis.jsx';
 import BoxWhisker from './components/BoxWhisker.jsx';
 import EnsembleSplits from './components/EnsembleSplits.jsx';
+import MinorityEffect from './components/MinorityEffect.jsx';
+
 
 function App() {
   const location = useLocation();
@@ -19,8 +21,12 @@ function App() {
   /*remember to route to specific stateID*/
   return (
     <GlobalStoreContextProvider>
-      <div className = 'flex'>
-        {showNavBar && <NavBar/>}
+      <div className = 'relative min-h-screen w-full overflow-hidden'>
+        {showNavBar && (
+          <div className="fixed top-0 left-0 z-[100] h-full">
+            <NavBar />
+          </div>
+        )}
         {/* {showStateSelection && <StateSelection/>} */}
         <StateSelection/>
         <div className = 'flex-1'>
@@ -31,6 +37,7 @@ function App() {
             <Route path = "/eiAnalysis" element = {<EIAnalysis/>}></Route>
             <Route path = "/ensembleSplits" element={<EnsembleSplits />}></Route>
             <Route path = "/boxWhisker" element = {<BoxWhisker/>}></Route> 
+            <Route path = "/minorityEffect" element = {<MinorityEffect/>}></Route> 
           </Routes>
         </div>
       </div>

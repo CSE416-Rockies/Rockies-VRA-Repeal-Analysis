@@ -49,7 +49,6 @@ export default function BoxWhisker(){
             subtitle = {ensemble ? `${ensemble}` : ""}
             svgRef={ref} 
             legendItems = {BOX_WHISKER_LEGEND}
-            legendTitle = ""
             menus = {
                     <div className='flex gap-5'>
                         <DropDownMenu  options = {RACES} onSelect = {setRacialGroup} icon={UserGroupIcon}/>

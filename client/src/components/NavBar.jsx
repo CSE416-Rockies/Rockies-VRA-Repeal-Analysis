@@ -6,6 +6,7 @@ import BarIcon from '../assets/svgs/bargraph.svg?react';
 import EIAnalysisIcon from '../assets/svgs/eiAnalysis.svg?react';
 import BoxPlotIcon from '../assets/svgs/boxandwhisker.svg?react';
 import ScatterIcon from '../assets/svgs/scatterplot.svg?react';
+import MinorityIcon from '../assets/svgs/group.svg?react';
 import RockiesLogo from '../assets/rockies-logo2.svg?react';
 
 import { Bars3Icon } from '@heroicons/react/24/solid'
@@ -13,7 +14,7 @@ import { Bars3Icon } from '@heroicons/react/24/solid'
 import { GlobalStoreContext } from "../store";
 
 export default function NavBar(){
-    const { store, setMinorityGroup } = useContext(GlobalStoreContext);
+    const { store } = useContext(GlobalStoreContext);
     
     const location = useLocation();
     
@@ -25,15 +26,12 @@ export default function NavBar(){
         {to: "/eiAnalysis", id: "boxplot-nav", icon: EIAnalysisIcon, label: "EI Analysis"},
         {to: "/ensembleSplits", id: "ensemble-nav", icon: BarIcon, label: "Ensemble Splits"},
         {to: "/boxWhisker", id: "boxWhisker-nav", icon: BoxPlotIcon, label: "Box & Whisker Data"},
+        {to: "/minorityEffect", id: "minority-nav", icon: MinorityIcon, label: "Minority Effectiveness"},
     ]
-
-    const handleClick = () =>{
-        // setMinorityGroup("");
-    };
 
     return(
         <div id = "navbar" 
-            className = {`flex flex-col relative z-50 h-screen bg-white backdrop-blur-sm shadow-md  overflow-hidden transition-all duration-500 ease-in-out ${expand ? 'w-72' : 'w-16'}`}
+            className = {`flex flex-col relative z-50 h-screen bg-white backdrop-blur-sm shadow-md  overflow-hidden transition-all duration-500 ease-in-out ${expand ? 'w-72' : 'w-16'}`} 
             onMouseEnter={() => setExpand(true)}
             onMouseLeave={() => setExpand(false)}
         >
@@ -53,7 +51,7 @@ export default function NavBar(){
                     const active = location.pathname == to;
 
                     return(
-                        <Link key = {id} to = {to} id = {id} className = "nav-link group" onClick={handleClick}>
+                        <Link key = {id} to = {to} id = {id} className = "nav-link group">
                             <div className= "flex items-center justify-center w-12">
                                 <Icon className= {`nav-icon ${active ? "text-emerald-500":""}`}/>
                             </div>

@@ -42,7 +42,6 @@ export default function ScatterPlot(){
             title = {`Gingles Analysis: Precinct-Level Election Results`}
             subtitle = {`By ${racialGroup} Population`}
             svgRef = {ref}
-            legendTitle = "Votes"
             legendItems = {PRESIDENT_CAND_LEGEND}
             menus = {<DropDownMenu  options = {RACES} onSelect = {setRacialGroup} icon={UserGroupIcon} toolTipDesc=""/>}
         >{(!racialGroup) && (

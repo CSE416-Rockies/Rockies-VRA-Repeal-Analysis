@@ -48,7 +48,7 @@ export function drawBoxWhisker({ givenSVG, data, margin, racialLabel }) {
     data.forEach((d, i) => {
         const cx = x(i + 1);  // center x for this district
 
-        drawBox(boxGroup, {cx, bandwidth, y, d});
+        drawBox(boxGroup, {cx, bandwidth, y, d, color: "white"});
 
          // ── Enacted dot ────────────────────────────────────────────────
         boxGroup.append("circle")

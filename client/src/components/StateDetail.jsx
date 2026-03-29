@@ -1,6 +1,6 @@
 import { ChevronRightIcon, ChevronLeftIcon, ChevronDownIcon, ChevronUpIcon, UserIcon } from '@heroicons/react/24/solid'
 import {useState, useEffect, useContext} from 'react'
-import { usePaginate } from '../hooks/paginate';
+import { usePaginate } from '../hooks/usePaginate';
 import PageControls from './PageControls';
 import GlobalStoreContext from '../store';
 import { getStateDetail } from '../api/api';

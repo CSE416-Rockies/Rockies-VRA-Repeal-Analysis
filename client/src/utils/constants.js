@@ -36,14 +36,28 @@ export const MINORITIES = ["black","latino", "other"];
 export const ENSEMBLES = ["VRA", "Race-Blind"];
 
 export const BOX_WHISKER_LEGEND = [
-    { label: "Ensemble", color: "black" },
-    { label: "Enacted", color: "#10B981" },
+    { label: "Ensemble", color: "black", shape:  "boxplot"},
+    { label: "Enacted", color: "#10B981", shape: "circle"},
 ]
 
+export const ME_COLORS = {
+    raceBlind: "#10B981",
+    vra: "#EAB308",
+    enacted: "#5D3FD3",
+};
+
 export const ENSEMBLE_LEGEND = [
-    {label: "race-blind", color: "#10B981"},
-    {label: "VRA", color: "#6EE7B7"},
-]
+  { label: "Race-Blind", color: "#10B981", shape: "square" },
+  { label: "VRA-Constrained", color: "#EAB308", shape: "square" },
+];
+
+export const BOX_WHISKER_ME_LEGEND = [
+  { label: "Race-Blind", color: "#10B981", shape: "square" },
+  { label: "VRA-Constrained", color: "#EAB308", shape: "square" },
+  { label: "Enacted", color: "#5D3FD3", shape: "circle" },
+];
+
+
 
 export const STATE_BOUNDS = {
     Delaware: [
