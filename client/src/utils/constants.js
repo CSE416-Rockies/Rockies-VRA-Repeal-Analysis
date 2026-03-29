@@ -44,3 +44,14 @@ export const ENSEMBLE_LEGEND = [
     {label: "race-blind", color: "#10B981"},
     {label: "VRA", color: "#6EE7B7"},
 ]
+
+export const STATE_BOUNDS = {
+    Delaware: [
+        [38.451, -75.789],
+        [39.839, -75.048],
+    ],
+    Georgia: [
+        [30.357, -85.605],
+        [35.000, -80.751],
+    ],
+};

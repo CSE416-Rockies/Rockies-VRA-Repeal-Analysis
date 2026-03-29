@@ -58,7 +58,10 @@ export default function StateSelection({ onClose }){
 
     return(
 
-        <div ref={ref} className = "fixed right-5 top-5 z-50 flex flex-col bg-white rounded-2xl shadow-md w-1/3 pt-4 border-divide">
+        <div ref={ref} 
+            className = "fixed right-5 top-5 z-50 flex flex-col bg-white rounded-2xl shadow-md pt-4 border-divide"
+            style = {{width: 'var(--sidebar-width)' }}
+        >
 
             <div className = "flex justify-between items-center pb-4 px-4 text-xl w-full relative">
                 <span className = 'flex gap-2'>

@@ -1,57 +1,69 @@
 import * as d3 from "d3";
 import { PARTY_COLORS } from "./constants";
+import { drawAxes } from "./drawAxes";
 
-export function drawScatterPlot({ givenSVG, data, margin, racialLabel, regression }) {    
-    // create svg element
+export function drawScatterPlot({ givenSVG, data, margin, racialLabel }) { 
+    
+    if (!givenSVG || !data) return;
     var svg = d3.select(givenSVG)
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
-            
-    /* ------------------------------------------------------------------ Axis Rendering */
+
+    /* ------------------------------------------------------------------ Dimensions */
     const width = givenSVG.clientWidth - margin.left - margin.right;
     const height = givenSVG.clientHeight - margin.top - margin.bottom;
 
+    /* ------------------------------------------------------------------ Transformation */
+    const flatData = data.precincts.flatMap(d => {
+        const g = d.groups[racialLabel];
+        if (!g) return [];
+        return [
+            { precinct: d.id, racial_pct: g.pctDemo * 100, vote_share: g.harris * 100, party: "dem" },
+            { precinct: d.id, racial_pct: g.pctDemo * 100, vote_share: g.trump * 100, party: "rep" }
+        ]
+    });
+
+    const fits = data.regression.fits.find(f => f.group === racialLabel);
+    if (!fits) return;
+
+    const harrisFit = fits.candidates.find(c => c.candidate === "harris");
+    const trumpFit = fits.candidates.find(c => c.candidate === "trump");
+    if (!harrisFit || !trumpFit) return;
+
+    const regression = {
+        [racialLabel]: {
+            dem: { b0: harrisFit.b0, b1: harrisFit.b1 },
+            rep: { b0: trumpFit.b0, b1: trumpFit.b1 }
+        }
+    };
+
+
+    /* ------------------------------------------------------------------ Axes */
+    
     // Create x axis
     var x = d3.scaleLinear()
         .domain([0,100])        // axis ticks
         .range([0,width]);      // graph width 
-    svg
-        .append("g")
-        .attr("class", "axisColor")
-        .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(x).ticks(4).tickFormat(d=>`${d}%`));      // axis tick spread
                 
     // Create y axis
     var y = d3.scaleLinear()
         .domain([100,0])        // axis ticks
         .range([0,height]);     // graph height
-    svg
-        .append("g")
-        .attr("class", "axisColor")
-        .call(d3.axisLeft(y).ticks(4).tickFormat(d=>`${d}%`));       // axis tick spread
-        
-    // Add X axis label:
-    svg.append("text")
-        .attr("text-anchor", "middle")
-        .attr("x", width/2)
-        .attr("y", height + margin.bottom)
-        .text(`Percent ${racialLabel}`)
-        .attr("class", "capitalize-axis");
 
-    // Add Y axis label:
-    svg.append("text")
-        .attr("text-anchor", "middle")
-        .attr("transform", "rotate(-90)")
-        .attr("x", -height/2)
-        .attr("y", -margin.left + 20)
-        .text("Vote Shares");
+    drawAxes({
+        svg, width, height, margin,
+        xConfig: d3.axisBottom(x).ticks(4).tickFormat(d => `${d}%`),
+        yConfig: d3.axisLeft(y).ticks(4).tickFormat(d => `${d}%`),
+        xLabel: `Percent ${racialLabel}`,
+        yLabel: "Vote Shares",
+    });
             
     /* ------------------------------------------------------------------ Plot Point Rendering */
 
     // Scatter dots
     svg.append('g')
         .selectAll("dot")
-        .data(data)                                     // bind data to dots
+        .data(flatData)                                     // bind data to dots
         .join("circle")                                 // create circle
             .attr("cx", d => x(d.racial_pct))
             .attr("cy", d => y(d.vote_share) )

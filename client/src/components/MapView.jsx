@@ -9,6 +9,7 @@ import DistrictDetail from './DistrictDetail.jsx';
 import MapSelect from './MapSelect.jsx';
 import StateSelection from "./StateSelection.jsx";
 import Heatmap_Legend from "./Heatmap_Legend.jsx";
+import LoadingView from "./LoadingView.jsx";
 
 import { useDistrictData } from "../hooks/useDistrictData.js";
 import { usePrecinctData } from "../hooks/usePrecinctData.js";
@@ -121,7 +122,7 @@ export default function MapView(){
                         }
                     }
                     hoveredLayerRef.current = e.target;
-                    const currentStyle = getStyle(e.targety.feature);
+                    const currentStyle = getStyle(e.target.feature);
                     e.target.setStyle({
                         ...currentStyle,           
                         fillColor: "#d8d8d8", 
@@ -161,19 +162,15 @@ export default function MapView(){
             <div className = 'flex fixed inset-0 h-screen w-full pointer-events-none'>
                 <MapSelect/>
                 
-                <div style={{ top: 'calc(var(--state-selection-height) + 1.25rem)' }}
-                    className = 'flex flex-col absolute gap-5 w-1/3 my-5 bottom-5 z-50 right-5 pointer-events-auto'>
+                <div style={{ top: 'calc(var(--state-selection-height) + 1.25rem)', width: 'var(--sidebar-width)'  }}
+                    className = 'flex flex-col absolute gap-5 my-5 bottom-5 z-50 right-5 pointer-events-auto'
+                >
                     <StateDetail expanded = {expanded} onClick = {()=>setExpanded(!expanded)} className = 'absolute top-0 '/>
                     <DistrictDetail expanded = {!expanded} onClick = {()=>setExpanded(!expanded)} selectedDistrict = {selectedDistrict} onSelect = {selectDistrict} className = 'absolute bottom-0 '/>
                 </div>
    
                 {isLoading && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/50 backdrop-blur-sm pointer-events-auto">
-                        <div className="flex flex-col items-center gap-3 text-gray-500">
-                            <div className="w-8 h-8 border-4 border-gray-300 border-t-emerald-500 rounded-full animate-spin" />
-                            <span className="text-sm font-medium">Loading map...</span>
-                        </div>
-                    </div>
+                    <LoadingView text = "Loading map..."/>
                 )}
                 
                 <MapContainer

@@ -6,6 +6,7 @@ import GraphView from './GraphView';
 import { SelectionPlaceholder } from './selectionPlaceholder';
 import { ENSEMBLE_LEGEND } from "../utils/constants"
 import drawEnsembleSplits from '../utils/drawEnsembleSplits';
+import { useD3 } from '../hooks/useD3';
 import { RACES } from '../utils/constants';
 import DropDownMenu from './DropDownMenu';
 import { UserGroupIcon } from '@heroicons/react/24/solid';
@@ -33,27 +34,12 @@ export default function EnsembleSplits(){
         .catch(err => console.error("Error loading ensemble splits:", err));
     }, [stateName]);
 
-    useEffect(() =>{
-        if(!ref.current || !data || !candView || !racialGroup) return;
-
-        const draw = () =>{
-            if(!ref.current) return;
-            d3.select(ref.current).selectAll("*").remove();
-            d3.selectAll(".tooltip-ensemble").remove();
-            
-            drawEnsembleSplits({
-                givenSVG: ref.current,
-                data: data,
-                margin,
-                candView,
-                racialGroup,
-            });
-        };
-        const observer = new ResizeObserver(draw);
-        observer.observe(ref.current);
-        return () => observer.disconnect();
-        
-    }, [candView, data, racialGroup]);
+    // draw d3
+    useD3(ref, (svg) => {
+        if( !data || !candView || !racialGroup) return;
+        d3.selectAll(".tooltip-ensemble").remove();
+        drawEnsembleSplits({ givenSVG: svg, data: data, margin, candView, racialGroup});
+    }, [data, racialGroup, candView]);
 
     
 

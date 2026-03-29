@@ -1,10 +1,11 @@
 import {useEffect, useRef, useState, useContext} from "react"
 import GlobalStoreContext from '../store';
-import * as d3 from "d3";
 import DropDownMenu from "./DropDownMenu";
 import GraphView from "./GraphView";
 
 import { drawScatterPlot } from "../utils/drawScatterPlot";
+import { useD3 } from "../hooks/useD3";
+
 import { PRESIDENT_CAND_LEGEND, RACES} from "../utils/constants"
 import { UserGroupIcon } from "@heroicons/react/24/solid";
 import { SelectionPlaceholder } from './selectionPlaceholder';
@@ -28,49 +29,10 @@ export default function ScatterPlot(){
         .catch(err => console.error("Error loading Gingles data:", err));
     }, [selectedState]);
 
-    // racialGroup or resize change
-    useEffect(()=>{
+    // draw d3 
+    useD3(ref, (svg)=>{
         if(!data || !racialGroup) return;
-
-        const flatData = data.precincts.flatMap(d=>{
-            const g = d.groups[racialGroup];  // direct lookup
-            if (!g){
-                console.error("Failed to find: ", racialGroup);
-                return [];
-            } 
-            return [
-                {precinct: d.id, racial_pct: g.pctDemo*100, vote_share: g.harris*100, party: "dem"},
-                {precinct: d.id, racial_pct: g.pctDemo*100, vote_share: g.trump*100, party: "rep"}
-            ]
-        });
-
-        const fits = data.regression.fits.find(f => f.group === racialGroup);
-        if (!fits) return;
-
-        const harrisFit = fits.candidates.find(c => c.candidate === "harris");
-        const trumpFit = fits.candidates.find(c => c.candidate === "trump");
-        if (!harrisFit || !trumpFit) return;
-        
-        const regression = {
-            [racialGroup]: {
-                dem: { b0: harrisFit.b0, b1: harrisFit.b1 },
-                rep: { b0: trumpFit.b0,  b1: trumpFit.b1  }
-            }
-        };
-
-        function redraw(){
-            // Draw d3 scatterplot
-            if (!ref.current) return;
-            d3.select(ref.current).selectAll("*").remove();                // prevent rednering on top of each other
-            drawScatterPlot({givenSVG: ref.current, data: flatData, margin, racialLabel: racialGroup, regression});
-        }
-
-        const obsvr = new ResizeObserver(redraw);
-        obsvr.observe(ref.current);
-        redraw();
-
-        return ()=> obsvr.disconnect();
-
+        drawScatterPlot({givenSVG: svg, data, margin, racialLabel: racialGroup});
     }, [data, racialGroup]);
 
 

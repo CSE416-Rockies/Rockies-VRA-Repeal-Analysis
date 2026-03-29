@@ -1,5 +1,4 @@
 import {useRef, useState, useEffect, useContext} from 'react'
-import * as d3 from "d3";
 
 import DropDownMenu from './DropDownMenu';
 import GlobalStoreContext from "../store";
@@ -8,6 +7,7 @@ import { SelectionPlaceholder } from './selectionPlaceholder';
 import { UserGroupIcon } from '@heroicons/react/24/solid';
 
 import { drawEIAnalysis } from '../utils/drawEIAnalysis';
+import { useD3 } from '../hooks/useD3';
 import { RACES, PRESIDENT_CAND_LEGEND, getPrimarySecondaryColors } from "../utils/constants"
 import { getEIAnalysis } from '../api/api';
 
@@ -31,23 +31,11 @@ export default function EIAnalysis(){
            .catch(err => console.error("Error loading EI Analysis data:", err));
     }, [selectedState]);
 
-    useEffect(()=>{
+    // draw d3 
+    useD3(ref, (svg)=>{
         if(!data || !racialGroup|| !ref.current) return;
-
-        function redraw(){
-            if (!ref.current) return;
-            // Draw d3 scatterplot
-            d3.select(ref.current).selectAll("*").remove();                // prevent rendering on top of each other
-            drawEIAnalysis({givenSVG: ref.current, data: data, margin, racialLabel: racialGroup, candView});
-        }
-        
-        const obsvr = new ResizeObserver(redraw);
-        obsvr.observe(ref.current);
-        redraw();
-
-        return () => obsvr.disconnect();
-        
-    }, [data, candView, racialGroup])
+        drawEIAnalysis({givenSVG: svg, data: data, margin, racialLabel: racialGroup, candView});
+    }, [data, candView, racialGroup]);
     
 
     const choiceMenu = 

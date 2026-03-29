@@ -1,5 +1,4 @@
 import {useRef, useEffect, useContext} from 'react'
-import * as d3 from "d3";
 import { drawBoxWhisker } from "../utils/drawBoxWhisker";
 import DropDownMenu from './DropDownMenu';
 import GraphView from './GraphView';
@@ -8,6 +7,7 @@ import { Squares2X2Icon, UserGroupIcon, } from "@heroicons/react/24/solid";
 import { SelectionPlaceholder } from './selectionPlaceholder';
 
 import { ENSEMBLES, RACES, BOX_WHISKER_LEGEND  } from "../utils/constants"
+import { useD3 } from '../hooks/useD3';
 import { getBoxWhiskers } from '../api/api';
 
 
@@ -17,7 +17,6 @@ export default function BoxWhisker(){
 
     const racialGroup = store.racialGroup;
     const ensemble = store.ensemble;
-
 
     const ref = useRef(null);
     
@@ -32,31 +31,15 @@ export default function BoxWhisker(){
     }, [selectedState]);
     
     // racialGroup or resize change
-    useEffect(()=>{
-        if (!store.boxWhisker || !racialGroup || !ensemble || !ref.current) return;
-
-        const filteredData = store.boxWhisker.ensembles
-            ?.find(e => e.name === ensemble)
-            ?.[racialGroup];
-        console.log(filteredData);
-
-        function redraw(){
-            // Draw d3 scatterplot
-            d3.select(ref.current).selectAll("*").remove();                
-            drawBoxWhisker({
-                givenSVG: ref.current,
-                data: filteredData,
-                margin,
-                racialLabel: racialGroup,
-            });
-        }
-
-        const obsvr = new ResizeObserver(redraw);
-        obsvr.observe(ref.current);
-        redraw();
-
-        return ()=> obsvr.disconnect();
-
+    const filteredData = store.boxWhisker?.ensembles
+        ?.find(e => e.name === ensemble)
+        ?.[racialGroup];
+    console.log(filteredData);
+       
+    // draw d3 
+    useD3(ref, (svg)=>{
+        if (!store.boxWhisker || !racialGroup || !ensemble) return;
+        drawBoxWhisker({ givenSVG: svg, data: filteredData, margin, racialLabel: racialGroup });
     }, [store.boxWhisker, racialGroup, ensemble]);
 
 

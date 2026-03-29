@@ -2,8 +2,10 @@ import Legend from "./Legend"
 
 export default function GraphView({title, subtitle, legendTitle, legendItems, svgRef, menus, children}){
     return(
-        <div className = 'flex justify-center items-center w-full h-full bg-gray-200'>  
-            <div className = 'flex flex-col gap-10 justify-center w-full h-full py-5 px-5 bg-gray-200'>    
+        <div className = 'flex justify-center items-center w-full h-screen bg-gray-200'>  
+            <div className = 'flex flex-col gap-10 justify-center w-full h-full py-5 px-5 bg-gray-200'
+                style={{ paddingLeft: 'calc(var(--navbar-width) + var(--panel-padding))'}}
+            >    
                 {menus}
                 <div className = 'flex flex-col w-full h-full px-15 py-10 justify-center items-center gap-5 bg-white rounded-xl'>
                     { (children) ? children :
