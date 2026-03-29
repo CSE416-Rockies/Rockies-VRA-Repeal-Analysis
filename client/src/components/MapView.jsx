@@ -2,7 +2,6 @@ import { useState, useEffect, useContext, useRef } from "react"
 import { useParams } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
-import { feature } from "topojson-client";
 
 import GlobalStoreContext from "../store/index.jsx";
 import StateDetail from './StateDetail.jsx';
@@ -10,19 +9,13 @@ import DistrictDetail from './DistrictDetail.jsx';
 import MapSelect from './MapSelect.jsx';
 import StateSelection from "./StateSelection.jsx";
 import Heatmap_Legend from "./Heatmap_Legend.jsx";
-import { getPrecinctMap, getCongressionalMap } from "../api/api.js";
-import { PARTY_COLORS, normalizeParty, MAP_PARTY_COLORS} from "../utils/constants.js";
 
-const stateBounds = {
-    Delaware: [
-        [38.451, -75.789],
-        [39.839, -75.048],
-    ],
-    Georgia: [
-        [30.357, -85.605],
-        [35.000, -80.751],
-    ],
-};
+import { useDistrictData } from "../hooks/useDistrictData.js";
+import { usePrecinctData } from "../hooks/usePrecinctData.js";
+
+import { normalizeParty, MAP_PARTY_COLORS, STATE_BOUNDS } from "../utils/constants.js";
+import { choroplethStyle, highlightStyle, lineStyle } from "../utils/mapStyles.js";
+
 
 const legend_items = [
     {label: "0-5%", color: "#ECFDF5"},
@@ -38,58 +31,17 @@ export default function MapView(){
     const { name } = useParams();
 
     const [expanded, setExpanded] = useState(true);
-    const [districtPlan, setDistrictPlan] = useState(null);
-    const [precinctData, setPrecinctData] = useState(null);
-    const [map, setMap] = useState(null);
-    const hoveredLayer = useRef(null);
+    const [selectedDistrict, setSelectedDistrict] = useState(null);
+
+    const hoveredLayerRef = useRef(null);
+    const selectedDistrictRef = useRef(null);
+    const geoJsonRef = useRef(null);
+
     const selectedState = store?.selectedState || "";
     const districtArr = store?.representatives || [];
 
-    const lineStyle = (feature) => {
-        return {
-        fillOpacity: 0,
-        weight: 1,
-        color: "#6b6b6b",
-        };
-    };
-
-    const districtStyle = (feature) => {
-        const mapDistrictValue = feature.properties.DISTRICT === "Congressional District (at Large)" // account for delaware
-        ?   "0"
-        :   String(feature.properties.DISTRICT).replace(/\D/g, "");
-
-        // console.log(feature.properties.DISTRICT);
-        const representative = districtArr.find(
-            (rep) => String(rep.districtNumber) === mapDistrictValue
-        );
-
-        let partyColor = MAP_PARTY_COLORS.other;
-        if (representative) { 
-            partyColor = MAP_PARTY_COLORS[normalizeParty(representative.party)];
-        }
-
-        return {
-            fillColor: partyColor,
-            fillOpacity: 0.7,
-            weight: 1,
-            color: "#6b6b6b",
-        };
-    };
-
-    const choroplethStyle = (feature) => ({
-        fillColor: getColor(feature),
-        fillOpacity: 1,
-        color: "#6b6b6b",
-        weight: 1,
-    });
-
-    const highlightStyle = {
-        color: "#6b6b6b",     
-        weight: 2,
-        fillOpacity: 1,
-    }
-
-    const getStyle = (feature) => store.minorityGroup ? choroplethStyle(feature) : lineStyle(feature);
+    const { districtPlan } = useDistrictData(name);
+    const { precinctData } = usePrecinctData(name, store.mapMode);
 
     const navigate = useNavigate();
 
@@ -97,30 +49,36 @@ export default function MapView(){
         navigate(`/`);
     };
 
-    useEffect(() => {
-        getCongressionalMap(name)
-            .then((res) => res.data)
-            .then((data) => setDistrictPlan(data))
-            .catch((err) => console.error("Error loading geojson:", err));
-    }, [name]);
+    const isLoading =   (store.mapMode === 'district' && !districtPlan) || 
+                        (store.mapMode === 'precinct' && !precinctData);
 
-    useEffect(() => {
-        if(store.mapMode === 'precinct' && !precinctData) {
-            getPrecinctMap(name) //(put path of precinct geojsons)
-                .then((res) => res.data)
-                .then(topology => {
-                        // console.log(Object.keys(topology.objects.data.geometries));
-                        const geojson = feature(
-                        topology,
-                        topology.objects.data // name of object inside topojson
-                    );
+    const getStyle = (feature) => store.minorityGroup ? choroplethStyle(feature, store.minorityGroup) : lineStyle(feature);
+    const selectDistrict = (val) => {
+        selectedDistrictRef.current = val ? String(val) : null;
+        setSelectedDistrict(val);
+    };
 
-                    // console.log("geojson: ", geojson);
-                    setPrecinctData(geojson);
-                })
-                .catch((err) => console.error("Error loading geojson:", err));
-        }
-    }, [store.mapMode, precinctData]);
+    const districtStyle = (feature) => {
+        const mapDistrictValue = feature.properties.DISTRICT === "Congressional District (at Large)" // account for delaware
+        ?   "0"
+        :   String(feature.properties.DISTRICT).replace(/\D/g, "");
+
+        // district's color
+        let partyColor = MAP_PARTY_COLORS.other;
+        const district = districtArr.find(
+            (rep) => String(rep.districtNumber) === mapDistrictValue
+        );
+        if (district) {  partyColor = MAP_PARTY_COLORS[normalizeParty(district.party)]; }
+
+        let isSelected = selectedDistrictRef.current == mapDistrictValue;
+
+        return {
+            fillColor: partyColor,
+            fillOpacity: isSelected ? 1 : 0.5,
+            weight: isSelected ? 4 : 2,
+            color: "#6b6b6b",
+        };
+    };
 
     const onEachState = (feature, layer) => {
         if(store.mapMode === 'district' && districtPlan) {  //district tootip
@@ -135,14 +93,8 @@ export default function MapView(){
             });
             
             layer.on({
-                mouseover: (e) => {
-                e.target.setStyle(highlightStyle);
-                },
-                mouseout: (e) => {
-                e.target.setStyle(districtStyle(layer.feature));
-                },
-                // click: (e) => {
-                // }
+                mouseover: (e) =>  e.target.setStyle(highlightStyle),
+                mouseout:  (e) => e.target.setStyle( districtStyle(e.target.feature) ),
             });
         }
 
@@ -160,16 +112,16 @@ export default function MapView(){
             
             layer.on({
                 mouseover: (e) => {
-                    if (hoveredLayer.current && hoveredLayer.current !== e.target) {
-                        hoveredLayer.current.closeTooltip();
+                    if (hoveredLayerRef.current && hoveredLayerRef.current !== e.target) {
+                        hoveredLayerRef.current.closeTooltip();
                         if (store.minorityGroup) {
-                            hoveredLayer.current.setStyle(choroplethStyle(hoveredLayer.current.feature));
+                            hoveredLayerRef.current.setStyle(getStyle(e.target.feature));
                         } else {
-                            hoveredLayer.current.setStyle(lineStyle(hoveredLayer.current.feature));
+                            hoveredLayerRef.current.setStyle(lineStyle(hoveredLayerRef.current.feature));
                         }
                     }
-                    hoveredLayer.current = e.target;
-                    const currentStyle = getStyle(layer.feature);
+                    hoveredLayerRef.current = e.target;
+                    const currentStyle = getStyle(e.targety.feature);
                     e.target.setStyle({
                         ...currentStyle,           
                         fillColor: "#d8d8d8", 
@@ -180,58 +132,62 @@ export default function MapView(){
                     e.target.bringToFront();
                 },
                 mouseout: (e) => {
-                    hoveredLayer.current = null;
+                    hoveredLayerRef.current = null;
                     e.target.closeTooltip();
                     if (store.minorityGroup) {
-                        // console.log("choroplethstyle after mouseout");
-                        e.target.setStyle(choroplethStyle(layer.feature));
+                        e.target.setStyle(getStyle(e.target.feature));
                     } else {
-                        // console.log("linestyle after mouseout");
                         e.target.setStyle(lineStyle(layer.feature));
                     }
                 },
-                // click: (e) => {
-                // }
             });
         }
     };
+  
 
-    const getColor = (feature) =>{
-        if(!store.minorityGroup) return "#ffffff";
-        const group = store.minorityGroup;
-        const key = `${group}_percentage`;
-        const value = feature.properties[key] || 0;
-        return value > 75 ? "#063E2F" :
-         value > 50 ? "#047857" :
-         value > 25 ? "#10B981" :
-         value > 10 ? "#6EE7B7" :
-         value > 5  ? "#D1FAE5" :
-                    "#ECFDF5";
-    }
+    useEffect(() => {
+        if (!geoJsonRef.current) return;
+        geoJsonRef.current.eachLayer((layer) => {
+            layer.setStyle(districtStyle(layer.feature));
+            if (String(layer.feature.properties.DISTRICT).replace(/\D/g, "") === selectedDistrictRef.current) {
+                layer.bringToFront();
+            }
+        });
+    }, [selectedDistrict]);
 
     return(
         <>
             <StateSelection onClose={zoomOut} />
             <div className = 'flex fixed inset-0 h-screen w-full pointer-events-none'>
                 <MapSelect/>
+                
                 <div style={{ top: 'calc(var(--state-selection-height) + 1.25rem)' }}
                     className = 'flex flex-col absolute gap-5 w-1/3 my-5 bottom-5 z-50 right-5 pointer-events-auto'>
                     <StateDetail expanded = {expanded} onClick = {()=>setExpanded(!expanded)} className = 'absolute top-0 '/>
-                    <DistrictDetail expanded = {!expanded} onClick = {()=>setExpanded(!expanded)} className = 'absolute bottom-0 '/>
+                    <DistrictDetail expanded = {!expanded} onClick = {()=>setExpanded(!expanded)} selectedDistrict = {selectedDistrict} onSelect = {selectDistrict} className = 'absolute bottom-0 '/>
                 </div>
-
+   
+                {isLoading && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/50 backdrop-blur-sm pointer-events-auto">
+                        <div className="flex flex-col items-center gap-3 text-gray-500">
+                            <div className="w-8 h-8 border-4 border-gray-300 border-t-emerald-500 rounded-full animate-spin" />
+                            <span className="text-sm font-medium">Loading map...</span>
+                        </div>
+                    </div>
+                )}
+                
                 <MapContainer
-                    bounds={stateBounds[name]}
+                    bounds={STATE_BOUNDS[name]}
                     boundsOptions={{ paddingTopLeft: [-300, 0] }}
-                    whenCreated = {setMap}
                     className="fixed inset-0 h-screen w-full"
                 >  
                     <TileLayer
                         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>'
                     />
-                    {store.mapMode === 'district' && districtPlan && (<GeoJSON key={`districts-${selectedState}-${districtArr.length}`} data={districtPlan} style={districtStyle} onEachFeature={onEachState} />)}
-                    {store.mapMode === 'precinct' && precinctData && (<GeoJSON data={precinctData} key={store.minorityGroup} style={getStyle} onEachFeature={onEachState} />)}
+
+                    {store.mapMode === 'district' && districtPlan && (<GeoJSON ref={geoJsonRef} key={`districts-${selectedState}-${districtArr.length}`} data={districtPlan} style={districtStyle} onEachFeature={onEachState} />)}
+                    {store.mapMode === 'precinct' && precinctData && (<GeoJSON key={name} data={precinctData} style={getStyle} onEachFeature={onEachState} />)}
 
                 </MapContainer>
                 {store.mapMode == "precinct" && <Heatmap_Legend title="Population Percentage" items = {legend_items} />}

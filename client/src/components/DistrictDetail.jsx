@@ -1,19 +1,19 @@
 import {ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid'
 import PageControls from './PageControls';
 
-import { usePaginate } from '../hooks/paginate';
+import { usePaginate } from '../hooks/usePaginate';
 import { useEffect, useRef, useState, useContext } from 'react';
 import GlobalStoreContext from '../store';
 import { normalizeParty, PARTY_COLORS } from '../utils/constants';
 
-export default function DistrictDetail({expanded, onClick}){
+export default function DistrictDetail({expanded, onClick, selectedDistrict, onSelect}){
     const theadRef = useRef(null);
     const rowRef = useRef(null);
     const pageRef = useRef(null);
     const containerRef = useRef(null);
     const titleRef = useRef(null);
     const [perPage, setPerPage] = useState(7);
-
+    
     const { store } = useContext(GlobalStoreContext);
     const districtArr = store?.representatives || [];
 
@@ -57,7 +57,7 @@ export default function DistrictDetail({expanded, onClick}){
         
             <div className={`flex flex-col justify-center items-center gap-5 overflow-y-auto ${expanded ? 'opacity-100 pt-5' : 'max-h-0 opacity-0'}`}>
                 <table className = 'w-full'>
-                    <thead className = 'text-left text-gray-400 ' ref={theadRef}>
+                    <thead className = 'text-left text-gray-400' ref={theadRef}>
                         <tr>
                             <th className = 'pl-5'>#</th>
                             <th>Representative</th>
@@ -68,7 +68,16 @@ export default function DistrictDetail({expanded, onClick}){
                     </thead>
                     <tbody>
                         {onPage.map(({districtNumber, name, party, racialEthnicGroup, voteMarginPercent, status}, index) => (
-                        <tr key = {districtNumber} ref={index === 0 ? rowRef : null} className = {`h-8 ${index%2==0? 'bg-gray-100':''} ${status == "Vacant" ? 'text-gray-400' : ''}`} >
+                        <tr key = {districtNumber} 
+                            ref={index === 0 ? rowRef : null} 
+                            onClick = {()=> onSelect(districtNumber)}
+                            className = {`
+                                h-8 cursor-pointer hover:text-gray-400
+                                ${index % 2 === 0 ? 'bg-gray-100' : ''} 
+                                ${status === "Vacant" ? 'text-gray-400' : ''} 
+                                ${String(districtNumber) === String(selectedDistrict) ? 'text-emerald-500 font-bold' : ''}
+                                `}
+                        >
                                 <td className = 'pl-5'>{districtNumber}</td>
                                 <td>{name ?? "Vacant"}</td>
                                 <td >
