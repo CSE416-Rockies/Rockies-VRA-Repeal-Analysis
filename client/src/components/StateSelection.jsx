@@ -5,6 +5,7 @@ import { useContext, useEffect, useState, useRef } from 'react';
 import GlobalStoreContext from '../store';
 import StateDropdown from './StateDropdown';
 import { getStateSummary, getRepresentatives } from '../api/api';
+import {STATE_OPTIONS} from "../utils/constants"
 
 export default function StateSelection({ onClose }){
     const location = useLocation();
@@ -54,8 +55,6 @@ export default function StateSelection({ onClose }){
         
     },[selectedState]);
 
-    const options = [{id: 'Delaware', label: 'Delaware'}, {id: 'Georgia',  label: 'Georgia'}]
-
     return(
 
         <div ref={ref} 
@@ -69,7 +68,7 @@ export default function StateSelection({ onClose }){
                     
                     {selectedState && (<span className = "font-bold">{selectedState}</span>)}
                 </span>
-                {(!selectedState || isGraph) && <StateDropdown options={options} onSelect={(state)=> setSelectedState(state)} />}
+                {(!selectedState || isGraph) && <StateDropdown options={STATE_OPTIONS} onSelect={(state)=> setSelectedState(state)} />}
                 {selectedState && !isGraph && <XCircleIcon className = 'cursor-pointer text-red-500 w-7 transition-transform duration-500 ease-in-out hover:scale-125'
                 onClick={backToMap}
                 />}

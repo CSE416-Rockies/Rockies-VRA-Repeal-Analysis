@@ -63,6 +63,10 @@ export const ENSEMBLE_VIEW_OPTIONS = [
   { value: "both", label: "Both" },
 ];
 
+export const STATE_OPTIONS = [
+    {id: 'Arkansas', label: 'Arkansas'}, 
+    {id: 'Georgia',  label: 'Georgia'}
+]
 
 export const US_BOUNDS = [
     [24.396308, -124.848974],
@@ -70,9 +74,10 @@ export const US_BOUNDS = [
 ]
 
 export const STATE_BOUNDS = {
-    Delaware: [
-        [38.451, -75.789],
-        [39.839, -75.048],
+    Arkansas: [
+        [33.0, -94.6],  
+        [36.5, -89.6], 
+    
     ],
     Georgia: [
         [30.357, -85.605],

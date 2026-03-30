@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON, } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useRef } from "react";
-import RockiesLogo from '../assets/rockies-logo2.svg?react';
+
+import {US_BOUNDS, STATE_BOUNDS} from "../utils/constants";
 
 import GlobalStoreContext from "../store";
 
@@ -12,26 +13,10 @@ export default function Map() {
   const [stateLines, setStateLines] = useState(null);
   const navigate = useNavigate();
   const mapRef = useRef(null);
-
-  const usBounds = [
-    [24.396308, -124.848974],
-    [49.384358, -66.885444]   
-  ];
-
-  const stateBounds = {
-    Delaware: [
-      [38.451, -75.789],
-      [39.839, -75.048],
-    ],
-    Georgia: [
-      [30.357, -85.605],
-      [35.000, -80.751],
-    ],
-  };
   
   /* US State Lines Style */
   const lineStyle = (feature) => {
-    if (feature.properties.NAME === "Delaware" || feature.properties.NAME === "Georgia") {
+    if (feature.properties.NAME === "Arkansas" || feature.properties.NAME === "Georgia") {
       return {
         fillColor: "#d8d8d8", 
         color: "#6b7280",     
@@ -55,7 +40,7 @@ export default function Map() {
   }
 
   const onEachState = (feature, layer) => {
-    if (feature.properties.NAME === "Delaware" || feature.properties.NAME === "Georgia") {
+    if (feature.properties.NAME === "Arkansas" || feature.properties.NAME === "Georgia") {
       layer.bindTooltip(
         `<div class="px-3 py-2 rounded-xl bg-white shadow-lg text-sm font-medium text-gray-800">
           <strong>${feature.properties.NAME}</strong><br/>
@@ -76,7 +61,7 @@ export default function Map() {
         },
         click: (e) => {
           const stateName = feature.properties.NAME;
-          const bounds = stateBounds[stateName];
+          const bounds = STATE_BOUNDS[stateName];
           setSelectedState(stateName);
 
           e.target.setStyle({
@@ -104,7 +89,7 @@ export default function Map() {
   useEffect( () => {
       const selectedState = store.selectedState;
       if(!selectedState) return;
-      const bounds = stateBounds[selectedState]
+      const bounds = STATE_BOUNDS[selectedState]
       if(!bounds) return;
       navigate(`/map/${selectedState}`);
   }, [store.selectedState]);
@@ -119,7 +104,7 @@ export default function Map() {
   return (
     <div className = 'relative h-screen w-screen'>
       <MapContainer
-        bounds={usBounds}
+        bounds={US_BOUNDS}
         className="fixed inset-0 h-screen w-full"
         whenCreated={(mapInstance) => {
           mapRef.current = mapInstance;
