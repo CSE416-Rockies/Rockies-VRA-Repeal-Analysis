@@ -1,6 +1,5 @@
 package com.rockies.vra_analysis.repositories;
 
-import com.rockies.vra_analysis.models.BoxWhiskerPlotsME;
 import com.rockies.vra_analysis.models.EnsembleHistogramME;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
