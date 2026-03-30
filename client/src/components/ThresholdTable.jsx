@@ -17,7 +17,7 @@ export default function ThresholdTable(){
                     { label: 'Satisfies rough proportionality', raceBlind: '%', vra: '%' , subText: "≥ number of effective districts proportional to demographics",},
                     { label: 'Satisfies both conditions above', raceBlind: '%', vra: '%' , subText: "", },
                 ].map(({label, raceBlind, vra, subText}, index)=> (
-                    <tr className = {`${index % 2 === 0 ? 'bg-gray-100' : ''}`}> 
+                    <tr key = {index} className = {`${index % 2 === 0 ? 'bg-gray-100' : ''}`}> 
                         <td className = 'relative pl-4 py-2 group cursor-pointer'> 
                             {label}
                             {subText && <Tooltip desc = {subText} plain = {true}/>}

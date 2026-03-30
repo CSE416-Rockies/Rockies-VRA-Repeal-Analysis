@@ -8,8 +8,7 @@ import StateSelection from './components/StateSelection.jsx';
 import MapView from './components/MapView.jsx';
 import ScatterPlot from './components/ScatterPlot.jsx';
 import EIAnalysis from './components/EIAnalysis.jsx';
-import BoxWhisker from './components/BoxWhisker.jsx';
-import EnsembleSplits from './components/EnsembleSplits.jsx';
+import Ensemble from './components/Ensemble.jsx';
 import MinorityEffect from './components/MinorityEffect.jsx';
 
 
@@ -29,14 +28,13 @@ function App() {
         )}
         {/* {showStateSelection && <StateSelection/>} */}
         <StateSelection/>
-        <div className = 'flex-1'>
+        <div className = 'overflow-hidden'>
           <Routes>
             <Route path = "/" element = {<Map/>}></Route>
             <Route path = "/map/:name" element = {<MapView />}></Route> 
             <Route path = "/scatterplot" element = {<ScatterPlot/>}></Route>
             <Route path = "/eiAnalysis" element = {<EIAnalysis/>}></Route>
-            <Route path = "/ensembleSplits" element={<EnsembleSplits />}></Route>
-            <Route path = "/boxWhisker" element = {<BoxWhisker/>}></Route> 
+            <Route path = "/ensembles" element = {<Ensemble/>}></Route> 
             <Route path = "/minorityEffect" element = {<MinorityEffect/>}></Route> 
           </Routes>
         </div>

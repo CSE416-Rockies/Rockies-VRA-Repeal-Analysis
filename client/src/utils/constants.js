@@ -57,7 +57,17 @@ export const BOX_WHISKER_ME_LEGEND = [
   { label: "Enacted", color: "#5D3FD3", shape: "circle" },
 ];
 
+export const ENSEMBLE_VIEW_OPTIONS = [
+  { value: "raceBlind", label: "Race-Blind" },
+  { value: "vra", label: "VRA" },
+  { value: "both", label: "Both" },
+];
 
+
+export const US_BOUNDS = [
+    [24.396308, -124.848974],
+    [49.384358, -66.885444]  
+]
 
 export const STATE_BOUNDS = {
     Delaware: [

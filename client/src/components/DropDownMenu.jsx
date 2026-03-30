@@ -5,7 +5,7 @@ import Tooltip from './Tooltip';
 import GlobalStoreContext from '../store';
 
 
-export default function DropDownMenu({options, onSelect, icon: Icon, text, toolTipDesc}){
+export default function DropDownMenu({options, onSelect, icon: Icon, minority=false, toolTipDesc}){
         const { store } = useContext(GlobalStoreContext);
         const [open, setOpen] = useState(false);
         const [selected, setSelected] = useState(null);
@@ -23,14 +23,13 @@ export default function DropDownMenu({options, onSelect, icon: Icon, text, toolT
         }
 
         useEffect(() =>{
-                if(isMapView) setSelected(store.minorityGroup);
-                else if(text=="Set Ensemble") setSelected(store.ensemble);
+                if (minority) setSelected(store.minorityGroup);
                 else setSelected(store.racialGroup);
         },[isMapView, setSelected]);
 
 
-        const defaultText = (isMapView)?( store.minorityGroup ? store.minorityGroup : "Select minority group" ): "Select racial group";
-        const displayText = selected || text || defaultText;
+        const defaultText = minority ? "Select minority group" : "Select racial group";
+        const displayText = selected || defaultText;
 
         return(
         

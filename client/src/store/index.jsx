@@ -72,7 +72,7 @@ export function GlobalStoreContextProvider(props) {
         mapMode: 'district',
         minorityGroup: null,
         racialGroup: null,
-        ensemble: null,
+        ensemble: 'raceBlind',
         boxWhisker: null,
         representatives: [],
     });

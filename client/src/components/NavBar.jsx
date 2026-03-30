@@ -24,8 +24,7 @@ export default function NavBar(){
         {to: `/map/${selectedStateName}`, id: "map-nav", icon: MapIcon, label: "Map"},
         {to: "/scatterplot", id: "scatter-nav", icon: ScatterIcon, label: "Scatterplot"},
         {to: "/eiAnalysis", id: "boxplot-nav", icon: EIAnalysisIcon, label: "EI Analysis"},
-        {to: "/ensembleSplits", id: "ensemble-nav", icon: BarIcon, label: "Ensemble Splits"},
-        {to: "/boxWhisker", id: "boxWhisker-nav", icon: BoxPlotIcon, label: "Box & Whisker Data"},
+        {to: "/ensembles", id: "ensembles-nav", icon: BoxPlotIcon, label: "Ensemble Visualizations"},
         {to: "/minorityEffect", id: "minority-nav", icon: MinorityIcon, label: "Minority Effectiveness"},
     ]
 

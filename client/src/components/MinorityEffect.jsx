@@ -5,7 +5,7 @@ import { UserGroupIcon } from "@heroicons/react/24/solid";
 import DropDownMenu from "./DropDownMenu";
 import ThresholdTable from "./ThresholdTable";
 import MiniGraphView from "./MiniGraphView";
-
+import { SelectionPlaceholder } from "./selectionPlaceholder";
 
 import GlobalStoreContext from '../store';
 import { getBoxWhiskersME, getEnsembleHistME } from "../api/api";
@@ -14,8 +14,8 @@ import { drawBoxWhiskerME } from "../utils/drawBoxWhiskerME";
 
 export default function MinorityEffect(){
 
-    const { store, setRacialGroup } = useContext(GlobalStoreContext);
-    const racialGroup = store.racialGroup;
+    const { store, setMinorityGroup } = useContext(GlobalStoreContext);
+    const racialGroup = store.minorityGroup;
     const selectedState = store?.selectedState || "";
 
     const [boxData, setBoxData] = useState(null);
@@ -42,26 +42,38 @@ export default function MinorityEffect(){
             <div className = 'flex flex-col gap-10 justify-center w-full h-full py-5 px-5 bg-gray-200'
                 style={{ paddingLeft: 'calc(var(--navbar-width) + 1.25rem)' }}
             >    
-                <DropDownMenu  options = {MINORITIES} onSelect = {setRacialGroup} icon={UserGroupIcon} toolTipDesc=""/>
-                <div className = 'flex h-full justify-center items-center gap-5'>
-                    <div className = "flex flex-col flex-1 h-full justify-center items-center gap-5">
-                        <MiniGraphView 
-                            title = "Minority Effectiveness Distribution by Ensemble Type"
-                            data = {boxData} 
-                            racialGroup = {racialGroup} 
-                            margin = {margin} 
-                            drawFunc = {drawBoxWhiskerME}
-                            legendItems = {BOX_WHISKER_ME_LEGEND}
-                        />
-                        <MiniGraphView 
-                            title = {`${racialGroup} Effective District Distribution`} 
-                            data = {ensembleData} 
-                            racialGroup = {racialGroup}
-                            margin = {margin} 
-                            drawFunc = {drawEnsembleHistME}
-                            legendItems = {ENSEMBLE_LEGEND}
-                        />
+                <DropDownMenu  options = {MINORITIES} onSelect = {setMinorityGroup} icon={UserGroupIcon} toolTipDesc="" minority = {true}/>
+                
+                { (!racialGroup) ?
+                    <div className = 'w-full h-full rounded-xl bg-white'>
+                        <SelectionPlaceholder 
+                            message={`Please select a ${!racialGroup ? 'minority group' : ''}`} 
+                        /> 
                     </div>
+                    
+                    
+                    : 
+
+                    <div className = 'flex h-full justify-center items-center gap-5'>
+                        <div className = "flex flex-col flex-1 h-full justify-center items-center gap-5">
+                            <MiniGraphView 
+                                title = "Minority Effectiveness Distribution by Ensemble Type"
+                                data = {boxData} 
+                                racialGroup = {racialGroup} 
+                                margin = {margin} 
+                                drawFunc = {drawBoxWhiskerME}
+                                legendItems = {BOX_WHISKER_ME_LEGEND}
+                            />
+                            <MiniGraphView 
+                                title = {`${racialGroup} Effective District Distribution`} 
+                                data = {ensembleData} 
+                                racialGroup = {racialGroup}
+                                margin = {margin} 
+                                drawFunc = {drawEnsembleHistME}
+                                legendItems = {ENSEMBLE_LEGEND}
+                            />
+                        </div>
+                    
                     
 
                     <div className = 'flex flex-col p-5 h-full justify-center items-center gap-5 bg-white rounded-xl'
@@ -80,6 +92,10 @@ export default function MinorityEffect(){
                     </div>
                 </div>
                
+                }
+                
+                
+                
                 
             </div>
         </div> 

@@ -19,7 +19,6 @@ export function drawEnsembleHistME({givenSVG, data, margin, racialGroup}){
     const raceBlindEntries = Object.entries(data.raceBlind).map(([k, v]) => ({ x: +k, y: v[racialGroup] ?? 0 }));
     const vraEntries       = Object.entries(data.vra      ).map(([k, v]) => ({ x: +k, y: v[racialGroup] ?? 0 }));
 
-
     /* ------------------------------------------------------------------- Axes */
     const allX     = [...raceBlindEntries, ...vraEntries].map(d => d.x);
     const maxCount = d3.max([...raceBlindEntries, ...vraEntries], d => d.y);

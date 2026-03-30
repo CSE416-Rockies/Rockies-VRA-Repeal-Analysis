@@ -9,7 +9,7 @@ export default function GraphView({title, subtitle, legendTitle, legendItems, sv
                 {menus}
                 <div className = 'flex flex-col w-full h-full px-15 py-10 justify-center items-center gap-5 bg-white rounded-xl'>
                     { (children) ? children :
-                    <>
+                    <div className = 'flex flex-col justify-center items-center w-full h-full'>
                         <div className = 'flex flex-col gap-2 justify-center items-center'>
                             <div className = 'text-3xl capitalize'>{title}</div>
                             <div className = 'text-xl capitalize text-gray-500'>{subtitle}</div>
@@ -18,7 +18,7 @@ export default function GraphView({title, subtitle, legendTitle, legendItems, sv
                             <svg className = 'flex-1' width = "100%" height = "100%" ref = {svgRef} />
                             {legendItems.length > 0 && <Legend title={legendTitle} items={legendItems} />}
                         </div>
-                    </>
+                    </div>
                     }
                 </div>
             </div>

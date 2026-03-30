@@ -64,7 +64,6 @@ export function drawBoxWhiskerME({givenSVG, data, margin, racialGroup}){
     
     groups.forEach((g,i) => {
         const groupX = xOuter(g.race);
-
         const isHighlighted = (g.race === racialGroup);
 
         // boxes

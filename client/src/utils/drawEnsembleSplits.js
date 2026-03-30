@@ -3,28 +3,35 @@ import { ME_COLORS } from "./constants";
 import { drawAxes } from "./drawAxes";
 import { drawBars } from "./drawBars";
 
-export default function drawEnsembleSplits({ givenSVG, data, margin, candView, racialGroup}){
+export default function drawEnsembleSplits({ givenSVG, data, margin, ensemble, racialGroup}){
+    if (!ensemble) return;
     // create svg element
-        var svg = d3.select(givenSVG).append("g")
-            .attr("transform", `translate(${margin.left},${margin.top})`);
-              
+    var svg = d3.select(givenSVG).append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
             
         /* ------------------------------------------------------------------------ Dimensions */
         const width = givenSVG.clientWidth - margin.left - margin.right;
         const height = givenSVG.clientHeight - margin.top - margin.bottom;
 
-        const allEntries = candView === "both" ? [...Object.entries(data.raceBlind), ...Object.entries(data.vra)]
-        : Object.entries(candView === "raceBlind" ? data.raceBlind : data.vra);
+        /* ------------------------------------------------------------------------ Data */
+        const allEntries = ensemble === "both"
+        ? [{ key: "raceBlind", label: "Race-Blind", series: data.raceBlind }, { key: "vra", label: "VRA", series: data.vra }]
+        : [{ key: ensemble,    label: ensemble === "raceBlind" ? "Race-Blind" : "VRA", series: ensemble === "raceBlind" ? data.raceBlind : data.vra }];
 
-        const allSeats = Array.from(new Set(allEntries.map(([k]) => +k))).sort((a, b) => a - b);
-
+        const allSeats = Array.from(new Set(
+            allEntries.flatMap(entry => Object.keys(entry.series || {}).map(Number))
+        )).sort((a, b) => a - b);
         const totalDistricts = data.totalDistricts;
 
         const getCount = (v) =>{
             if(!racialGroup) return 0;
             return v[racialGroup];
         }
-        const maxCount = d3.max(allEntries, ([, v]) => getCount(v));
+
+        const toEntries = (dataset) => Object.entries(dataset).map(([k, v]) => ({ x: +k, y: getCount(v) }));
+        const maxCount = d3.max(allEntries.flatMap(entry => 
+            Object.values(entry.series || {}).map(getCount)
+        ));
 
 
         /* ------------------------------------------------------------------------ Axes */
@@ -42,48 +49,28 @@ export default function drawEnsembleSplits({ givenSVG, data, margin, candView, r
             xLabel: "Republican / Democratic Split", 
             yLabel: "Count",
             xConfig: d3.axisBottom(x).tickFormat(d=>`${d}R/${totalDistricts - d}D`),
-            yConfig: d3.axisLeft(y).ticks(4)
+            yConfig: d3.axisLeft(y).ticks(4),
+            small: true
         });
 
 
         /* ------------------------------------------------------------------------ Bars */
-        const toEntries = (dataset) => Object.entries(dataset).map(([k, v]) => ({ x: +k, y: getCount(v) }));
         const tooltipHTML = (label) => (d) => 
             `<strong>${label}</strong><br/>
             Split: ${d.x}R / ${totalDistricts - d.x}D<br/>
             Count: ${d.y.toLocaleString()}`;
 
-        if (candView === "both") {
-            const half = x.bandwidth() / 2;
-            drawBars({
-                svg, x, y, height, 
-                tooltipHTML: tooltipHTML("Race-Blind"),
-                entries: toEntries(data.raceBlind),
-                barWidth: half, 
-                color: ME_COLORS["raceBlind"],
-                xOffset: 0,
-                label: "Race-Blind",
-            } );
+        const half = x.bandwidth() / 2;
 
+        allEntries.forEach(({ key, label, series }, i) => {
             drawBars({
-                svg, x, y, height, 
-                tooltipHTML: tooltipHTML("VRA"),
-                entries: toEntries(data.vra),
-                barWidth: half, 
-                color: ME_COLORS["vra"],
-                xOffset: half,
-                label: "VRA"
-            } )
-
-        } else {
-            const dataset = candView === "raceBlind" ? data.raceBlind : data.vra;
-            const label = candView === "raceBlind" ? "Race-Blind" : "VRA";
-            drawBars({
-                svg, x, y, height, 
+                svg, x, y, height,
                 tooltipHTML: tooltipHTML(label),
-                entries: toEntries(dataset),
-                color: ME_COLORS[candView],
-                label: label
-            } );
-        }
+                entries: toEntries(series),
+                barWidth: ensemble === "both" ? half : undefined,
+                color: ME_COLORS[key],
+                xOffset: ensemble === "both" ? i * half : 0,
+                label,
+            });
+    });
 }
