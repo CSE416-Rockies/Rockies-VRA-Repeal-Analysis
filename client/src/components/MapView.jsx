@@ -170,9 +170,6 @@ export default function MapView(){
             let start = i === 0 ? min : bins[i - 1];
             let end = bin;
 
-            start = start*100;
-            end = end*100;
-
             return {
                 label: `${start.toFixed(1)}% - ${end.toFixed(1)}%`,
                 color: legend_colors[i]
