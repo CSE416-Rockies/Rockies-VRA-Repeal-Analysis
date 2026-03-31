@@ -170,10 +170,8 @@ export default function MapView(){
             let start = i === 0 ? min : bins[i - 1];
             let end = bin;
 
-            if(store.selectedState == 'Georgia'){
-                start = start*100;
-                end = end*100;
-            }
+            start = start*100;
+            end = end*100;
 
             return {
                 label: `${start.toFixed(1)}% - ${end.toFixed(1)}%`,
