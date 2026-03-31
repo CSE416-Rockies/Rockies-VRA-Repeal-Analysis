@@ -19,6 +19,13 @@ export const lineStyle = () => ({
     color: "#6b6b6b",
 });
 
+export const highlightStateStyle = {
+    fillColor: "#D3E6DC", 
+    color: "#10B981",     
+    weight: 2,
+    fillOpacity: 1,
+  }
+
 export const highlightStyle = {
     weight: 4,
     fillOpacity: .8,
