@@ -8,11 +8,21 @@ export function usePrecinctData(name, mapMode){
     useEffect(() => {
         if(mapMode === 'precinct' && !precinctData) {
             getPrecinctMap(name)                     //(put path of precinct geojsons)
-                .then((res) => res.data)
+                .then((res) => {
+                    console.log("RAW RES:", res);
+                    return res.data
+                })
                 .then(topology => {
+                    const parsed = typeof topology === "string"
+                        ? JSON.parse(topology)
+                        : topology;
+
+                    console.log(parsed)
+                    const objectKey = Object.keys(parsed.objects)[0];
+                    console.log(objectKey)
                     const geojson = feature(
-                        topology,
-                        topology.objects.data       // name of object inside topojson
+                        parsed,
+                        parsed.objects["data"]       // name of object inside topojson
                     );
                     setPrecinctData(geojson);
                 })

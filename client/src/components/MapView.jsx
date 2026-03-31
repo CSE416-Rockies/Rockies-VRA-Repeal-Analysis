@@ -17,15 +17,14 @@ import { usePrecinctData } from "../hooks/usePrecinctData.js";
 import { normalizeParty, MAP_PARTY_COLORS, STATE_BOUNDS } from "../utils/constants.js";
 import { choroplethStyle, highlightStyle, lineStyle } from "../utils/mapStyles.js";
 
+async function loadLegend(state){
+    const res = await fetch(
+    `http://localhost:8080/${state}_legend.json`
+    );
+    return await res.json();
+}
 
-const legend_items = [
-    {label: "0-5%", color: "#ECFDF5"},
-    {label: "5-10%", color: "#D1FAE5"},
-    {label: "10-25%", color: "#6EE7B7"},
-    {label: "25-50%", color: "#10B981"},
-    {label: "50-75%", color: "#047857"},
-    {label: "75-100%", color: "#063E2F"},
-]
+const legend_colors = ["#ECFDF5", "#D1FAE5", "#6EE7B7", "#10B981", "#047857", "#063E2F"]
 
 export default function MapView(){
     const { store } = useContext(GlobalStoreContext); 
@@ -33,6 +32,7 @@ export default function MapView(){
 
     const [expanded, setExpanded] = useState(true);
     const [selectedDistrict, setSelectedDistrict] = useState(null);
+    const [legend_items, setLegend_items] = useState([]); 
 
     const hoveredLayerRef = useRef(null);
     const selectedDistrictRef = useRef(null);
@@ -156,6 +156,34 @@ export default function MapView(){
         });
     }, [selectedDistrict]);
 
+    useEffect(() => {
+        // console.log("fetching legend");
+        async function fetchLegend() {
+            const data = await loadLegend(selectedState);
+            console.log(data);
+            const race = store.minorityGroup;
+            const bins = data[race].bins;
+
+            const min = data[race].min;
+
+            const items = bins.map((bin, i) => {
+            const start = i === 0 ? min*100 : bins[i - 1]*100;
+            const end = bin*100;
+
+            return {
+                label: `${start.toFixed(1)}% - ${end.toFixed(1)}%`,
+                color: legend_colors[i]
+            };
+            });
+
+            setLegend_items(items);
+        }
+
+        if (selectedState && store.minorityGroup) {
+            fetchLegend();
+        }
+    }, [selectedState, store.minorityGroup]);
+
     return(
         <>
             <StateSelection onClose={zoomOut} />
@@ -187,7 +215,7 @@ export default function MapView(){
                     {store.mapMode === 'precinct' && precinctData && (<GeoJSON key={name} data={precinctData} style={getStyle} onEachFeature={onEachState} />)}
 
                 </MapContainer>
-                {store.mapMode == "precinct" && <Heatmap_Legend title="Population Percentage" items = {legend_items} />}
+                {store.mapMode == "precinct" && store.minorityGroup && <Heatmap_Legend title="Population Percentage" items = {legend_items} />}
                 
             </div>
         </>
