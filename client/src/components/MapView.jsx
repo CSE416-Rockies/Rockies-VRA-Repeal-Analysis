@@ -167,8 +167,13 @@ export default function MapView(){
             const min = data[race].min;
 
             const items = bins.map((bin, i) => {
-            const start = i === 0 ? min*100 : bins[i - 1]*100;
-            const end = bin*100;
+            let start = i === 0 ? min : bins[i - 1];
+            let end = bin;
+
+            if(store.selectedState == 'Georgia'){
+                start = start*100;
+                end = end*100;
+            }
 
             return {
                 label: `${start.toFixed(1)}% - ${end.toFixed(1)}%`,
