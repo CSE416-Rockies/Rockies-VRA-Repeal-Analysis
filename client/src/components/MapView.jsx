@@ -36,7 +36,9 @@ export default function MapView(){
 
     const hoveredLayerRef = useRef(null);
     const selectedDistrictRef = useRef(null);
-    const geoJsonRef = useRef(null);
+    const districtRef = useRef(null);
+    const minorityGroupRef = useRef(store.minorityGroup);
+
 
     const selectedState = store?.selectedState || "";
     const districtArr = store?.representatives || [];
@@ -53,7 +55,7 @@ export default function MapView(){
     const isLoading =   (store.mapMode === 'district' && !districtPlan) || 
                         (store.mapMode === 'precinct' && !precinctData);
 
-    const getStyle = (feature) => store.minorityGroup ? choroplethStyle(feature, store.minorityGroup) : lineStyle(feature);
+    const getStyle = (feature) => minorityGroupRef.current ? choroplethStyle(feature, minorityGroupRef.current) : lineStyle(feature);
     const selectDistrict = (val) => {
         selectedDistrictRef.current = val ? String(val) : null;
         setSelectedDistrict(val);
@@ -115,7 +117,7 @@ export default function MapView(){
                 mouseover: (e) => {
                     if (hoveredLayerRef.current && hoveredLayerRef.current !== e.target) {
                         hoveredLayerRef.current.closeTooltip();
-                        if (store.minorityGroup) {
+                        if (minorityGroupRef.current) {
                             hoveredLayerRef.current.setStyle(getStyle(e.target.feature));
                         } else {
                             hoveredLayerRef.current.setStyle(lineStyle(hoveredLayerRef.current.feature));
@@ -135,10 +137,10 @@ export default function MapView(){
                 mouseout: (e) => {
                     hoveredLayerRef.current = null;
                     e.target.closeTooltip();
-                    if (store.minorityGroup) {
+                    if (minorityGroupRef.current) {
                         e.target.setStyle(getStyle(e.target.feature));
                     } else {
-                        e.target.setStyle(lineStyle(layer.feature));
+                        e.target.setStyle(lineStyle(e.target.feature));
                     }
                 },
             });
@@ -147,14 +149,18 @@ export default function MapView(){
   
 
     useEffect(() => {
-        if (!geoJsonRef.current) return;
-        geoJsonRef.current.eachLayer((layer) => {
+        if (!districtRef.current) return;
+        districtRef.current.eachLayer((layer) => {
             layer.setStyle(districtStyle(layer.feature));
             if (String(layer.feature.properties.DISTRICT).replace(/\D/g, "") === selectedDistrictRef.current) {
                 layer.bringToFront();
             }
         });
     }, [selectedDistrict]);
+
+    useEffect(() => {
+        minorityGroupRef.current = store.minorityGroup;
+    }, [store.minorityGroup]);
 
     useEffect(() => {
         // console.log("fetching legend");
@@ -169,6 +175,11 @@ export default function MapView(){
             const items = bins.map((bin, i) => {
             let start = i === 0 ? min : bins[i - 1];
             let end = bin;
+
+            if(store.selectedState == 'Georgia'){
+                start = start*100;
+                end = end*100;
+            }
 
             return {
                 label: `${start.toFixed(1)}% - ${end.toFixed(1)}%`,
@@ -211,7 +222,7 @@ export default function MapView(){
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>'
                     />
 
-                    {store.mapMode === 'district' && districtPlan && (<GeoJSON ref={geoJsonRef} key={`districts-${selectedState}-${districtArr.length}`} data={districtPlan} style={districtStyle} onEachFeature={onEachState} />)}
+                    {store.mapMode === 'district' && districtPlan && (<GeoJSON ref={districtRef} key={`districts-${selectedState}-${districtArr.length}`} data={districtPlan} style={districtStyle} onEachFeature={onEachState} />)}
                     {store.mapMode === 'precinct' && precinctData && (<GeoJSON key={name} data={precinctData} style={getStyle} onEachFeature={onEachState} />)}
 
                 </MapContainer>
