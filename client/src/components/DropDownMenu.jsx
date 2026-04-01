@@ -3,7 +3,7 @@ import {ChevronDownIcon, ChevronUpIcon} from '@heroicons/react/24/solid'
 import {useLocation} from 'react-router-dom';
 import Tooltip from './Tooltip';
 import GlobalStoreContext from '../store';
-
+import { getRaceLabel } from '../utils/helpers';
 
 export default function DropDownMenu({options, onSelect, icon: Icon, minority=false, toolTipDesc}){
         const { store } = useContext(GlobalStoreContext);
@@ -39,7 +39,7 @@ export default function DropDownMenu({options, onSelect, icon: Icon, minority=fa
                         <button className = 'flex items-center justify-between px-5 capitalize text-lg hover:text-gray-400 transition-all duration-100' onClick = {()=>setOpen(!open)}>
                                 <div className = 'flex gap-2 items-center'>
                                         { Icon && <Icon className = 'w-7'/> }
-                                        { selected ? selected : displayText }
+                                        { selected ? getRaceLabel(selected) : displayText }
                                 </div>
                                 {chevronIcon}
                         </button>
@@ -47,8 +47,8 @@ export default function DropDownMenu({options, onSelect, icon: Icon, minority=fa
                         { open && 
                         <ul className = 'absolute top-full bg-white cursor-pointer rounded-xl shadow-md w-full py-2 mt-1'>
                         { options.map((option)=> (
-                                <div key = {option} className = 'px-5 hover:bg-gray-100 transition-all duration-100 ease-in'>
-                                        <li className = 'capitalize p-2' onClick = {()=>selectFunc(option)}> {option} </li>
+                                <div key = {option.value} className = 'px-5 hover:bg-gray-100 transition-all duration-100 ease-in'>
+                                        <li className = 'capitalize p-2' onClick = {()=>selectFunc(option.value)}> {option.label} </li>
                                 </div> 
                         ))}
                         </ul>
