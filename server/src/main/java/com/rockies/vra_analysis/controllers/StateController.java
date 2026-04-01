@@ -1,35 +1,17 @@
 package com.rockies.vra_analysis.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rockies.vra_analysis.models.EnsembleSummary;
-import com.rockies.vra_analysis.models.Representative;
-import com.rockies.vra_analysis.models.StateDetail;
-import com.rockies.vra_analysis.models.BoxWhiskerPlots;
-import com.rockies.vra_analysis.models.BoxWhiskerPlotsME;
-import com.rockies.vra_analysis.models.EnsembleSplits;
-import com.rockies.vra_analysis.models.Gingles;
-import com.rockies.vra_analysis.models.EIAnalysis;
-import com.rockies.vra_analysis.models.EnsembleHistogramME;
-
-import com.rockies.vra_analysis.repositories.EnsembleSummaryRepository;
-import com.rockies.vra_analysis.repositories.RepresentativeRepository;
-import com.rockies.vra_analysis.repositories.StateDetailRepository;
-import com.rockies.vra_analysis.repositories.EnsembleSplitsRepository;
-import com.rockies.vra_analysis.repositories.BoxWhiskerPlotsRepository;
-import com.rockies.vra_analysis.repositories.BoxWhiskerPlotsMERepository;
-import com.rockies.vra_analysis.repositories.EIAnalysisRepository;
-import com.rockies.vra_analysis.repositories.GinglesRepository;
-import com.rockies.vra_analysis.repositories.EnsembleHistogramMERepository;
-
+import com.rockies.vra_analysis.service.StateService;
+import com.rockies.vra_analysis.models.*;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.web.bind.annotation.*;
 
 
@@ -40,85 +22,52 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class StateController {
 
     @Autowired
-    private EnsembleSummaryRepository ensembleRepo;
-
-    @Autowired
-    private StateDetailRepository stateDetailRepo;
-
-    @Autowired EnsembleSplitsRepository splitsRepo;
-
-    @Autowired
-    private BoxWhiskerPlotsRepository boxRepo;
-
-    @Autowired
-    private GinglesRepository ginglesRepo;
-
-    @Autowired
-    private EIAnalysisRepository eiRepo;
-
-    @Autowired
-    private BoxWhiskerPlotsMERepository boxMERepo;
-
-    @Autowired
-    private EnsembleHistogramMERepository ensembleHistMERepo;
-    
-
-    @Autowired
-    private RepresentativeRepository repository;
+    private StateService stateService;
 
     @GetMapping("/ensemble")
     public EnsembleSummary getEnsembleSummary(@PathVariable String stateName) {
-        EnsembleSummary result = ensembleRepo.findByState(stateName);
-        // System.out.println("Looking for: " + stateName + " → Found: " + result);
-        return result;
+        return stateService.getEnsembleSummary(stateName);
     }
 
     @GetMapping("/detail")
     public StateDetail getStateDetail(@PathVariable String stateName) {
-        StateDetail result = stateDetailRepo.findByState(stateName);
-        // System.out.println("VoterDist: " + result.getVoterDistribution().getDemocratPercentage());
-        return result;
+        return stateService.getStateDetail(stateName);
     }
 
     @GetMapping("/ensembleSplits")
     public EnsembleSplits getEnsembleSplits(@PathVariable String stateName) {
-        EnsembleSplits result = splitsRepo.findByState(stateName);
-        return result;
+        return stateService.getEnsembleSplits(stateName);
     }
 
     @GetMapping("/boxWhiskers")
     public BoxWhiskerPlots getBoxWhiskers(@PathVariable String stateName) {
-        BoxWhiskerPlots result = boxRepo.findByState(stateName);
-        return result;
+        System.out.println("requested boxwhisker");
+        return stateService.getBoxWhiskers(stateName);
     }
 
     @GetMapping("/representatives")
-    public List<Representative> getByState(@PathVariable String stateName) {
-        List<Representative> result = repository.findByState(stateName);
-        return result;
-    }   
+    public List<Representative> getRepresentatives(@PathVariable String stateName) {
+        return stateService.getRepresentatives(stateName);
+    }
 
     @GetMapping("/gingles")
     public Gingles getGingles(@PathVariable String stateName) {
-        Gingles result = ginglesRepo.findByState(stateName);
-        return result;
+        System.out.println("requested gingels");
+        return stateService.getGingles(stateName);
     }
 
     @GetMapping("/eiAnalysis")
     public EIAnalysis getEIAnalysis(@PathVariable String stateName) {
-        EIAnalysis result = eiRepo.findByState(stateName);
-        return result;
+        return stateService.getEIAnalysis(stateName);
     }
 
     @GetMapping("/boxWhiskersME")
-    public BoxWhiskerPlotsME getBoxWhiskerME(@PathVariable String stateName) {
-        BoxWhiskerPlotsME result = boxMERepo.findByState(stateName);
-        return result;
+    public BoxWhiskerPlotsME getBoxWhiskersME(@PathVariable String stateName) {
+        return stateService.getBoxWhiskersME(stateName);
     }
 
     @GetMapping("/ensembleHistogramME")
-    public EnsembleHistogramME getEnsembleHistME(@PathVariable String stateName) {
-        EnsembleHistogramME result = ensembleHistMERepo.findByState(stateName);
-        return result;
+    public EnsembleHistogramME getEnsembleHistogramME(@PathVariable String stateName) {
+        return stateService.getEnsembleHistogramME(stateName);
     }
 }

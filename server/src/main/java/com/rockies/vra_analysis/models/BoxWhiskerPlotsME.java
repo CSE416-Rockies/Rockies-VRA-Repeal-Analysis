@@ -31,7 +31,6 @@ public class BoxWhiskerPlotsME {
         private double median;
         private double q3;
         private double max;
-        private double enacted;
 
         public BoxStats() {}
 
@@ -40,7 +39,6 @@ public class BoxWhiskerPlotsME {
         public double getMedian() { return median; }
         public double getQ3() { return q3; }
         public double getMax() { return max; }
-        public double getEnacted() { return enacted; }
     }
 
     public BoxWhiskerPlotsME(){}

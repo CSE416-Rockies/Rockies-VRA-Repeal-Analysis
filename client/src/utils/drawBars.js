@@ -19,7 +19,7 @@ export function drawBars({svg, height, x, y, entries, color, xOffset = 0, barWid
         .attr("x", d => x(d.x) + xOffset)
         .attr("y", d => y(d.y))
         .attr("width", barWidth)
-        .attr("height", d => height - y(d.y))
+        .attr("height", d => Math.max(0, height - y(d.y)))
         .attr("fill", color)
         .attr("stroke", "#000")
         .attr("stroke-width", 2)

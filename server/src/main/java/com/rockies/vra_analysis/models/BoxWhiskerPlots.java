@@ -46,6 +46,7 @@ public class BoxWhiskerPlots {
         return state;
     }
 
+    public String getId() { return id; }
     public Map<String, List<EnsembleDetail>> getRaceBlind() { return raceBlind; }
     public Map<String, List<EnsembleDetail>> getVra() { return vra; }
 }
