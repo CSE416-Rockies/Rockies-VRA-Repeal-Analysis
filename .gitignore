@@ -3,3 +3,5 @@ venv/
 .DS_Store
 *.zip
 .gitignore
+preprocessing/output/Delaware/Delaware_precincts.geojson
+preprocessing/output/Georgia/Georgia_precincts.geojson
