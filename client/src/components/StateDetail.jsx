@@ -38,7 +38,7 @@ export default function StateDetail({expanded, onClick}){
                 setRaceArr([
                     { race: "White", popNumber: data.racialPopulation.whitePopulation, percent: data.racialPopulation.whitePercentage },
                     { race: "Black", popNumber: data.racialPopulation.blackPopulation, percent: data.racialPopulation.blackPercentage },
-                    { race: "Latino", popNumber: data.racialPopulation.latinoPopulation, percent: data.racialPopulation.latinoPercentage },
+                    { race: "Hispanic/Latino", popNumber: data.racialPopulation.latinoPopulation, percent: data.racialPopulation.latinoPercentage },
                     { race: "Other", popNumber: data.racialPopulation.otherPopulation, percent: data.racialPopulation.otherPercentage },
                 ]);
                 setStatePopulation(data.racialPopulation.total);

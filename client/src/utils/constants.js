@@ -24,8 +24,8 @@ export const getPrimarySecondaryColors = (racialGroup) => [
     {label: `Not ${racialGroup}`, color: "#D1FAE5"}
 ]
 
-export const RACES = ["white", "black", "latino", "other"];
-export const MINORITIES = ["black","latino", "other"];
+export const RACES = ["white", "black", "hispanic/latino", "other"];
+export const MINORITIES = ["black","hispanic/latino", "other"];
 
 export const ENSEMBLES = ["VRA", "Race-Blind"];
 
