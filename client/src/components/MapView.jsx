@@ -58,18 +58,18 @@ export default function MapView(){
 
     const getStyle = (feature) => minorityGroupRef.current ? choroplethStyle(feature, minorityGroupRef.current) : lineStyle(feature);
     const selectDistrict = (val) => {
-        if (val === selectedDistrictRef.current || !val){        // toggle on off
+        const normalized = val ? String(val) : null;
+        if (normalized === selectedDistrictRef.current || !val){        // toggle on off
             selectedDistrictRef.current = null;
         } else{
-            selectedDistrictRef.current = String(val)
+            selectedDistrictRef.current = normalized;
+            setExpanded(false);
         }
         setSelectedDistrict(selectedDistrictRef.current);
     };
 
     const districtStyle = (feature) => {
-        const mapDistrictValue = feature.properties.DISTRICT === "Congressional District (at Large)" // account for delaware
-        ?   "0"
-        :   normalizeDistrict(feature.properties.DISTRICT);
+        const mapDistrictValue = normalizeDistrict(feature.properties.DISTRICT);
 
         // district's color
         let partyColor = MAP_PARTY_COLORS.other;

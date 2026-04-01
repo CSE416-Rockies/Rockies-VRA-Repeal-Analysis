@@ -20,7 +20,6 @@ export default function DistrictDetail({expanded, onClick, selectedDistrict, onS
 
     useEffect(()=>{
         if(!expanded) return;
-        // console.log("in expanded, calculating perpage");
 
         const calculate = () =>{
             if(containerRef.current && theadRef.current && rowRef.current && pageRef.current && titleRef.current){
@@ -44,8 +43,13 @@ export default function DistrictDetail({expanded, onClick, selectedDistrict, onS
         }
     }, [expanded]);
 
-    const {onPage, currPage, goPrev, goNext, hasPrev, hasNext, _ } = usePaginate(districtArr, perPage);
-    
+    const {onPage, currPage, goPrev, goNext, hasPrev, hasNext, goToSpecific } = usePaginate(districtArr, perPage);
+
+    useEffect(()=>{
+        if(!selectedDistrict) return;
+        goToSpecific(selectedDistrict-1);
+    }, [selectedDistrict]);
+
     return(
 
         <div ref={containerRef} className = 'bg-white rounded-2xl shadow-md flex flex-col w-full py-4 text-sm overflow-hidden min-h-0 transition-all duration-700 ease-in-out' 
