@@ -18,6 +18,8 @@ public class BoxWhiskerPlotsME {
         private BoxStats vra;
         private int enactedCount;
 
+        public GroupEffectiveness(){}
+
         public BoxStats getRaceBlind() { return raceBlind; }
         public BoxStats getVra() { return vra; }
         public int getEnactedCount() { return enactedCount; }
@@ -31,12 +33,21 @@ public class BoxWhiskerPlotsME {
         private double max;
         private double enacted;
 
+        public BoxStats() {}
+
         public double getMin() { return min; }
         public double getQ1() { return q1; }
         public double getMedian() { return median; }
         public double getQ3() { return q3; }
         public double getMax() { return max; }
         public double getEnacted() { return enacted; }
+    }
+
+    public BoxWhiskerPlotsME(){}
+
+    public BoxWhiskerPlotsME(String state, Map<String, GroupEffectiveness> groups){
+        this.state = state;
+        this.groups = groups;
     }
 
     public String getState() {

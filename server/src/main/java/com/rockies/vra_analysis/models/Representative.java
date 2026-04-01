@@ -21,12 +21,14 @@ public class Representative {
     private String racialEthnicGroup;
 
     @Field("vote_margin_percent")
-    private Double voteMarginPercent;
+    private double voteMarginPercent;
 
     @Field("image_id")
     private String imageId;
 
     private String status;
+
+    public Representative() {}
 
     public Representative(String state, int districtNumber, String name, String party, String racialEthnicGroup, double voteMarginPercent, String imageId, String status) {
         this.state = state;

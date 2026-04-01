@@ -23,6 +23,8 @@ public class BoxWhiskerPlots {
         private double max;
         private double enacted;
 
+        public EnsembleDetail() {}
+
         public int getDistrictIndex() { return districtIndex; }
         public double getMin() { return min; }
         public double getQ1() { return q1; }
@@ -33,6 +35,12 @@ public class BoxWhiskerPlots {
     }
 
     public BoxWhiskerPlots() {}
+
+    public BoxWhiskerPlots(String state, Map<String, List<EnsembleDetail>> raceBlind, Map<String, List<EnsembleDetail>> vra) {
+        this.state = state;
+        this.raceBlind = raceBlind;
+        this.vra = vra;
+    }
 
     public String getState() {
         return state;

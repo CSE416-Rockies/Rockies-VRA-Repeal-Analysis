@@ -13,12 +13,24 @@ public class EnsembleHistogramME{
     private int totalDistricts;
     private Map<String, GroupCounts> raceBlind;
     private Map<String, GroupCounts> vra;
+
+    /* ----------------------------------------- constructors */
+    public EnsembleHistogramME() {}
     
+    public EnsembleHistogramME(String state, int totalDistricts, Map<String, GroupCounts> raceBlind, Map<String, GroupCounts> vra) {
+        this.state = state;
+        this.totalDistricts = totalDistricts;
+        this.raceBlind = raceBlind;
+        this.vra = vra;
+    }
+
     public static class GroupCounts {
         private int black;
         private int latino;
         private int other;
 
+        public GroupCounts() {}
+        
         public int getBlack()  { return black; }
         public int getLatino() { return latino; }
         public int getOther()  { return other; }

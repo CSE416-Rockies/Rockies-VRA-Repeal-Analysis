@@ -19,6 +19,15 @@ import java.util.Map;
         private MCMC mcmc;
         private List<Candidate> candidates;
 
+        /* constructor -------------------------------------- */
+        public EIAnalysis() {}
+
+        public EIAnalysis(String state, MCMC mcmc, List<Candidate> candidates) {
+            this.state = state;
+            this.mcmc = mcmc;
+            this.candidates = candidates;
+        }
+
         /* methods ---------------------------------------- */
         public String getId() { return id; }
         public String getState() { return state; }
@@ -28,11 +37,14 @@ import java.util.Map;
         /* classes ---------------------------------------- */
         public static class MCMC {
             private int iterations;
-            private int burn_in;
+            @Field("burn_in")
+            private int burnIn;
             private int chains;
 
+            public MCMC() {}
+
             public int getIterations() { return iterations; }
-            public int getBurnIn() { return burn_in; }
+            public int getBurnIn() { return burnIn; }
             public int getChains() { return chains; }
             
         }
@@ -44,6 +56,8 @@ import java.util.Map;
             private String party;
             private Map<String, GroupResult> groups;
 
+            public Candidate() {}
+
             public String getId() { return id; }
             public String getName() {return name; }
             public String getParty() { return party; }
@@ -53,18 +67,24 @@ import java.util.Map;
         }
 
         public static class GroupResult{
-            private PosteriorMean posterior_mean;
-            private CredibleInterval credible_interval_95;
+            @Field("posterior_mean")
+            private PosteriorMean posteriorMean;
+            @Field("credible_interval_95")
+            private CredibleInterval credibleInterval95;
             private Density density;
 
-            public PosteriorMean getPosteriorMean() { return posterior_mean; }
-            public CredibleInterval getCredibleInterval95() { return credible_interval_95; }
+            public GroupResult() {}
+
+            public PosteriorMean getPosteriorMean() { return posteriorMean; }
+            public CredibleInterval getCredibleInterval95() { return credibleInterval95; }
             public Density getDensity() { return density; }
         }
         
         public static class PosteriorMean{
             private double group;
             private double complement;
+
+            public PosteriorMean() {}
 
             public double getGroup() { return group; }
             public double getComplement() { return complement; }
@@ -74,6 +94,8 @@ import java.util.Map;
             private List<Double> group;
             private List<Double> complement;
 
+            public CredibleInterval() {}
+
             public List<Double> getGroup() { return group; }
             public List<Double> getComplement() { return complement; }
         }
@@ -82,6 +104,8 @@ import java.util.Map;
             private List<Point> group;
             private List<Point> complement;
 
+            public Density() {}
+
             public List<Point> getGroup() { return group; }
             public List<Point> getComplement() { return complement; }
         }
@@ -89,6 +113,8 @@ import java.util.Map;
         public static class Point {
             private double x;
             private double y;
+
+            public Point() {}
 
             public double getX() { return x; }
             public double getY() { return y; }
