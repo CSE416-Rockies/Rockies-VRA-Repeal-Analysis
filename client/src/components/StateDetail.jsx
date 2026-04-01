@@ -4,7 +4,8 @@ import { usePaginate } from '../hooks/usePaginate';
 import PageControls from './PageControls';
 import GlobalStoreContext from '../store';
 import { getStateDetail } from '../api/api';
-import { PARTY_COLORS, APP_COLORS, normalizeParty } from '../utils/constants';
+import { PARTY_COLORS, APP_COLORS } from '../utils/constants';
+import { normalizeParty } from '../utils/helpers';
 
 export default function StateDetail({expanded, onClick}){
 

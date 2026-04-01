@@ -14,8 +14,9 @@ import LoadingView from "./LoadingView.jsx";
 import { useDistrictData } from "../hooks/useDistrictData.js";
 import { usePrecinctData } from "../hooks/usePrecinctData.js";
 
-import { normalizeParty, MAP_PARTY_COLORS, STATE_BOUNDS } from "../utils/constants.js";
+import { MAP_PARTY_COLORS, STATE_BOUNDS } from "../utils/constants.js";
 import { choroplethStyle, highlightStyle, lineStyle } from "../utils/mapStyles.js";
+import { normalizeDistrict, normalizeParty } from "../utils/helpers.js";
 
 async function loadLegend(state){
     const res = await fetch(
@@ -57,14 +58,18 @@ export default function MapView(){
 
     const getStyle = (feature) => minorityGroupRef.current ? choroplethStyle(feature, minorityGroupRef.current) : lineStyle(feature);
     const selectDistrict = (val) => {
-        selectedDistrictRef.current = val ? String(val) : null;
-        setSelectedDistrict(val);
+        if (val === selectedDistrictRef.current || !val){        // toggle on off
+            selectedDistrictRef.current = null;
+        } else{
+            selectedDistrictRef.current = String(val)
+        }
+        setSelectedDistrict(selectedDistrictRef.current);
     };
 
     const districtStyle = (feature) => {
         const mapDistrictValue = feature.properties.DISTRICT === "Congressional District (at Large)" // account for delaware
         ?   "0"
-        :   String(feature.properties.DISTRICT).replace(/\D/g, "");
+        :   normalizeDistrict(feature.properties.DISTRICT);
 
         // district's color
         let partyColor = MAP_PARTY_COLORS.other;
@@ -96,6 +101,10 @@ export default function MapView(){
             });
             
             layer.on({
+                click: () =>{
+                    console.log(layer.feature.properties.DISTRICT);
+                    selectDistrict(normalizeDistrict(layer.feature.properties.DISTRICT));
+                },
                 mouseover: (e) =>  e.target.setStyle(highlightStyle),
                 mouseout:  (e) => e.target.setStyle( districtStyle(e.target.feature) ),
             });
@@ -152,7 +161,7 @@ export default function MapView(){
         if (!districtRef.current) return;
         districtRef.current.eachLayer((layer) => {
             layer.setStyle(districtStyle(layer.feature));
-            if (String(layer.feature.properties.DISTRICT).replace(/\D/g, "") === selectedDistrictRef.current) {
+            if (normalizeDistrict(layer.feature.properties.DISTRICT) === selectedDistrictRef.current) {
                 layer.bringToFront();
             }
         });

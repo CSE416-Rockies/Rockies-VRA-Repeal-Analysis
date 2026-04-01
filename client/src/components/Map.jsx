@@ -1,6 +1,6 @@
 import { useEffect, useContext, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { MapContainer, TileLayer, GeoJSON, } from "react-leaflet";
+import { MapContainer, TileLayer, GeoJSON, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
 import {US_BOUNDS, STATE_BOUNDS, STATE_OPTIONS} from "../utils/constants";
@@ -8,8 +8,14 @@ import { highlightStateStyle } from "../utils/mapStyles";
 
 import GlobalStoreContext from "../store";
 
+function MapController({ mapRef }) {
+  const map = useMap();
+  useEffect(() => { mapRef.current = map; }, [map, mapRef]);
+  return null;
+}
+
 export default function Map() {
-  const { setSelectedState } = useContext(GlobalStoreContext);
+  const { store, setSelectedState } = useContext(GlobalStoreContext);
   const [stateLines, setStateLines] = useState(null);
   const navigate = useNavigate();
   const mapRef = useRef(null);
@@ -46,6 +52,21 @@ export default function Map() {
     });
   }, [stateLines]);
 
+  // navigate to state's mapview when using state dropdown
+  useEffect( () => {
+      const selectedState = store.selectedState;
+      if(!selectedState) return;
+      const bounds = STATE_BOUNDS[selectedState]
+      if(!bounds || !mapRef.current) return;
+
+      // zoom in 
+      mapRef.current.flyToBounds(bounds, {  duration: 1, });
+      setTimeout(() => {
+        navigate(`/map/${selectedState}`);
+      }, 200);
+  }, [store.selectedState]);
+  
+
   const onEachState = (feature, layer) => {
     if (isStateOption(feature.properties.NAME)) {
       layer.bindTooltip(
@@ -67,23 +88,8 @@ export default function Map() {
           e.target.setStyle(lineStyle(feature));
         },
         click: (e) => {
-          const stateName = feature.properties.NAME;
-          const bounds = STATE_BOUNDS[stateName];
-          setSelectedState(stateName);
-
+          setSelectedState(feature.properties.NAME);
           e.target.setStyle(lineStyle(feature));
-
-          if (bounds) {
-            const map = e.target._map;
-            console.log("doing zooming effect");
-            map.flyToBounds(bounds, {
-              duration: 1,
-            });
-
-            setTimeout(() => {
-              navigate(`/map/${stateName}`);
-            }, 200);
-          }
         },
       });
     }
@@ -101,10 +107,8 @@ export default function Map() {
       <MapContainer
         bounds={US_BOUNDS}
         className="fixed inset-0 h-screen w-full"
-        whenCreated={(mapInstance) => {
-          mapRef.current = mapInstance;
-        }}
       >
+        <MapController mapRef = {mapRef}/>
         <TileLayer
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>'

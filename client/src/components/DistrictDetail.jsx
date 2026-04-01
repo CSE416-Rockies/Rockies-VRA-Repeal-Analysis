@@ -4,7 +4,8 @@ import PageControls from './PageControls';
 import { usePaginate } from '../hooks/usePaginate';
 import { useEffect, useRef, useState, useContext } from 'react';
 import GlobalStoreContext from '../store';
-import { normalizeParty, PARTY_COLORS } from '../utils/constants';
+import { PARTY_COLORS } from '../utils/constants';
+import { normalizeParty } from '../utils/helpers';
 
 export default function DistrictDetail({expanded, onClick, selectedDistrict, onSelect}){
     const theadRef = useRef(null);
