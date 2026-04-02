@@ -1,6 +1,10 @@
 import Tooltip from "./Tooltip"
+import { toPercent } from "../utils/helpers";
 
-export default function ThresholdTable(){
+export default function ThresholdTable({data, racialGroup, aggregate = false}){
+     if (!data) return null;
+
+    const groupData = aggregate ? data.aggregate : data.groups?.[racialGroup];
 
     return(
         <table className = 'w-full text-sm border-2 rounded-md'>
@@ -13,9 +17,9 @@ export default function ThresholdTable(){
             </thead>
             <tbody>
                 {[
-                    { label: 'Satisfies enacted effectiveness', raceBlind: '%', vra: '%', subText: "≥ number of effective districts in a plan"},
-                    { label: 'Satisfies rough proportionality', raceBlind: '%', vra: '%' , subText: "≥ number of effective districts proportional to demographics",},
-                    { label: 'Satisfies both conditions above', raceBlind: '%', vra: '%' , subText: "", },
+                    { label: 'Satisfies enacted effectiveness', raceBlind: toPercent(groupData.enactedThreshold.raceBlind), vra: toPercent(groupData.enactedThreshold.vra),  subText: "≥ number of effective districts in a plan"},
+                    { label: 'Satisfies rough proportionality', raceBlind: toPercent(groupData.proportionalThreshold.raceBlind), vra: toPercent(groupData.proportionalThreshold.vra), subText: "≥ number of effective districts proportional to demographics",},
+                    { label: 'Satisfies both conditions above', raceBlind: toPercent(groupData.bothThreshold.raceBlind),  vra: toPercent(groupData.bothThreshold.vra),  subText: "", },
                 ].map(({label, raceBlind, vra, subText}, index)=> (
                     <tr key = {index} className = {`${index % 2 === 0 ? 'bg-gray-100' : ''}`}> 
                         <td className = 'relative pl-4 py-2 group cursor-pointer'> 

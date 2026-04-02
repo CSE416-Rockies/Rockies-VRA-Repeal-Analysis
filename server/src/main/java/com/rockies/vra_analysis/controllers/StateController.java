@@ -70,4 +70,9 @@ public class StateController {
     public EnsembleHistogramME getEnsembleHistogramME(@PathVariable String stateName) {
         return stateService.getEnsembleHistogramME(stateName);
     }
+
+    @GetMapping("/impactThresholdTable")
+    public ImpactThresholdTable getImpactThresholdTable(@PathVariable String stateName) {
+        return stateService.getImpactThresholdTable(stateName);
+    }
 }

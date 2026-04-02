@@ -39,6 +39,9 @@ public class StateService {
     @Autowired 
     private RepresentativeRepository representativeRepo;
 
+    @Autowired 
+    private ImpactThresholdTableRepository impactThresholdTableRepo;
+
     /*  */
 
     @Cacheable("ensemble-summary")
@@ -86,5 +89,10 @@ public class StateService {
     @Cacheable("ensemble-histogram-me")
     public EnsembleHistogramME getEnsembleHistogramME(String state) {
         return ensembleHistMERepo.findByState(state);
+    }
+
+    @Cacheable("impact-threshold-table")
+    public ImpactThresholdTable getImpactThresholdTable(String state) {
+        return impactThresholdTableRepo.findByState(state);
     }
 }

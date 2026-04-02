@@ -13,3 +13,7 @@ export function normalizeDistrict(district) {
 
 export const getRaceLabel = (value) => 
     RACES.find(r => r.value === value)?.label ?? value;
+
+export const toPercent = (value, decimals = 1) => {
+    return (value * 100).toFixed(decimals);
+}

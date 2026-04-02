@@ -8,7 +8,7 @@ import MiniGraphView from "./MiniGraphView";
 import { SelectionPlaceholder } from "./selectionPlaceholder";
 
 import GlobalStoreContext from '../store';
-import { getBoxWhiskersME, getEnsembleHistME } from "../api/api";
+import { getBoxWhiskersME, getEnsembleHistME, getImpactThresholdTable} from "../api/api";
 import {drawEnsembleHistME } from "../utils/drawEnsembleHistME";
 import { drawBoxWhiskerME } from "../utils/drawBoxWhiskerME";
 
@@ -20,6 +20,7 @@ export default function MinorityEffect(){
 
     const [boxData, setBoxData] = useState(null);
     const [ensembleData, setEnsembleData] = useState(null);
+    const [thresholdData, setThresholdData] = useState(null);
     
     const margin = {top: 20, right: 20, bottom: 40, left: 80}
     
@@ -29,9 +30,11 @@ export default function MinorityEffect(){
         Promise.all([
             getBoxWhiskersME(selectedState),
             getEnsembleHistME(selectedState),
-        ]).then(([boxRes, ensembleRes]) => {
+            getImpactThresholdTable(selectedState),
+        ]).then(([boxRes, ensembleRes, thresholdRes]) => {
             setBoxData(boxRes.data);
             setEnsembleData(ensembleRes.data);
+            setThresholdData(thresholdRes.data);
         }).catch(err => console.error("Error loading data:", err));
     }, [selectedState]);
 
@@ -81,12 +84,12 @@ export default function MinorityEffect(){
                     >
                         <div className = 'flex flex-col items-center gap-2'>
                             <div> VRA Impact Threshold Table <span className = 'text-emerald-500 font-bold'> [{racialGroup}]</span></div>
-                            <ThresholdTable/>
+                            <ThresholdTable data = {thresholdData} racialGroup = {racialGroup}/>
                         </div>
 
                         <div className = 'flex flex-col items-center gap-2'>
                             <> General Minority VRA Threshold Table</>
-                            <ThresholdTable/>
+                            <ThresholdTable data = {thresholdData} racialGroup = {racialGroup} aggregate = {true}/>
                         </div>
                         
                     </div>

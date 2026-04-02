@@ -58,3 +58,8 @@ export const getEnsembleHistME = (stateName) => {
     return api.get(`/state/${stateName}/ensembleHistogramME`);
 }
 
+export const getImpactThresholdTable = (stateName) => {
+    return api.get(`/state/${stateName}/impactThresholdTable`);
+}
+
+
