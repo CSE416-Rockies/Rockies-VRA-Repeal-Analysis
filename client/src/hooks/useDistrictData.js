@@ -8,8 +8,7 @@ export function useDistrictData(name){
 
     useEffect(() => {
         getCongressionalMap(name)
-            .then((res) => res.data)
-            .then((data) => setDistrictPlan(data))
+            .then((res) => setDistrictPlan(res.data))
             .catch((err) => console.error("Error loading geojson:", err));
     }, [name]);
 

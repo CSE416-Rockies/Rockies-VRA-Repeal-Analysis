@@ -24,12 +24,12 @@ public class StateController {
     @Autowired
     private StateService stateService;
 
-    @GetMapping("/ensemble")
+    @GetMapping("/ensembleSummary")
     public EnsembleSummary getEnsembleSummary(@PathVariable String stateName) {
         return stateService.getEnsembleSummary(stateName);
     }
 
-    @GetMapping("/detail")
+    @GetMapping("/stateDetail")
     public StateDetail getStateDetail(@PathVariable String stateName) {
         return stateService.getStateDetail(stateName);
     }

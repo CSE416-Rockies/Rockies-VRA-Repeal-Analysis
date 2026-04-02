@@ -5,6 +5,8 @@ import "leaflet/dist/leaflet.css";
 
 import {US_BOUNDS, STATE_BOUNDS, STATE_OPTIONS} from "../utils/constants";
 import { highlightStateStyle } from "../utils/mapStyles";
+import { getStateLines } from "../api/api.js";
+
 
 import GlobalStoreContext from "../store";
 
@@ -96,11 +98,12 @@ export default function Map() {
   };
 
   useEffect(() => {
-    fetch("/geojson/2024_us_state_lines.json")
-      .then((res) => res.json())
-      .then((data) => setStateLines(data))
+    getStateLines()
+      .then((res) => setStateLines(res.data))
       .catch((err) => console.error("Error loading geojson:", err));
-  }, []);
+}, []);
+
+  
 
   return (
     <div className = 'relative h-screen w-screen'>

@@ -22,8 +22,8 @@ export default function Ensemble(){
 
     const margin = {top: 20, right: 20, bottom: 60, left: 80};
 
-    const [boxData, setBoxData] = useState(null);
-    const [ensembleData, setEnsembleData] = useState(null);
+    const [boxWhiskerData, setBoxWhiskerData] = useState(null);
+    const [ensembleSplitsData, setEnsembleSplitsData] = useState(null);
     
 
      // state change
@@ -33,8 +33,8 @@ export default function Ensemble(){
             getBoxWhiskers(selectedState),
             getEnsembleSplits(selectedState),
         ]).then(([boxRes, ensembleRes]) => {
-            setBoxData(boxRes.data);
-            setEnsembleData(ensembleRes.data);
+            setBoxWhiskerData(boxRes.data);
+            setEnsembleSplitsData(ensembleRes.data);
         }).catch(err => console.error("Error loading data:", err));
         
     }, [selectedState]);
@@ -74,7 +74,7 @@ export default function Ensemble(){
                     <div className = "flex flex-col flex-1 h-full justify-center items-center gap-5">
                         <MiniGraphView 
                             title = {`${racialGroup} Population Share`}
-                            data = {boxData} 
+                            data = {boxWhiskerData} 
                             racialGroup = {racialGroup} 
                             margin = {margin} 
                             drawFunc = {drawBoxWhisker}
@@ -84,7 +84,7 @@ export default function Ensemble(){
                             
                         <MiniGraphView 
                             title={`${ensemble} Ensemble Splits for ${racialGroup} `}
-                            data = {ensembleData} 
+                            data = {ensembleSplitsData} 
                             racialGroup = {racialGroup}
                             margin = {margin} 
                             drawFunc = {drawEnsembleSplits}

@@ -17,7 +17,7 @@ export default function ScatterPlot(){
 
     const racialGroup = store.racialGroup;
     const ref = useRef(null);
-    const [data, setData] = useState(null);
+    const [ginglesData, setGinglesData] = useState(null);
 
     const margin = {top: 20, right: 20, bottom: 60, left: 80}
 
@@ -25,15 +25,15 @@ export default function ScatterPlot(){
     useEffect(()=>{
         if(!selectedState) return;
         getGingles(selectedState)
-        .then(res => setData(res.data))
+        .then(res => setGinglesData(res.data))
         .catch(err => console.error("Error loading Gingles data:", err));
     }, [selectedState]);
 
     // draw d3 
     useD3(ref, (svg)=>{
-        if(!data || !racialGroup) return;
-        drawScatterPlot({givenSVG: svg, data, margin, racialLabel: racialGroup});
-    }, [data, racialGroup]);
+        if(!ginglesData || !racialGroup) return;
+        drawScatterPlot({givenSVG: svg, data: ginglesData, margin, racialLabel: racialGroup});
+    }, [ginglesData, racialGroup]);
 
 
     return(

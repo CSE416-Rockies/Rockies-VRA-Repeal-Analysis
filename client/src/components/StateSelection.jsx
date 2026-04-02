@@ -4,7 +4,7 @@ import {useLocation} from 'react-router-dom'
 import { useContext, useEffect, useState, useRef } from 'react';
 import GlobalStoreContext from '../store';
 import StateDropdown from './StateDropdown';
-import { getStateSummary, getRepresentatives } from '../api/api';
+import { getEnsembleSummary, getRepresentatives } from '../api/api';
 import {STATE_OPTIONS} from "../utils/constants"
 
 export default function StateSelection({ onClose }){
@@ -13,7 +13,7 @@ export default function StateSelection({ onClose }){
 
     const isMapView = (location.pathname.startsWith("/map"));
     const isGraph = ((location.pathname !== "/") && !isMapView);
-    const [ensembleData, setEnsembleData] = useState(null);
+    const [ensembleSummary, setEnsembleSummary] = useState(null);
 
     const { store, setSelectedState, setMapMode, setRepresentatives } = useContext(GlobalStoreContext);
     const selectedState = store?.selectedState || "";
@@ -42,11 +42,8 @@ export default function StateSelection({ onClose }){
 
     useEffect(()=>{
         if(selectedState){
-            getStateSummary(selectedState)
-                .then(res => {
-                    console.log("Data from server:", res.data);
-                    setEnsembleData(res.data);
-                })
+            getEnsembleSummary(selectedState)
+                .then(res => { setEnsembleSummary(res.data);})
                 .catch(err => console.log(err))
             getRepresentatives(selectedState)
                 .then((res) => setRepresentatives(res.data.sort((a, b) => a.districtNumber - b.districtNumber)))
@@ -77,15 +74,15 @@ export default function StateSelection({ onClose }){
                 <div className = "flex justify-between divide-x divide-gray-300">
                     <div className = "px-4 pt-2 pb-4 flex-1">
                         <div className = "font-bold text-lg text-gray-500">Race-Blind</div>
-                        <div className = "text-gray-500 text-sm">District Plans: {ensembleData ? ensembleData.raceBlindPlans: '-'}</div>
-                        <div className = "text-gray-500 text-sm">Population Threshold: ±{ensembleData ? ensembleData.raceBlindThreshold: '-'}%</div>
+                        <div className = "text-gray-500 text-sm">District Plans: {ensembleSummary ? ensembleSummary.raceBlindPlans: '-'}</div>
+                        <div className = "text-gray-500 text-sm">Population Threshold: ±{ensembleSummary ? ensembleSummary.raceBlindThreshold: '-'}%</div>
                     </div>
 
 
                     <div className = "px-4 pt-2 flex-1">
                         <div className = "font-bold text-lg text-gray-500">VRA</div>
-                        <div className = "text-gray-500 text-sm">District Plans: {ensembleData ? ensembleData.vraPlans: '-'}</div>
-                        <div className = "text-gray-500 text-sm">Population Threshold: ±{ensembleData ? ensembleData.vraThreshold: '-'}%</div>
+                        <div className = "text-gray-500 text-sm">District Plans: {ensembleSummary ? ensembleSummary.vraPlans: '-'}</div>
+                        <div className = "text-gray-500 text-sm">Population Threshold: ±{ensembleSummary ? ensembleSummary.vraThreshold: '-'}%</div>
                     </div>
                 </div>
                 }

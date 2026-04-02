@@ -18,7 +18,7 @@ export default function EIAnalysis(){
 
     const racialGroup = store.racialGroup;
     const [candView, setCandView] = useState('trump'); 
-    const [data, setData] = useState(null); 
+    const [eiAnalysisData, setEIAnalysisData] = useState(null); 
 
     const ref = useRef(null);
     const margin = {top: 20, right: 20, bottom: 60, left: 80};
@@ -27,15 +27,15 @@ export default function EIAnalysis(){
     useEffect(()=>{
            if(!selectedState) return;
            getEIAnalysis(selectedState)
-           .then(res => setData(res.data))
+           .then(res => setEIAnalysisData(res.data))
            .catch(err => console.error("Error loading EI Analysis data:", err));
     }, [selectedState]);
 
     // draw d3 
     useD3(ref, (svg)=>{
-        if(!data || !racialGroup|| !ref.current) return;
-        drawEIAnalysis({givenSVG: svg, data: data, margin, racialLabel: racialGroup, candView});
-    }, [data, candView, racialGroup]);
+        if(!eiAnalysisData || !racialGroup|| !ref.current) return;
+        drawEIAnalysis({givenSVG: svg, data: eiAnalysisData, margin, racialLabel: racialGroup, candView});
+    }, [eiAnalysisData, candView, racialGroup]);
     
 
     const choiceMenu = 

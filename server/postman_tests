@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "0d741148-ca68-4c6f-b156-85fd65b3481a",
     "name": "Client-Server Interface",
-    "description": "## Backend Tests\n\nThis collection contains backend API tests for a **redistricting/VRA appeal analysis application**, targeting a locally running server at `http://localhost:8080`. It validates endpoints that power the application's GUI use cases across two U.S. states — **Georgia** and **Delaware**.\n\n### Structure\n\nThe collection is organized into two folders:\n\n- **State** — Requests that retrieve high-level state data, including ensemble summaries, state detail, and congressional representative information for Georgia and Delaware.\n    \n- **Graphs** — Requests that fetch visualization data, including Box & Whisker plots, Scatter plots (Gingles analysis), Ecological Inference (EI) analysis, and ensemble splits.\n    \n\n### Endpoints Covered\n\n| Endpoint | Description |\n| --- | --- |\n| `/api/state/{state}/ensemble` | Ensemble summary (number of district plans, population equality threshold) |\n| `/api/state/{state}/detail` | Detailed state-level data |\n| `/api/state/{state}/representatives` | Congressional representative summary and table data |\n| `/api/state/{state}/boxWhiskers` | Box & Whisker plot data |\n| `/api/state/{state}/gingles` | Scatter plot data for Gingles analysis |\n| `/api/state/{state}/eiAnalysis` | Ecological Inference analysis data |\n| `/api/state/{state}/ensembleSplits` | Ensemble split data |",
+    "description": "## Backend Tests\n\nThis collection contains backend API tests for a **redistricting/VRA appeal analysis application**, targeting a locally running server at `http://localhost:8080`. It validates endpoints that power the application's GUI use cases across two U.S. states — **Georgia** and **Arkansas**.\n\n### Structure\n\nThe collection is organized into two folders:\n\n- **State** — Requests that retrieve high-level state data, including ensemble summaries, state detail, and congressional representative information for Georgia and Arkansas.\n    \n- **Graphs** — Requests that fetch visualization data, including Box & Whisker plots, Scatter plots (Gingles analysis), Ecological Inference (EI) analysis, and ensemble splits.\n    \n\n### Endpoints Covered\n\n| Endpoint | Description |\n| --- | --- |\n| `/api/state/{state}/ensembleSummary` | Ensemble summary (number of district plans, population equality threshold) |\n| `/api/state/{state}/stateDetail` | Detailed state-level data |\n| `/api/state/{state}/representatives` | Congressional representative summary and table data |\n| `/api/state/{state}/boxWhiskers` | Box & Whisker plot data |\n| `/api/state/{state}/gingles` | Scatter plot data for Gingles analysis |\n| `/api/state/{state}/eiAnalysis` | Ecological Inference analysis data |\n| `/api/state/{state}/ensembleSplits` | Ensemble split data |",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "48983540"
   },
@@ -34,12 +34,12 @@
           "response": []
         },
         {
-          "name": "Delaware Representatives",
+          "name": "Arkansas Representatives",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/api/state/Delaware/representatives",
+              "raw": "http://localhost:8080/api/state/Arkansas/representatives",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -48,11 +48,11 @@
               "path": [
                 "api",
                 "state",
-                "Delaware",
+                "Arkansas",
                 "representatives"
               ]
             },
-            "description": "Use Cases:\n\n1. GUI-3: State data summary (Congressional Representative Summary)\n    \n2. GUI- 6: Display Congressional representation table\n    \n\nPassing Parameter: stateName (Delaware)"
+            "description": "Use Cases:\n\n1. GUI-3: State data summary (Congressional Representative Summary)\n    \n2. GUI- 6: Display Congressional representation table\n    \n\nPassing Parameter: stateName (Arkansas)"
           },
           "response": []
         },
@@ -62,7 +62,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/api/state/Georgia/ensemble",
+              "raw": "http://localhost:8080/api/state/Georgia/ensembleSummary",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -72,7 +72,7 @@
                 "api",
                 "state",
                 "Georgia",
-                "ensemble"
+                "ensembleSummary"
               ]
             },
             "description": "Use Cases:\n\n1. GUI-3: State data summary (Summary of the Ensembles Available)\n    \n\n- Number of district plans, population equality threshold.\n    \n\nPassing Parameter: stateName (Georgia)"
@@ -80,12 +80,12 @@
           "response": []
         },
         {
-          "name": "Delaware Ensemble Summary",
+          "name": "Arkansas Ensemble Summary",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/api/state/Delaware/ensemble",
+              "raw": "http://localhost:8080/api/state/Arkansas/ensembleSummary",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -94,11 +94,11 @@
               "path": [
                 "api",
                 "state",
-                "Delaware",
-                "ensemble"
+                "Arkansas",
+                "ensembleSummary"
               ]
             },
-            "description": "Use Cases:\n\n1. GUI-3: State data summary (Summary of the Ensembles Available)\n    \n\n- Number of district plans, population equality threshold.\n    \n\nPassing Parameter: stateName (Delaware)"
+            "description": "Use Cases:\n\n1. GUI-3: State data summary (Summary of the Ensembles Available)\n    \n\n- Number of district plans, population equality threshold.\n    \n\nPassing Parameter: stateName (Arkansas)"
           },
           "response": []
         },
@@ -108,7 +108,7 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/api/state/Georgia/detail",
+              "raw": "http://localhost:8080/api/state/Georgia/stateDetail",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -118,7 +118,7 @@
                 "api",
                 "state",
                 "Georgia",
-                "detail"
+                "stateDetail"
               ]
             },
             "description": "Use Cases:\n\n1. GUI-3: State data summary\n    \n\n- State population, state voter population, population of each significant racial/ethnic group, party control of the redistricting process\n    \n\nPassing Parameter: stateName (Georgia)"
@@ -126,12 +126,12 @@
           "response": []
         },
         {
-          "name": "Delaware State Detail",
+          "name": "Arkansas State Detail",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/api/state/Delaware/detail",
+              "raw": "http://localhost:8080/api/state/Arkansas/stateDetail",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -140,11 +140,11 @@
               "path": [
                 "api",
                 "state",
-                "Delaware",
-                "detail"
+                "Arkansas",
+                "stateDetail"
               ]
             },
-            "description": "Use Cases:\n\n1. GUI-3: State data summary\n    \n\n- State population, state voter population, population of each significant racial/ethnic group, party control of the redistricting process\n    \n\nPassing Parameter: stateName (Delaware)"
+            "description": "Use Cases:\n\n1. GUI-3: State data summary\n    \n\n- State population, state voter population, population of each significant racial/ethnic group, party control of the redistricting process\n    \n\nPassing Parameter: stateName (Arkansas)"
           },
           "response": []
         }
@@ -177,12 +177,12 @@
           "response": []
         },
         {
-          "name": "Delaware BoxWhisker Plots",
+          "name": "Arkansas BoxWhisker Plots",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/api/state/Delaware/boxWhiskers",
+              "raw": "http://localhost:8080/api/state/Arkansas/boxWhiskers",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -191,11 +191,11 @@
               "path": [
                 "api",
                 "state",
-                "Delaware",
+                "Arkansas",
                 "boxWhiskers"
               ]
             },
-            "description": "Use Cases:\n\n1. GUI-17: Display Box and Whisker data\n    \n\nPassing Parameter: stateName (Delaware)"
+            "description": "Use Cases:\n\n1. GUI-17: Display Box and Whisker data\n    \n\nPassing Parameter: stateName (Arkansas)"
           },
           "response": []
         },
@@ -223,12 +223,12 @@
           "response": []
         },
         {
-          "name": "Delaware ScatterPlots",
+          "name": "Arkansas ScatterPlots",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/api/state/Delaware/gingles",
+              "raw": "http://localhost:8080/api/state/Arkansas/gingles",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -237,11 +237,11 @@
               "path": [
                 "api",
                 "state",
-                "Delaware",
+                "Arkansas",
                 "gingles"
               ]
             },
-            "description": "Use Cases:\n\n1. GUI-9: Display Gingles Analysis Results\n    \n\nPassing Parameter: stateName (Delaware)"
+            "description": "Use Cases:\n\n1. GUI-9: Display Gingles Analysis Results\n    \n\nPassing Parameter: stateName (Arkansas)"
           },
           "response": []
         },
@@ -269,12 +269,12 @@
           "response": []
         },
         {
-          "name": "Delaware EI Analysis",
+          "name": "Arkansas EI Analysis",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/api/state/Delaware/eiAnalysis",
+              "raw": "http://localhost:8080/api/state/Arkansas/eiAnalysis",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -283,11 +283,11 @@
               "path": [
                 "api",
                 "state",
-                "Delaware",
+                "Arkansas",
                 "eiAnalysis"
               ]
             },
-            "description": "Use Cases:\n\n1. GUI-12: Display candidate results of EI Analysis\n    \n\nPassing Parameter: stateName (Delaware)"
+            "description": "Use Cases:\n\n1. GUI-12: Display candidate results of EI Analysis\n    \n\nPassing Parameter: stateName (Arkansas)"
           },
           "response": []
         },
@@ -315,12 +315,12 @@
           "response": []
         },
         {
-          "name": "Delaware Ensemble Splits",
+          "name": "Arkansas Ensemble Splits",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/api/state/Delaware/ensembleSplits",
+              "raw": "http://localhost:8080/api/state/Arkansas/ensembleSplits",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -329,11 +329,11 @@
               "path": [
                 "api",
                 "state",
-                "Delaware",
+                "Arkansas",
                 "ensembleSplits"
               ]
             },
-            "description": "Use Cases:\n\n1. GUI-16: Display ensemble splits in a bar chart\n    \n\nPassing Parameter: stateName (Delaware)"
+            "description": "Use Cases:\n\n1. GUI-16: Display ensemble splits in a bar chart\n    \n\nPassing Parameter: stateName (Arkansas)"
           },
           "response": []
         }

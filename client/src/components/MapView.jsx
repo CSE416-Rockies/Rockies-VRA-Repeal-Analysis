@@ -11,6 +11,8 @@ import StateSelection from "./StateSelection.jsx";
 import Heatmap_Legend from "./Heatmap_Legend.jsx";
 import LoadingView from "./LoadingView.jsx";
 
+import { getStateLegend } from "../api/api.js";
+
 import { useDistrictData } from "../hooks/useDistrictData.js";
 import { usePrecinctData } from "../hooks/usePrecinctData.js";
 
@@ -18,12 +20,6 @@ import { MAP_PARTY_COLORS, STATE_BOUNDS } from "../utils/constants.js";
 import { choroplethStyle, highlightStyle, lineStyle } from "../utils/mapStyles.js";
 import { normalizeDistrict, normalizeParty } from "../utils/helpers.js";
 
-async function loadLegend(state){
-    const res = await fetch(
-    `http://localhost:8080/${state}_legend.json`
-    );
-    return await res.json();
-}
 
 const legend_colors = ["#ECFDF5", "#D1FAE5", "#6EE7B7", "#10B981", "#047857", "#063E2F"]
 
@@ -33,7 +29,7 @@ export default function MapView(){
 
     const [expanded, setExpanded] = useState(true);
     const [selectedDistrict, setSelectedDistrict] = useState(null);
-    const [legend_items, setLegend_items] = useState([]); 
+    const [legendItems, setLegendItems] = useState([]); 
 
     const hoveredLayerRef = useRef(null);
     const selectedDistrictRef = useRef(null);
@@ -172,36 +168,33 @@ export default function MapView(){
     }, [store.minorityGroup]);
 
     useEffect(() => {
+        if (!selectedState || !store.minorityGroup) return;
         // console.log("fetching legend");
-        async function fetchLegend() {
-            const data = await loadLegend(selectedState);
-            console.log(data);
+        getStateLegend(selectedState)
+        .then((res) => {
+            const data = res.data;
             const race = store.minorityGroup;
+
+            if (!data[race]) {
+                console.error(`No legend data for minority group: ${race}`);
+                return;
+            }
+
             const bins = data[race].bins;
-
             const min = data[race].min;
-
+            
             const items = bins.map((bin, i) => {
-            let start = i === 0 ? min : bins[i - 1];
-            let end = bin;
-
-            // if(store.selectedState == 'Georgia'){
-            //     start = start*100;
-            //     end = end*100;
-            // }
-
-            return {
-                label: `${start.toFixed(1)}% - ${end.toFixed(1)}%`,
-                color: legend_colors[i]
-            };
+                let start = i === 0 ? min : bins[i - 1];
+                let end = bin;
+                return {
+                    label: `${start.toFixed(1)}% - ${end.toFixed(1)}%`,
+                    color: legend_colors[i]
+                }
             });
 
-            setLegend_items(items);
-        }
-
-        if (selectedState && store.minorityGroup) {
-            fetchLegend();
-        }
+            setLegendItems(items);
+        })
+        .catch((err) => console.error("Error loading legend:", err));            
     }, [selectedState, store.minorityGroup]);
 
     return(
@@ -235,7 +228,7 @@ export default function MapView(){
                     {store.mapMode === 'precinct' && precinctData && (<GeoJSON key={name} data={precinctData} style={getStyle} onEachFeature={onEachState} />)}
 
                 </MapContainer>
-                {store.mapMode == "precinct" && store.minorityGroup && <Heatmap_Legend title="Population Percentage" items = {legend_items} />}
+                {store.mapMode == "precinct" && store.minorityGroup && <Heatmap_Legend title="Population Percentage" items = {legendItems} />}
                 
             </div>
         </>
