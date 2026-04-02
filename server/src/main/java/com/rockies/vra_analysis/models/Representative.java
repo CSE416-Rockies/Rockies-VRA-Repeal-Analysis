@@ -40,6 +40,8 @@ public class Representative {
         this.imageId = imageId;
         this.status = status;
     }
+    
+    public String getId() { return id; }
 
     public String getState() {
         return state;

@@ -48,6 +48,8 @@ public class BoxWhiskerPlotsME {
         this.groups = groups;
     }
 
+    public String getId() { return id; }
+
     public String getState() {
         return state;
     }
