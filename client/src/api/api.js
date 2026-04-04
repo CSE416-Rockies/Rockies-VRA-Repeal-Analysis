@@ -6,6 +6,8 @@ const api = axios.create({
     baseURL: API_BASE_URL,
 });
 
+/* -----------------------------------------------------------------  General Information */
+
 export const getEnsembleSummary = (stateName) => {
     return api.get(`/state/${stateName}/ensembleSummary`);
 }
@@ -13,6 +15,13 @@ export const getEnsembleSummary = (stateName) => {
 export const getStateDetail = (stateName) =>{
     return api.get(`/state/${stateName}/stateDetail`);
 }
+
+export const getRepresentatives = (stateName) =>{
+    return api.get(`/state/${stateName}/representatives`);
+}
+
+
+/* ----------------------------------------------------------------- Visuals */
 
 export const getEnsembleSplits = (stateName) =>{
     return api.get(`/state/${stateName}/ensembleSplits`);
@@ -30,26 +39,6 @@ export const getGingles = (stateName) => {
     return api.get(`/state/${stateName}/gingles`);
 }
 
-export const getRepresentatives = (stateName) =>{
-    return api.get(`/state/${stateName}/representatives`);
-}
-
-export const getPrecinctMap = (stateName) =>{
-    return axios.get(`http://localhost:8080/${stateName}_precincts_topo.topojson`);
-}
-
-export const getCongressionalMap = (stateName) =>{
-    return axios.get(`http://localhost:8080/${stateName}_Congressional_Districts.geojson`);
-}
-
-export const getStateLines = () => {
-    return axios.get(`http://localhost:8080/2024_us_state_lines.json`);
-}
-
-export const getStateLegend = (stateName) => {
-    return axios.get(`http://localhost:8080/${stateName}_legend.json`);
-}
-
 export const getBoxWhiskersME = (stateName) => {
     return api.get(`/state/${stateName}/boxWhiskersME`);
 }
@@ -61,5 +50,24 @@ export const getEnsembleHistME = (stateName) => {
 export const getImpactThresholdTable = (stateName) => {
     return api.get(`/state/${stateName}/impactThresholdTable`);
 }
+
+/* ----------------------------------------------------------------- Get Maps */
+
+export const getPrecinctMap = (stateName) =>{
+    return axios.get(`http://localhost:8080/maps/${stateName}_precincts_topo.topojson`);
+}
+
+export const getCongressionalMap = (stateName) =>{
+    return axios.get(`http://localhost:8080/maps/${stateName}_Congressional_Districts.geojson`);
+}
+
+export const getStateLines = () => {
+    return axios.get(`http://localhost:8080/maps/2024_us_state_lines.json`);
+}
+
+export const getStateLegend = (stateName) => {
+    return axios.get(`http://localhost:8080/${stateName}_legend.json`);
+}
+
 
 

@@ -10,25 +10,13 @@ export default function MapSelect(){
 
     const options = [{id: 'district',  label: 'District plan'}, {id: 'precinct', label: 'Precinct'}]
 
-    const handleToggle = (mode) => {
-        setMinorityGroup(null);
-        setMapMode(mode);
-    }
-
-
-    function handleSelect(option){
-        setMinorityGroup(option);
-    }
-
-
-
     return(
         <div className = 'flex items-center z-40 absolute top-5 gap-5 text-gray-500 pointer-events-auto'
              style={{ left: 'calc(var(--navbar-width) + var(--panel-padding))'}}
         >
             <div className = 'flex items-center gap-5 bg-white rounded-xl px-5 shadow-md'>
                 { options.map(({id, label})=>(
-                    <button key = {id} className = 'flex gap-2 text-lg py-2 items-center cursor-pointer group' onClick = {()=> handleToggle(id)}>
+                    <button key = {id} className = 'flex gap-2 text-lg py-2 items-center cursor-pointer group' onClick = {()=> setMapMode(id)}>
                         <div className = {`rounded-md border-2 w-5 h-5 border-gray-500 capitalize ${store.mapMode == id? 'bg-gray-500 ': 'group-hover:bg-gray-300'}`}>  </div>
                         {label}
                     </button>
@@ -36,7 +24,7 @@ export default function MapSelect(){
                 }
             </div>
 
-            { store.mapMode == 'precinct' &&  <DropDownMenu options = {MINORITIES} icon = {UserGroupIcon} onSelect={handleSelect} toolTipDesc="Select group to show population" /> }
+            { store.mapMode == 'precinct' &&  <DropDownMenu options = {MINORITIES} minority = {true} icon = {UserGroupIcon} onSelect={setMinorityGroup} toolTipDesc="Select group to show population" /> }
         </div>
     )
 }

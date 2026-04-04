@@ -1,67 +1,50 @@
-import {useState, useContext, useEffect} from 'react'
+import {useState, useContext} from 'react'
 import {ChevronDownIcon, ChevronUpIcon} from '@heroicons/react/24/solid'
-import {useLocation} from 'react-router-dom';
 import Tooltip from './Tooltip';
 import GlobalStoreContext from '../store';
 import { getRaceLabel } from '../utils/helpers';
 
 export default function DropDownMenu({options, onSelect, icon: Icon, minority=false, toolTipDesc}){
-        const { store } = useContext(GlobalStoreContext);
-        const [open, setOpen] = useState(false);
-        const [selected, setSelected] = useState(null);
+    const { store} = useContext(GlobalStoreContext);
+    const [open, setOpen] = useState(false);
 
-        const location = useLocation();
-        const isMapView = (location.pathname.startsWith("/map"));
+    const selected = minority ? store.minorityGroup : store.racialGroup;
 
-        const chevronIcon = open? < ChevronUpIcon className = 'w-5'/> : < ChevronDownIcon className = 'w-5'/>
+    /* Display options ---------------------------------------------------------------------------- */
+    const defaultText = minority ? "Select minority group" : "Select racial group";
+    const displayText = selected || defaultText;
+    const chevronIcon = open? < ChevronUpIcon className = 'w-5'/> : < ChevronDownIcon className = 'w-5'/>
 
-        function selectFunc(option) {
-                // console.log("in dropdown menu, option: ", option);
-                setSelected(option);
-                onSelect(option);
-                setOpen(false);
-        }
+    const handleSelect = (option) =>{
+        onSelect(option);
+        setOpen(false);
+    }
 
-        useEffect(() =>{
-                if (minority) setSelected(store.minorityGroup);
-                else setSelected(store.racialGroup);
-        },[isMapView, setSelected]);
-
-
-        const defaultText = minority ? "Select minority group" : "Select racial group";
-        const displayText = selected || defaultText;
-
-        return(
-        
+    return(
         <div className = 'relative' >
-                <div className = 'flex flex-col py-2 relative bg-white shadow-md rounded-xl w-72 text-gray-600'>
-
-                        <button className = 'flex items-center justify-between px-5 capitalize text-lg hover:text-gray-400 transition-all duration-100' onClick = {()=>setOpen(!open)}>
-                                <div className = 'flex gap-2 items-center'>
-                                        { Icon && <Icon className = 'w-7'/> }
-                                        { selected ? getRaceLabel(selected) : displayText }
-                                </div>
-                                {chevronIcon}
-                        </button>
-                        
-                        { open && 
-                        <ul className = 'absolute top-full bg-white cursor-pointer rounded-xl shadow-md w-full py-2 mt-1'>
+            <div className = 'flex flex-col py-2 relative bg-white shadow-md rounded-xl w-72 text-gray-600'>
+                <button className = 'flex items-center justify-between px-5 capitalize text-lg hover:text-gray-400 transition-all duration-100' onClick = {()=>setOpen(!open)}>
+                    <div className = 'flex gap-2 items-center'>
+                        { Icon && <Icon className = 'w-7'/> }
+                        { selected ? getRaceLabel(selected) : displayText }
+                    </div>
+                    {chevronIcon}
+                </button>
+                            
+                { open && 
+                    <ul className = 'absolute top-full bg-white cursor-pointer rounded-xl shadow-md w-full py-2 mt-1'>
                         { options.map((option)=> (
-                                <div key = {option.value} className = 'px-5 hover:bg-gray-100 transition-all duration-100 ease-in'>
-                                        <li className = 'capitalize p-2' onClick = {()=>selectFunc(option.value)}> {option.label} </li>
-                                </div> 
+                            <div key = {option.value} className = 'px-5 hover:bg-gray-100 transition-all duration-100 ease-in'>
+                                    <li className = 'capitalize p-2' onClick={()=>handleSelect(option.value)}> {option.label} </li>
+                            </div> 
                         ))}
-                        </ul>
-                        }
-
-                        
-                </div>
-                { !selected && !open &&
-                        <Tooltip desc = {toolTipDesc}/>
+                    </ul>
                 }
-                
+                            
+            </div>
+            { !selected && !open 
+                && <Tooltip desc = {toolTipDesc}/>
+            }    
         </div>
-
-
-        )
+    )
 }

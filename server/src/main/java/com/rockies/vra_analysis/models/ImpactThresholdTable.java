@@ -11,6 +11,8 @@ public class ImpactThresholdTable {
     private Map<String, GroupThresholds> groups;    // per race
     private GroupThresholds aggregate;              // all minorities combined
 
+    public ImpactThresholdTable(){};
+
     public static class GroupThresholds {
         private EnsembleProportion enactedThreshold;
         private EnsembleProportion proportionalThreshold;
@@ -19,7 +21,7 @@ public class ImpactThresholdTable {
         public static class EnsembleProportion {
             private double raceBlind;
             private double vra;
-
+            
             public double getRaceBlind() { return raceBlind; }
             public double getVra() { return vra; }
         }
