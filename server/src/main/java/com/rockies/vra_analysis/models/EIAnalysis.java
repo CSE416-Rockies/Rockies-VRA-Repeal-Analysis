@@ -15,52 +15,30 @@ import java.util.Map;
         /* variables -------------------------------------- */
         private String id;
         private String state;
-
-        private MCMC mcmc;
         private List<Candidate> candidates;
 
         /* constructor -------------------------------------- */
         public EIAnalysis() {}
 
-        public EIAnalysis(String state, MCMC mcmc, List<Candidate> candidates) {
+        public EIAnalysis(String state, List<Candidate> candidates) {
             this.state = state;
-            this.mcmc = mcmc;
             this.candidates = candidates;
         }
 
         /* methods ---------------------------------------- */
         public String getId() { return id; }
         public String getState() { return state; }
-        public MCMC getMCMC() { return mcmc; }
         public List<Candidate> getCandidates() {return candidates;}
 
-        /* classes ---------------------------------------- */
-        public static class MCMC {
-            private int iterations;
-            @Field("burn_in")
-            private int burnIn;
-            private int chains;
-
-            public MCMC() {}
-
-            public int getIterations() { return iterations; }
-            public int getBurnIn() { return burnIn; }
-            public int getChains() { return chains; }
-            
-        }
 
         public static class Candidate{
             @Field("id")
             private String id; 
-            private String name;
-            private String party;
             private Map<String, GroupResult> groups;
 
             public Candidate() {}
 
             public String getId() { return id; }
-            public String getName() {return name; }
-            public String getParty() { return party; }
             public Map<String, GroupResult> getGroups() {
                 return groups;
             }
