@@ -2,8 +2,9 @@ import * as d3 from "d3";
 import { PARTY_COLORS } from "./constants";
 import { drawAxes, drawGrid } from "./drawGridLines";
 import { drawBisector } from "./drawBisector";
+import { predict } from "./helpers";
 
-export function drawScatterPlot({ givenSVG, data, margin, racialLabel }) { 
+export function drawGingles({ givenSVG, data, margin, racialLabel }) { 
     
     if (!givenSVG || !data) return;
     var svg = d3.select(givenSVG)
@@ -34,8 +35,8 @@ export function drawScatterPlot({ givenSVG, data, margin, racialLabel }) {
 
     const regression = {
         [racialLabel]: {
-            dem: { b0: harrisFit.b0, b1: harrisFit.b1 },
-            rep: { b0: trumpFit.b0, b1: trumpFit.b1 }
+            dem: { model: harrisFit.model, params: harrisFit.params },
+            rep: { model: trumpFit.model,  params: trumpFit.params }
         }
     };
 
@@ -82,14 +83,11 @@ export function drawScatterPlot({ givenSVG, data, margin, racialLabel }) {
     const lineDataByParty = {};
 
     ['dem', 'rep'].forEach(party => {
-        // sigmoid
-        const { b0, b1 } = raceRegression[party];
-        // divide x by 100 -> coefficients 0–1 scale to 0 - 100
-        const predict = (x) => (1 / (1 + Math.exp(-(b0 + b1 * (x / 100))))) * 100;
-        const lineData = d3.range(0, 101, 1).map(x => ({
-            x,
-            y: Math.min(100, Math.max(0, predict(x)))
-        }));
+        const { model, params } = raceRegression[party];
+        const lineData = d3.range(0, 101, 1).map(xVal => ({
+            x: xVal,
+            y: Math.min(100, Math.max(0, predict(model, params, xVal/100)*100))
+        }));        
 
         lineDataByParty[party] = lineData;
 

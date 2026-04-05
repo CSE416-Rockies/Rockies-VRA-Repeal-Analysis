@@ -49,25 +49,18 @@ public class Gingles extends StateDocument{
     }
     public static class Candidate{
         private String candidate;
-        private double b0;
-        private double b1;
+        private String model;
+        private String formula;
+        private Map<String, Double> params;
 
         public Candidate() {}
 
-        @Field("se_b0")
-        private double seB0;
-        @Field("se_b1")
-        private double seB1;
-        @Field("r_squared")
-        private double rSquared;
-
         public String getCandidate() { return candidate; }
-        public double getB0() { return b0; }
-        public double getB1() { return b1; }
-        public double getSeB0() { return seB0; }
-        public double getSeB1() { return seB1; }
-        public double getRSquared() { return rSquared; }
+        public String getModel() { return model; }
+        public String getFormula() { return formula; }
+        public Map<String, Double> getParams() { return params; }
     }
+    
     public static class Precinct{
         private int id;
         private Map<String, GroupPoint> groups;

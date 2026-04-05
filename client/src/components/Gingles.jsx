@@ -3,7 +3,7 @@ import GlobalStoreContext from '../store';
 import DropDownMenu from "./DropDownMenu";
 import GraphView from "./GraphView";
 
-import { drawScatterPlot } from "../utils/drawScatterPlot";
+import { drawGingles } from "../utils/drawGingles";
 import { useD3 } from "../hooks/useD3";
 
 import { PRESIDENT_CAND_LEGEND, RACES} from "../utils/constants"
@@ -11,7 +11,7 @@ import { UserGroupIcon } from "@heroicons/react/24/solid";
 import { SelectionPlaceholder } from './selectionPlaceholder';
 import { getGingles } from "../api/api";
 
-export default function ScatterPlot(){
+export default function Gingles(){
     const { store, setRacialGroup } = useContext(GlobalStoreContext);
     const selectedState = store?.selectedState || "";
 
@@ -32,7 +32,7 @@ export default function ScatterPlot(){
     // draw d3 
     useD3(ref, (svg)=>{
         if(!ginglesData || !racialGroup) return;
-        drawScatterPlot({givenSVG: svg, data: ginglesData, margin, racialLabel: racialGroup});
+        drawGingles({givenSVG: svg, data: ginglesData, margin, racialLabel: racialGroup});
     }, [ginglesData, racialGroup]);
 
 

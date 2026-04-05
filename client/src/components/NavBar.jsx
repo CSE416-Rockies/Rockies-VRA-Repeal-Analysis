@@ -2,7 +2,6 @@ import { Link, useLocation } from "react-router-dom"
 import { useState, useContext } from "react"
 
 import MapIcon from '../assets/svgs/map.svg?react';
-import BarIcon from '../assets/svgs/bargraph.svg?react';
 import EIAnalysisIcon from '../assets/svgs/eiAnalysis.svg?react';
 import BoxPlotIcon from '../assets/svgs/boxandwhisker.svg?react';
 import ScatterIcon from '../assets/svgs/scatterplot.svg?react';
@@ -22,7 +21,7 @@ export default function NavBar(){
     const [expand, setExpand] = useState(false);
     const navItems = [
         {to: `/map/${selectedStateName}`, id: "map-nav", icon: MapIcon, label: "Map"},
-        {to: "/scatterplot", id: "scatter-nav", icon: ScatterIcon, label: "Scatterplot"},
+        {to: "/gingles", id: "gingles-nav", icon: ScatterIcon, label: "Gingles"},
         {to: "/eiAnalysis", id: "boxplot-nav", icon: EIAnalysisIcon, label: "EI Analysis"},
         {to: "/ensembles", id: "ensembles-nav", icon: BoxPlotIcon, label: "Ensemble Visualizations"},
         {to: "/minorityEffect", id: "minority-nav", icon: MinorityIcon, label: "Minority Effectiveness"},

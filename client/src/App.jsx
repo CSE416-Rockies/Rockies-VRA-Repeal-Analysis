@@ -6,7 +6,7 @@ import Map from './components/Map.jsx';
 import NavBar from './components/NavBar.jsx';
 import StateSelection from './components/StateSelection.jsx';
 import MapView from './components/MapView.jsx';
-import ScatterPlot from './components/ScatterPlot.jsx';
+import Gingles from './components/Gingles.jsx';
 import EIAnalysis from './components/EIAnalysis.jsx';
 import Ensemble from './components/Ensemble.jsx';
 import MinorityEffect from './components/MinorityEffect.jsx';
@@ -32,7 +32,7 @@ function App() {
           <Routes>
             <Route path = "/" element = {<Map/>}></Route>
             <Route path = "/map/:name" element = {<MapView />}></Route> 
-            <Route path = "/scatterplot" element = {<ScatterPlot/>}></Route>
+            <Route path = "/gingles" element = {<Gingles/>}></Route>
             <Route path = "/eiAnalysis" element = {<EIAnalysis/>}></Route>
             <Route path = "/ensembles" element = {<Ensemble/>}></Route> 
             <Route path = "/minorityEffect" element = {<MinorityEffect/>}></Route> 
