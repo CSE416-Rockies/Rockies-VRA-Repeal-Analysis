@@ -3,27 +3,29 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Map;
 
-import org.springframework.data.annotation.Id;
-
 @Document(collection = "ensemble-histogram-me")
-public class EnsembleHistogramME{
-    @Id
-    private String id;
-    private String state;
+public class EnsembleHistogramME extends StateDocument{
+    
+    /* private variables -------------------------------------- */
     private int totalDistricts;
     private Map<String, GroupCounts> raceBlind;
     private Map<String, GroupCounts> vra;
 
-    /* ----------------------------------------- constructors */
+    /* constructors ------------------------------------------- */
     public EnsembleHistogramME() {}
-    
     public EnsembleHistogramME(String state, int totalDistricts, Map<String, GroupCounts> raceBlind, Map<String, GroupCounts> vra) {
-        this.state = state;
+        super(state);
         this.totalDistricts = totalDistricts;
         this.raceBlind = raceBlind;
         this.vra = vra;
     }
 
+    /* methods ------------------------------------------- */
+    public int getTotalDistricts() { return totalDistricts; }
+    public Map<String, GroupCounts> getRaceBlind() { return raceBlind; }
+    public Map<String, GroupCounts> getVra() { return vra; }
+
+   /* static nested classes ---------------------------------- */
     public static class GroupCounts {
         private int black;
         private int latino;
@@ -35,10 +37,4 @@ public class EnsembleHistogramME{
         public int getLatino() { return latino; }
         public int getOther()  { return other; }
     }
-
-    public String getId() { return id; }
-    public String getState() { return state; }
-    public int getTotalDistricts() { return totalDistricts; }
-    public Map<String, GroupCounts> getRaceBlind() { return raceBlind; }
-    public Map<String, GroupCounts> getVra() { return vra; }
 }

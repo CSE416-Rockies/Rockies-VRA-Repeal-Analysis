@@ -2,35 +2,27 @@ package com.rockies.vra_analysis.models;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.annotation.Id;
 import java.util.List;
 import java.util.Map;
 
 @Document("ei-analysis")
 
-    public class EIAnalysis{
+    public class EIAnalysis extends StateDocument{
 
-        
-        @Id
-        /* variables -------------------------------------- */
-        private String id;
-        private String state;
+        /* private variables -------------------------------------- */
         private List<Candidate> candidates;
 
-        /* constructor -------------------------------------- */
+        /* constructors ------------------------------------------- */
         public EIAnalysis() {}
-
         public EIAnalysis(String state, List<Candidate> candidates) {
-            this.state = state;
+            super(state);
             this.candidates = candidates;
         }
 
-        /* methods ---------------------------------------- */
-        public String getId() { return id; }
-        public String getState() { return state; }
+        /* methods ------------------------------------------------ */
         public List<Candidate> getCandidates() {return candidates;}
 
-
+        /* static nested classes ---------------------------------- */
         public static class Candidate{
             @Field("id")
             private String id; 

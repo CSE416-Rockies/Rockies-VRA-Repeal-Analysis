@@ -2,34 +2,27 @@ package com.rockies.vra_analysis.models;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.annotation.Id;
 
-@Document(collection = "state-detail")
-public class StateDetail{
-    @Id
-    private String id;
-    private String state;
+@Document("state-detail")
+public class StateDetail extends StateDocument{
+   
+    /* private variables -------------------------------------- */
     private RacialPopulation racialPopulation;
     private VoterDistribution voterDistribution;
 
-    
-    //constructor
+    /* constructor --------------------------------------------- */
     public StateDetail(){}
-
-    public StateDetail(String name, RacialPopulation racialPopulation, VoterDistribution voterDistribution){
-        this.state = name;
+    public StateDetail(String state, RacialPopulation racialPopulation, VoterDistribution voterDistribution){
+        super(state);
         this.racialPopulation = racialPopulation;
         this.voterDistribution = voterDistribution;
     }
 
-    //getters
-    public String getId() { return this.id; }
-    public String getName() { return this.state; }
+    /* constructor --------------------------------------------- */
     public RacialPopulation getRacialPopulation() { return this.racialPopulation; }
     public VoterDistribution getVoterDistribution() { return this.voterDistribution; }
 
-    // static classes
-
+    /* static nested classes ----------------------------------- */
     public static class VoterDistribution{
         private String partyControl;
         @Field("democratPercent")
@@ -39,10 +32,8 @@ public class StateDetail{
         @Field("otherPercent")
         private double otherPercentage;
 
-        //constructor
         public VoterDistribution() {}
 
-        //getters
         public String getPartyControl() { return this.partyControl; }
         public double getDemocratPercentage() {return this.democratPercentage; }
         public double getRepublicanPercentage() {return this.republicanPercentage; }
@@ -61,10 +52,8 @@ public class StateDetail{
         @Field("otherPopulation")
         private int other;
 
-        //constructor
         public RacialPopulation() {}
 
-        //getters
         public int getTotal(){ return this.total; }
         public int getWhitePopulation() { return this.white; }
         public int getBlackPopulation() { return this.black; }

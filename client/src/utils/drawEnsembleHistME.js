@@ -35,7 +35,7 @@ export function drawEnsembleHistME({givenSVG, data, margin, racialGroup}){
     const xConfig = d3.axisBottom(x);
     const yConfig =  d3.axisLeft(y).ticks(4);
 
-    drawGrid({svg, width, height, x, xConfig, yConfig});
+    drawGrid({svg, width, height, x, xConfig, yConfig, hideX:true});
     drawAxes({
         svg, width, height, margin, xConfig, yConfig,
         xLabel: `# of ${racialGroup} effective districts`,

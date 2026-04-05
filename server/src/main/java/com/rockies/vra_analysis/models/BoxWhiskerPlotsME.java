@@ -1,19 +1,34 @@
 package com.rockies.vra_analysis.models;
 
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.annotation.Id;
 import java.util.Map;
 
 
 @Document("box-whisker-plots-me")
-public class BoxWhiskerPlotsME {
+public class BoxWhiskerPlotsME extends StateDocument{
 
-    @Id
-    private String id;
-    private String state;
-    private Map<String, GroupEffectiveness> groups;
+    /* private variables -------------------------------------- */
+    private Map<String, BoxStats> raceBlind;
+    private Map<String, BoxStats> vra;
+    private Map<String, Integer> enactedCounts;
 
-    public static class GroupEffectiveness {
+    /* constructors ------------------------------------------- */
+    public BoxWhiskerPlotsME(){}
+    public BoxWhiskerPlotsME(String state, Map<String, BoxStats> raceBlind, Map<String, BoxStats> vra, Map<String, Integer> enactedCounts) {
+        super(state);
+        this.raceBlind = raceBlind;
+        this.vra = vra;
+        this.enactedCounts = enactedCounts;
+    }
+
+    /* methods ------------------------------------------------ */
+    public Map<String, BoxStats> getRaceBlind() { return raceBlind; }
+    public Map<String, BoxStats> getVra() { return vra; }
+    public Map<String, Integer> getEnactedCounts() { return enactedCounts; }
+    
+
+    /* static nested classes ---------------------------------- */
+    public static class GroupEffectiveness{
         private BoxStats raceBlind;
         private BoxStats vra;
         private int enactedCount;
@@ -40,24 +55,5 @@ public class BoxWhiskerPlotsME {
         public double getQ3() { return q3; }
         public double getMax() { return max; }
     }
-
-    public BoxWhiskerPlotsME(){}
-
-    public BoxWhiskerPlotsME(String state, Map<String, GroupEffectiveness> groups){
-        this.state = state;
-        this.groups = groups;
-    }
-
-    public String getId() { return id; }
-
-    public String getState() {
-        return state;
-    }
-
-    public Map<String, GroupEffectiveness> getGroups() {
-        return groups;
-    }
-
-
 
 }

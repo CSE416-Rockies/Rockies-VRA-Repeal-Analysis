@@ -11,11 +11,11 @@ export function drawBoxWhiskerME({givenSVG, data, margin, racialGroup}){
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
     /* ------------------------------------------------------------------ Flatten map */
-    const groups = Object.entries(data.groups).map(([race, values]) => ({
+    const groups = Object.keys(data.raceBlind).map((race) => ({
         race,
-        raceBlind: values.raceBlind,
-        vra: values.vra,
-        enactedCount: values.enactedCount
+        raceBlind: data.raceBlind[race],
+        vra: data.vra[race],
+        enactedCount: data.enactedCounts[race]
     }));
 
     const ensembleTypes = ["raceBlind", "vra"];
@@ -70,7 +70,6 @@ export function drawBoxWhiskerME({givenSVG, data, margin, racialGroup}){
             const cx = groupX + xInner(type) + xInner.bandwidth() / 2;  
             const bandwidth = xInner.bandwidth();
             
-            console.log(type);
             drawBox(svg, { cx, bandwidth, y, d: stats, isHighlighted, color: ME_COLORS[type] });          
         });
         
