@@ -1,14 +1,10 @@
 import * as d3 from "d3";
-import { drawAxes } from "./drawAxes";
+import { drawAxes, drawGrid } from "./drawGridLines";
 import { drawBox} from "./drawBox";
 import { ME_COLORS } from "./constants";
 
 export function drawBoxWhiskerME({givenSVG, data, margin, racialGroup}){
     if(!givenSVG) return;
-
-    console.log("givenSVG:", givenSVG);
-    console.log("data:", data);
-    console.log("margin:", margin);
 
     var svg = d3.select(givenSVG)
         .append("g")
@@ -51,13 +47,15 @@ export function drawBoxWhiskerME({givenSVG, data, margin, racialGroup}){
         .domain([yMax, 0])
         .range([0, height]);
 
+    const xConfig = d3.axisBottom(xOuter);
+    const yConfig = d3.axisLeft(y).ticks(6);
+
+    drawGrid({svg, width, height, xOuter, xConfig, yConfig, hideX: true});
     drawAxes({
-        svg, width, height, margin,
-        xConfig: d3.axisBottom(xOuter),
-        yConfig: d3.axisLeft(y).ticks(6),
+        svg, width, height, margin, xConfig, yConfig,
         xLabel: "Racial Group",
         yLabel: "# of Effective Districts",
-        small: true
+        small: true,
     });
 
     /* ------------------------------------------------------------------ Boxes */

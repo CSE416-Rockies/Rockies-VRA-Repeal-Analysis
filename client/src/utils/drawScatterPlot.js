@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import { PARTY_COLORS } from "./constants";
-import { drawAxes } from "./drawAxes";
+import { drawAxes, drawGrid } from "./drawGridLines";
+import { drawBisector } from "./drawBisector";
 
 export function drawScatterPlot({ givenSVG, data, margin, racialLabel }) { 
     
@@ -12,6 +13,7 @@ export function drawScatterPlot({ givenSVG, data, margin, racialLabel }) {
     /* ------------------------------------------------------------------ Dimensions */
     const width = givenSVG.clientWidth - margin.left - margin.right;
     const height = givenSVG.clientHeight - margin.top - margin.bottom;
+    if (width <= 0 || height <= 0) return;
 
     /* ------------------------------------------------------------------ Transformation */
     const flatData = data.precincts.flatMap(d => {
@@ -50,10 +52,14 @@ export function drawScatterPlot({ givenSVG, data, margin, racialLabel }) {
         .domain([100,0])        // axis ticks
         .range([0,height]);     // graph height
 
+    const xConfig = d3.axisBottom(x).ticks(4).tickFormat(d => `${d}%`);
+    const yConfig = d3.axisLeft(y).ticks(4).tickFormat(d => `${d}%`);
+
+    drawGrid({ svg, width, height, x, xConfig, yConfig });
     drawAxes({
         svg, width, height, margin,
-        xConfig: d3.axisBottom(x).ticks(4).tickFormat(d => `${d}%`),
-        yConfig: d3.axisLeft(y).ticks(4).tickFormat(d => `${d}%`),
+        xConfig: xConfig,
+        yConfig: yConfig,
         xLabel: `Percent ${racialLabel}`,
         yLabel: "Vote Shares",
     });
@@ -73,6 +79,7 @@ export function drawScatterPlot({ givenSVG, data, margin, racialLabel }) {
 
     /* Draw regression lines from coefficients */
     const raceRegression = regression[racialLabel];
+    const lineDataByParty = {};
 
     ['dem', 'rep'].forEach(party => {
         // sigmoid
@@ -84,6 +91,8 @@ export function drawScatterPlot({ givenSVG, data, margin, racialLabel }) {
             y: Math.min(100, Math.max(0, predict(x)))
         }));
 
+        lineDataByParty[party] = lineData;
+
         svg.append("path")
             .datum(lineData)
             .attr("fill", "none")
@@ -92,4 +101,21 @@ export function drawScatterPlot({ givenSVG, data, margin, racialLabel }) {
             .attr("d", d3.line().x(d => x(d.x)).y(d => y(d.y)).curve(d3.curveBasis));
     });
     
+
+    drawBisector({
+        svg, width, height, x, 
+        data: [
+            { label: "Harris", values: lineDataByParty.dem  },
+            { label: "Trump", values: lineDataByParty.rep  }
+        ],
+        onHover: ({ xVal, points }) => {
+            const harris = points[0].point?.y;
+            const trump = points[1].point?.y;
+            return `
+                <strong>${xVal.toFixed(1)}% ${racialLabel}</strong>
+                <div>Harris: ${harris ? harris.toFixed(1) + "%" : "—"}</div>
+                <div>Trump: ${trump ? trump.toFixed(1) + "%" : "—"}</div>
+            `
+        }
+    })
 }

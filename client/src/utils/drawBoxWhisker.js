@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import { drawBox } from "./drawBox";
-import { drawAxes } from "./drawAxes";
+import { drawAxes, drawGrid } from "./drawGridLines";
 import { ME_COLORS } from "./constants";
 
 
@@ -47,11 +47,12 @@ export function drawBoxWhisker({ givenSVG, data, margin, racialGroup, ensemble }
         .range([0, height]);
 
     /* ------------------------------------------------------------------ Axes */
+    const xConfig = d3.axisBottom(xOuter).tickFormat(d => Number.isInteger(d) ? d : "");
+    const yConfig =  d3.axisLeft(y).ticks(6).tickFormat(d => `${Math.round(d * 100)}%`);
 
+    drawGrid({svg, width, xOuter, height, xConfig, yConfig, hideX: true});
     drawAxes({
-        svg, width, height, margin,
-        xConfig: d3.axisBottom(xOuter).tickFormat(d => Number.isInteger(d) ? d : ""),
-        yConfig: d3.axisLeft(y).ticks(6).tickFormat(d => `${Math.round(d * 100)}%`),
+        svg, width, height, margin, xConfig, yConfig,
         xLabel: "Indexed Districts",
         yLabel: `Population Share`,
         small: true

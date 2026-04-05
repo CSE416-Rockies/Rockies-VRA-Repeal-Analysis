@@ -27,7 +27,10 @@ export default function EIAnalysis(){
     useEffect(()=>{
            if(!selectedState) return;
            getEIAnalysis(selectedState)
-           .then(res => setEIAnalysisData(res.data))
+           .then(res => {
+            console.log("EI ANALYSIS: ", res.data)
+            setEIAnalysisData(res.data)
+            })
            .catch(err => console.error("Error loading EI Analysis data:", err));
     }, [selectedState]);
 

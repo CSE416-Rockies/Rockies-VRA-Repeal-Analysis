@@ -35,45 +35,79 @@ th{
 
 
 @keyframes slideInL {
-  from { transform: translateX(-100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
 }
 
 .slideInL {
-  animation: slideInL 0.5s;
+    animation: slideInL 0.5s;
 }
 
 @keyframes slideInR {
-  from { transform: translateX(100%); opacity: 0; }
-  to { transform: translateX(0%); opacity: 1; }
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0%); opacity: 1; }
 }
 
 .slideInR {
-  animation: slideInR  0.5s;
+    animation: slideInR  0.5s;
 }
 
 .leaflet-tooltip {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
 }
 
 .leaflet-interactive:focus {
-  outline: none !important;
+    outline: none !important;
 }
 
 /* ------------------------------------------- graph axis styling */
+
 .axisColor line, 
 .axisColor path{
-  stroke: #6B7280;
-  stroke-width: 2;
+    stroke: #6B7280;
+    stroke-width: 2;
 }
 
 .axisColor text{
-  fill: #6B7280;
+    fill: #6B7280;
 }
 
 .capitalize-axis {
-  text-transform: capitalize;
+    text-transform: capitalize;
+}
+
+.gridColor .tick line {
+    stroke: #E0E0E0;
+    stroke-width: .5;
+}
+
+.kdeFill{
+    opacity: 0.7;
+    stroke-width: 2;
+    stroke-linejoin: round;
+}
+
+.bisector{
+    stroke: #000000;
+    stroke-width: 1;
+    stroke-dasharray: 3,3;
+}
+
+.tooltip {
+    position: absolute;
+    background: rgba(0,0,0,0.75);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    pointer-events: none;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.tooltip.visible {
+    opacity: 1;
 }

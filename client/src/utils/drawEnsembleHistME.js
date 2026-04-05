@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { drawAxes } from "./drawAxes";
+import { drawAxes, drawGrid } from "./drawGridLines";
 import { drawBars } from "./drawBars";
 import { ME_COLORS } from "./constants";
 
@@ -32,12 +32,14 @@ export function drawEnsembleHistME({givenSVG, data, margin, racialGroup}){
         .domain([0, (maxCount || 1) *1.1])
         .range([height, 0]);
 
+    const xConfig = d3.axisBottom(x);
+    const yConfig =  d3.axisLeft(y).ticks(4);
+
+    drawGrid({svg, width, height, x, xConfig, yConfig});
     drawAxes({
-        svg, width, height, margin, 
+        svg, width, height, margin, xConfig, yConfig,
         xLabel: `# of ${racialGroup} effective districts`,
         yLabel: "# of plans",
-        xConfig: d3.axisBottom(x),
-        yConfig: d3.axisLeft(y).ticks(4),
         small: true
     });
 

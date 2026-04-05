@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import { ME_COLORS } from "./constants";
-import { drawAxes } from "./drawAxes";
+import { drawAxes, drawGrid } from "./drawGridLines";
 import { drawBars } from "./drawBars";
 
 export default function drawEnsembleSplits({ givenSVG, data, margin, ensemble, racialGroup}){
@@ -43,13 +43,16 @@ export default function drawEnsembleSplits({ givenSVG, data, margin, ensemble, r
         const y = d3.scaleLinear()
             .domain([0, (maxCount || 1) *1.1])
             .range([height, 0]);
-            
+          
+        const xConfig = d3.axisBottom(x).tickFormat(d=>`${d}R/${totalDistricts - d}D`);
+        const yConfig =  d3.axisLeft(y).ticks(4);
+        drawGrid({ svg, width, height, x, xConfig, yConfig, hideX: true });
+
         drawAxes({
             svg, width, height, margin, 
             xLabel: "Republican / Democratic Split", 
             yLabel: "Count",
-            xConfig: d3.axisBottom(x).tickFormat(d=>`${d}R/${totalDistricts - d}D`),
-            yConfig: d3.axisLeft(y).ticks(4),
+            xConfig, yConfig,
             small: true
         });
 

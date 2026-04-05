@@ -77,7 +77,7 @@ export default function DistrictDetail({expanded, onClick, selectedDistrict, onS
                             ref={index === 0 ? rowRef : null} 
                             onClick = {()=> onSelect(districtNumber)}
                             className = {`
-                                h-8 cursor-pointer hover:text-gray-400
+                                h-8 cursor-pointer hover:text-emerald-500
                                 ${index % 2 === 0 ? 'bg-gray-100' : ''} 
                                 ${status === "Vacant" ? 'text-gray-400' : ''} 
                                 ${String(districtNumber) === String(selectedDistrict) ? 'text-emerald-500 font-bold' : ''}
