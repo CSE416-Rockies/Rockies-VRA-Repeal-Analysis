@@ -26,11 +26,11 @@ export function drawGingles({ givenSVG, data, margin, racialLabel }) {
         ]
     });
 
-    const fits = data.regression.fits.find(f => f.group === racialLabel);
+    const fits = data.regression.fits[racialLabel];
     if (!fits) return;
 
-    const harrisFit = fits.candidates.find(c => c.candidate === "harris");
-    const trumpFit = fits.candidates.find(c => c.candidate === "trump");
+    const harrisFit = fits.find(c => c.candidate === "harris");
+    const trumpFit = fits.find(c => c.candidate === "trump");
     if (!harrisFit || !trumpFit) return;
 
     const regression = {

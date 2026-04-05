@@ -27,26 +27,13 @@ public class Gingles extends StateDocument{
 
     /* static nested classes ---------------------------------------- */
     public static class Regression{
-        private String model;
-        private String formula;
-        private List<Group> fits;
+        private Map<String, List<Candidate>> fits;
 
         public Regression(){}
 
-        public String getModel() { return model; }
-        public String getFormula() { return formula; }
-        public List<Group> getFits() { return fits; }
+        public Map<String, List<Candidate>> getFits() { return fits; }
     }
 
-    public static class Group{
-        private String group;
-        private List<Candidate> candidates;
-
-        public Group(){}
-
-        public String getGroup() { return group; }
-        public List<Candidate> getCandidates() { return candidates; }
-    }
     public static class Candidate{
         private String candidate;
         private String model;
@@ -60,7 +47,7 @@ public class Gingles extends StateDocument{
         public String getFormula() { return formula; }
         public Map<String, Double> getParams() { return params; }
     }
-    
+
     public static class Precinct{
         private int id;
         private Map<String, GroupPoint> groups;
