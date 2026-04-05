@@ -1,108 +1,96 @@
 {
     "state": "Georgia",
     "regression": {
-        "fits": [
-            {
-                "group": "white",
-                "candidates": [
-                    {
-                        "candidate": "harris",
-                        "model": "poly2",
-                        "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
-                        "params": {
-                            "a": -0.3857944588059289,
-                            "b": 0.27201679080841096,
-                            "c": 0.21626012352220578
-                        }
-                    },
-                    {
-                        "candidate": "trump",
-                        "model": "poly2",
-                        "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
-                        "params": {
-                            "a": 0.39340374302609443,
-                            "b": -0.26604105648385706,
-                            "c": 0.767124663843675
-                        }
+        "fits": {
+            "white": [
+                {
+                    "candidate": "harris",
+                    "model": "poly2",
+                    "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
+                    "params": {
+                        "a": -0.3857944588059289,
+                        "b": 0.27201679080841096,
+                        "c": 0.21626012352220578
                     }
-                ]
-            },
-            {
-                "group": "black",
-                "candidates": [
-                    {
-                        "candidate": "harris",
-                        "model": "poly2",
-                        "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
-                        "params": {
-                            "a": 0.38720623458250475,
-                            "b": -0.2997369850160906,
-                            "c": 0.9305333950037863
-                        }
-                    },
-                    {
-                        "candidate": "trump",
-                        "model": "poly2",
-                        "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
-                        "params": {
-                            "a": -0.38989569628593634,
-                            "b": 0.3063654501450026,
-                            "c": 0.06158905034268202
-                        }
+                },
+                {
+                    "candidate": "trump",
+                    "model": "poly2",
+                    "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
+                    "params": {
+                        "a": 0.39340374302609443,
+                        "b": -0.26604105648385706,
+                        "c": 0.767124663843675
                     }
-                ]
-            },
-            {
-                "group": "latino",
-                "candidates": [
-                    {
-                        "candidate": "harris",
-                        "model": "poly2",
-                        "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
-                        "params": {
-                            "a": -0.44083625780626573,
-                            "b": 0.03979423683965416,
-                            "c": 0.6902753538157986
-                        }
-                    },
-                    {
-                        "candidate": "trump",
-                        "model": "poly2",
-                        "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
-                        "params": {
-                            "a": 0.4920394705541861,
-                            "b": -0.03874699534670521,
-                            "c": 0.2760966971426551
-                        }
+                }
+            ],
+            "black": [
+                {
+                    "candidate": "harris",
+                    "model": "poly2",
+                    "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
+                    "params": {
+                        "a": 0.38720623458250475,
+                        "b": -0.2997369850160906,
+                        "c": 0.9305333950037863
                     }
-                ]
-            },
-            {
-                "group": "other",
-                "candidates": [
-                    {
-                        "candidate": "harris",
-                        "model": "poly2",
-                        "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
-                        "params": {
-                            "a": -0.2701740010462551,
-                            "b": 0.04483583049978189,
-                            "c": 0.8962739255014242
-                        }
-                    },
-                    {
-                        "candidate": "trump",
-                        "model": "poly2",
-                        "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
-                        "params": {
-                            "a": 0.21091246612211972,
-                            "b": -0.031967309258264576,
-                            "c": 0.07709178287689966
-                        }
+                },
+                {
+                    "candidate": "trump",
+                    "model": "poly2",
+                    "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
+                    "params": {
+                        "a": -0.38989569628593634,
+                        "b": 0.3063654501450026,
+                        "c": 0.06158905034268202
                     }
-                ]
-            }
-        ]
+                }
+            ],
+            "latino": [
+                {
+                    "candidate": "harris",
+                    "model": "poly2",
+                    "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
+                    "params": {
+                        "a": -0.44083625780626573,
+                        "b": 0.03979423683965416,
+                        "c": 0.6902753538157986
+                    }
+                },
+                {
+                    "candidate": "trump",
+                    "model": "poly2",
+                    "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
+                    "params": {
+                        "a": 0.4920394705541861,
+                        "b": -0.03874699534670521,
+                        "c": 0.2760966971426551
+                    }
+                }
+            ],
+            "other": [
+                {
+                    "candidate": "harris",
+                    "model": "poly2",
+                    "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
+                    "params": {
+                        "a": -0.2701740010462551,
+                        "b": 0.04483583049978189,
+                        "c": 0.8962739255014242
+                    }
+                },
+                {
+                    "candidate": "trump",
+                    "model": "poly2",
+                    "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
+                    "params": {
+                        "a": 0.21091246612211972,
+                        "b": -0.031967309258264576,
+                        "c": 0.07709178287689966
+                    }
+                }
+            ]
+        }
     },
     "precincts": [
         {
