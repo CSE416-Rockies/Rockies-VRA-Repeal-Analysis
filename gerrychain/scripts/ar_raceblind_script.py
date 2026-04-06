@@ -15,7 +15,7 @@ gdf = gdf[gdf.geometry.notnull() & gdf.is_valid]
 
 graph = Graph.from_geodataframe(
     gdf,
-    adjacency='queen'
+    adjacency='queen',
 )
 
 my_updaters = {
@@ -82,11 +82,12 @@ district_plans = []
 
 for i, plan in enumerate(recom_chain):
     if len(district_plans) >= 250:
+        print("district_plan length is 250")
         break
     
     district_plans.append(plan.assignment)
         
-with open("../outputs/ga_250.pkl", "wb") as f:
+with open("../outputs/ar_250.pkl", "wb") as f:
     pickle.dump(district_plans, f)
 
 print("Done: saved 250 plans")
