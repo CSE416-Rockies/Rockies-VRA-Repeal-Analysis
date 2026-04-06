@@ -1,9 +1,8 @@
 import { useContext} from 'react'
-import DropDownMenu from './DropDownMenu.jsx';
-
-import GlobalStoreContext from '../store/index.jsx';
-import { MINORITIES } from '../utils/constants.js';
 import { UserGroupIcon } from '@heroicons/react/24/solid';
+import GlobalStoreContext from '../store/index.jsx';
+import DropDownMenu from './DropDownMenu.jsx';
+import { MINORITIES } from '../utils/constants.js';
 
 export default function MapSelect(){
     const { store, setMapMode, setMinorityGroup } = useContext(GlobalStoreContext);

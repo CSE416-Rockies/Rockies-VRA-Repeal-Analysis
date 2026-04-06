@@ -1,9 +1,7 @@
 import {useState, useEffect} from 'react';
 import { getCongressionalMap } from "../api/api.js"
 
-
 export function useDistrictData(name){
-
     const [districtPlan, setDistrictPlan] = useState(null);
 
     useEffect(() => {

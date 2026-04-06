@@ -10,18 +10,17 @@ import MapSelect from './MapSelect.jsx';
 import StateSelection from "./StateSelection.jsx";
 import Heatmap_Legend from "./Heatmap_Legend.jsx";
 import LoadingView from "./LoadingView.jsx";
-
-import { getStateLegend } from "../api/api.js";
+import NotFound from "./NotFound.jsx";
 
 import { useDistrictData } from "../hooks/useDistrictData.js";
 import { usePrecinctData } from "../hooks/usePrecinctData.js";
 
-import { MAP_PARTY_COLORS, STATE_BOUNDS } from "../utils/constants.js";
+import { MAP_PARTY_COLORS, STATE_BOUNDS, VALID_STATES, CHOROPLETH_COLORS } from "../utils/constants.js";
 import { choroplethStyle, highlightStyle, lineStyle } from "../utils/mapStyles.js";
 import { normalizeDistrict, normalizeParty } from "../utils/helpers.js";
 
+import { getStateLegend } from "../api/api.js";
 
-const legend_colors = ["#ECFDF5", "#D1FAE5", "#6EE7B7", "#10B981", "#047857", "#063E2F"]
 
 export default function MapView(){
     const { store } = useContext(GlobalStoreContext); 
@@ -188,7 +187,7 @@ export default function MapView(){
                 let end = bin;
                 return {
                     label: `${start.toFixed(1)}% - ${end.toFixed(1)}%`,
-                    color: legend_colors[i]
+                    color: CHOROPLETH_COLORS[i]
                 }
             });
 
@@ -196,6 +195,11 @@ export default function MapView(){
         })
         .catch((err) => console.error("Error loading legend:", err));            
     }, [selectedState, store.minorityGroup]);
+
+    /* ---------------------------------------------------------------------------  invalid state URL*/
+    if(!VALID_STATES.has(name)){
+        return <NotFound/>
+    }
 
     return(
         <>

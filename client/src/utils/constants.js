@@ -70,7 +70,11 @@ export const ENSEMBLE_VIEW_OPTIONS = [
 export const STATE_OPTIONS = [
     {id: 'Arkansas', label: 'Arkansas'}, 
     {id: 'Georgia',  label: 'Georgia'}
-]
+];
+
+export const CHOROPLETH_COLORS = ["#ECFDF5", "#D1FAE5", "#6EE7B7", "#10B981", "#047857", "#063E2F"];
+
+export const VALID_STATES = new Set(STATE_OPTIONS.map(s=>s.id));
 
 export const US_BOUNDS = [
     [24.396308, -124.848974],

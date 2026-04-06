@@ -1,14 +1,15 @@
 import {useEffect, useRef, useState, useContext} from "react"
 import GlobalStoreContext from '../store';
+import { UserGroupIcon } from "@heroicons/react/24/solid";
+
 import DropDownMenu from "./DropDownMenu";
 import GraphView from "./GraphView";
+import { SelectionPlaceholder } from './SelectionPlaceholder';
 
 import { drawGingles } from "../utils/drawGingles";
+import { PRESIDENT_CAND_LEGEND, RACES} from "../utils/constants"
 import { useD3 } from "../hooks/useD3";
 
-import { PRESIDENT_CAND_LEGEND, RACES} from "../utils/constants"
-import { UserGroupIcon } from "@heroicons/react/24/solid";
-import { SelectionPlaceholder } from './selectionPlaceholder';
 import { getGingles } from "../api/api";
 
 export default function Gingles(){

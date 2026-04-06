@@ -1,10 +1,14 @@
 import { ChevronRightIcon, ChevronLeftIcon, ChevronDownIcon, ChevronUpIcon, UserIcon } from '@heroicons/react/24/solid'
 import {useState, useEffect, useContext} from 'react'
-import CongressRepDetail from './CongressRepDetail';
 import GlobalStoreContext from '../store';
-import { getStateDetail } from '../api/api';
+
+import CongressRepDetail from './CongressRepDetail';
+
 import { PARTY_COLORS, APP_COLORS } from '../utils/constants';
 import { normalizeParty } from '../utils/helpers';
+
+import { getStateDetail } from '../api/api';
+
 
 export default function StateDetail({expanded, onClick}){
 
@@ -13,11 +17,24 @@ export default function StateDetail({expanded, onClick}){
     const repArr = store?.representatives || [];
 
     const [view, setView] = useState('page1');
-    const [voterDist, setVoterDist] = useState([]);
-    const [raceArr, setRaceArr] = useState([]);
-    const [statePopulation, setStatePopulation] = useState(0);
-    const [partyControl, setPartyControl] = useState("");
-    
+    const [stateDetail, setStateDetail] = useState(null);
+
+    /* ------------------------------------------------------------------------- variables */
+    const voterDist = stateDetail ? [
+        { party: "Democrat",   partyColor: PARTY_COLORS.dem,   percent: stateDetail.voterDistribution.democratPercentage },
+        { party: "Republican", partyColor: PARTY_COLORS.rep,   percent: stateDetail.voterDistribution.republicanPercentage },
+        { party: "Other",      partyColor: PARTY_COLORS.other, percent: stateDetail.voterDistribution.otherPercentage },
+    ] : [];
+
+    const raceArr = stateDetail ? [
+        { race: "White",          popNumber: stateDetail.racialPopulation.whitePopulation,  percent: stateDetail.racialPopulation.whitePercentage },
+        { race: "Black",          popNumber: stateDetail.racialPopulation.blackPopulation,  percent: stateDetail.racialPopulation.blackPercentage },
+        { race: "Hispanic/Latino",popNumber: stateDetail.racialPopulation.latinoPopulation, percent: stateDetail.racialPopulation.latinoPercentage },
+        { race: "Other",          popNumber: stateDetail.racialPopulation.otherPopulation,  percent: stateDetail.racialPopulation.otherPercentage },
+    ] : [];
+
+    const statePopulation = stateDetail?.racialPopulation.total ?? 0;
+    const partyControl = stateDetail?.voterDistribution.partyControl ?? "";
 
     useEffect(() => {
         if(!selectedState) return;
@@ -25,23 +42,7 @@ export default function StateDetail({expanded, onClick}){
         getStateDetail(selectedState)
             .then((res) => {
                 console.log("State detail from server:", res.data);
-                const data = res.data;
-                
-                setVoterDist([
-                    { party: "Democrat", partyColor: PARTY_COLORS.dem, percent: data.voterDistribution.democratPercentage },
-                    { party: "Republican", partyColor: PARTY_COLORS.rep, percent: data.voterDistribution.republicanPercentage },
-                    { party: "Other", partyColor: PARTY_COLORS.other, percent: data.voterDistribution.otherPercentage },
-                ]
-                );
-                setRaceArr([
-                    { race: "White", popNumber: data.racialPopulation.whitePopulation, percent: data.racialPopulation.whitePercentage },
-                    { race: "Black", popNumber: data.racialPopulation.blackPopulation, percent: data.racialPopulation.blackPercentage },
-                    { race: "Hispanic/Latino", popNumber: data.racialPopulation.latinoPopulation, percent: data.racialPopulation.latinoPercentage },
-                    { race: "Other", popNumber: data.racialPopulation.otherPopulation, percent: data.racialPopulation.otherPercentage },
-                ]);
-                
-                setStatePopulation(data.racialPopulation.total);
-                setPartyControl(data.voterDistribution.partyControl);
+                setStateDetail(res.data);
             })
             .catch((err) => console.error("Error loading state detail json:", err));
 
@@ -58,26 +59,27 @@ export default function StateDetail({expanded, onClick}){
                 { expanded ? <ChevronUpIcon className = 'w-5'/> : <ChevronDownIcon className = 'w-5'/> }
             </div>
 
-
-                <div className={`flex-1 relative gap-10 px-5 overflow-y-auto overflow-x-hidden ${expanded ? 'opacity-100' : 'max-h-0 opacity-0'}`}>
-                    <div className = {`h-full ${view == 'reps' ? 'slideInR': 'slideInL'}`}>
-
-                    { view == 'reps' ? 
-                        <div className = 'flex flex-col h-full gap-5 w-full'>
-                            <RepDetailButton chevronDir = 'L' toWhere = {()=>setView('page2')}/>
-                            <CongressRepDetail repArr = {repArr} />
-                        </div>
-                    :
-                        <div className = 'flex flex-col gap-5 h-full w-full'>
-                            <DefaultDetail races = {raceArr} stateVoterDist = {voterDist} partyControl = {partyControl} pageNum = {view} statePopulation = {statePopulation}/>
-                            {view=='page2' && <RepDetailButton chevronDir = 'R' toWhere = {()=>setView('reps')}/> }
-                            <PageNum pageNum = {view} setPageNum = {setView}/>
-                        </div>
-                    }
+            <div className={`flex-1 relative gap-10 px-5 overflow-y-auto overflow-x-hidden ${expanded ? 'opacity-100' : 'max-h-0 opacity-0'}`}>
+                <div className = {`h-full ${view === 'reps' ? 'slideInR': 'slideInL'}`}>
+                { view === 'reps' ? 
+                    <div className = 'flex flex-col h-full gap-5 w-full'>
+                        <RepDetailButton chevronDir = 'L' toWhere = {()=>setView('page2')}/>
+                        <CongressRepDetail repArr = {repArr} />
                     </div>
-
-                    
+                :
+                    <div className = 'flex flex-col gap-5 h-full w-full'>
+                        <DefaultDetail races = {raceArr} stateVoterDist = {voterDist} partyControl = {partyControl} pageNum = {view} statePopulation = {statePopulation}/>
+                        {view==='page2' && <RepDetailButton chevronDir = 'R' toWhere = {()=>setView('reps')}/> }
+                        <PageNum pageNum = {view} setPageNum = {setView}/>
+                    </div>
+                }
                 </div>
+                
+            </div>
+
+                
+                
+                
         </div>
    )
 
@@ -129,7 +131,7 @@ function DefaultDetail({races, stateVoterDist, partyControl, pageNum, statePopul
 
     return(
     <div className = 'flex flex-col border-divide gap-3 w-full'>
-        {pageNum == 'page1' ?
+        {pageNum === 'page1' ?
             <>
             <div className = 'flex text-gray-500 justify-between pt-3'>
                 <span>State Population</span>
@@ -156,7 +158,7 @@ function DefaultDetail({races, stateVoterDist, partyControl, pageNum, statePopul
 /* "Congressional Represenatives > " button logic */
 
 function RepDetailButton({chevronDir, toWhere}){
-    const isLeft = (chevronDir == 'L');
+    const isLeft = (chevronDir === 'L');
     return(
         <div className = 'group flex text-gray-500 justify-between cursor-pointer hover:bg-gray-100 px-5 -mx-5 py-3' onClick = {toWhere}
             style = {{flexDirection: isLeft? "row-reverse" : "row"}}>
@@ -171,12 +173,12 @@ function RepDetailButton({chevronDir, toWhere}){
 }
 
 function PageNum({pageNum, setPageNum}){
-    const page = pageNum == "page1"? 1:2;
+    const page = pageNum === "page1"? 1:2;
 
     return(
         <div className = 'flex items-center justify-center gap-2 w-full text-center cursor-pointer absolute bottom-5 left-0 right-0'>
-            <button onClick = {()=>setPageNum('page1')} className = {`rounded-md border-2 border-gray-200 py-1 w-7 hover:bg-gray-200 ${page == 1 ? 'bg-gray-200':''}`}>1</button>
-            <button onClick = {()=>setPageNum('page2')} className = {`rounded-md border-2 border-gray-200 py-1 w-7 hover:bg-gray-200 ${page == 2 ? 'bg-gray-200':''}`}>2</button>
+            <button onClick = {()=>setPageNum('page1')} className = {`rounded-md border-2 border-gray-200 py-1 w-7 hover:bg-gray-200 ${page === 1 ? 'bg-gray-200':''}`}>1</button>
+            <button onClick = {()=>setPageNum('page2')} className = {`rounded-md border-2 border-gray-200 py-1 w-7 hover:bg-gray-200 ${page === 2 ? 'bg-gray-200':''}`}>2</button>
         </div>
     )
 }

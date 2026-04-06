@@ -26,7 +26,7 @@ export default function MiniGraphView({ title, drawFunc, data, racialGroup, marg
                     <ArrowsPointingOutIcon className = 'w-4 h-4'/>
             </button>
             <div className='flex flex-col gap-2 w-full h-full justify-center items-center'>
-                <div className='text-md capitalize'>{title}</div>
+                <div className='text-md capitalize font-semibold'>{title}</div>
             
                 <div className='flex w-full h-full px-20 items-center'>
                     {!fullScreen && <svg className='flex-1 block' width="100%" height="100%" ref={ref} />}

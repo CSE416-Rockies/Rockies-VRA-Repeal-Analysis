@@ -10,7 +10,7 @@ import Gingles from './components/Gingles.jsx';
 import EIAnalysis from './components/EIAnalysis.jsx';
 import Ensemble from './components/Ensemble.jsx';
 import MinorityEffect from './components/MinorityEffect.jsx';
-
+import NotFound from './components/NotFound.jsx';
 
 function App() {
   const location = useLocation();
@@ -36,6 +36,7 @@ function App() {
             <Route path = "/eiAnalysis" element = {<EIAnalysis/>}></Route>
             <Route path = "/ensembles" element = {<Ensemble/>}></Route> 
             <Route path = "/minorityEffect" element = {<MinorityEffect/>}></Route> 
+            <Route path="*" element={<NotFound />} /> 
           </Routes>
         </div>
       </div>

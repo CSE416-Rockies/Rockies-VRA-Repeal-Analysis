@@ -2,13 +2,13 @@ import { useEffect, useContext, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import GlobalStoreContext from "../store";
 
 import {US_BOUNDS, STATE_BOUNDS, STATE_OPTIONS} from "../utils/constants";
 import { highlightStateStyle } from "../utils/mapStyles";
+
 import { getStateLines } from "../api/api.js";
 
-
-import GlobalStoreContext from "../store";
 
 function MapController({ mapRef }) {
   const map = useMap();
@@ -20,6 +20,7 @@ export default function Map() {
   const { store, setSelectedState } = useContext(GlobalStoreContext);
   const [stateLines, setStateLines] = useState(null);
   const navigate = useNavigate();
+  
   const mapRef = useRef(null);
   const geoJsonRef = useRef(null);
 

@@ -1,30 +1,28 @@
 import { useState, useEffect, useContext} from 'react'
 import GlobalStoreContext from "../store";
-
+import { UserGroupIcon } from '@heroicons/react/24/solid';
+ 
 import DropDownMenu from './DropDownMenu';
 import MiniGraphView from './MiniGraphView';
-import { SelectionPlaceholder } from './selectionPlaceholder';
+import { SelectionPlaceholder } from './SelectionPlaceholder';
 
 import { drawBoxWhisker } from "../utils/drawBoxWhisker";
 import drawEnsembleSplits from "../utils/drawEnsembleSplits";
+import { BOX_WHISKER_ME_LEGEND, ENSEMBLE_LEGEND, RACES, ENSEMBLE_VIEW_OPTIONS } from '../utils/constants';
 
 import { getBoxWhiskers, getEnsembleSplits } from '../api/api';
-import { BOX_WHISKER_ME_LEGEND, ENSEMBLE_LEGEND, RACES, ENSEMBLE_VIEW_OPTIONS } from '../utils/constants';
-import { UserGroupIcon } from '@heroicons/react/24/solid';
 
 
 export default function Ensemble(){
     const { store, setRacialGroup, setEnsemble} = useContext(GlobalStoreContext);
     const selectedState = store?.selectedState || "";
-    
     const racialGroup = store.racialGroup;
     const ensemble = store.ensemble;
 
     const margin = {top: 20, right: 20, bottom: 60, left: 80};
 
     const [boxWhiskerData, setBoxWhiskerData] = useState(null);
-    const [ensembleSplitsData, setEnsembleSplitsData] = useState(null);
-    
+    const [ensembleSplitsData, setEnsembleSplitsData] = useState(null);    
 
      // state change
     useEffect(() => {

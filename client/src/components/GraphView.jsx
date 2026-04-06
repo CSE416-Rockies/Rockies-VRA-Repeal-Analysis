@@ -11,8 +11,8 @@ export default function GraphView({title, subtitle, legendTitle, legendItems, sv
                     { (children) ? children :
                     <div className = 'flex flex-col justify-center items-center w-full h-full'>
                         <div className = 'flex flex-col gap-2 justify-center items-center'>
-                            <div className = 'text-3xl capitalize'>{title}</div>
-                            <div className = 'text-xl capitalize text-gray-500'>{subtitle}</div>
+                            <div className = 'text-xl capitalize font-semibold'>{title}</div>
+                            <div className = 'text-lg capitalize text-gray-500'>{subtitle}</div>
                         </div>
                         <div className = 'flex w-full h-full px-20 items-center justify-between'>
                             <svg className = 'flex-1' width = "100%" height = "100%" ref = {svgRef} />

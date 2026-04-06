@@ -1,11 +1,11 @@
 import { XCircleIcon } from '@heroicons/react/24/solid'
-// import { useParams } from 'react-router-dom'
 import {useLocation} from 'react-router-dom'
 import { useContext, useEffect, useState, useRef } from 'react';
 import GlobalStoreContext from '../store';
+
 import StateDropdown from './StateDropdown';
+import {STATE_OPTIONS} from "../utils/constants";
 import { getEnsembleSummary, getRepresentatives } from '../api/api';
-import {STATE_OPTIONS} from "../utils/constants"
 
 export default function StateSelection({ onClose }){
     const location = useLocation();

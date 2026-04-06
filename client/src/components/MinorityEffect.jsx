@@ -5,7 +5,7 @@ import { UserGroupIcon } from "@heroicons/react/24/solid";
 import DropDownMenu from "./DropDownMenu";
 import ThresholdTable from "./ThresholdTable";
 import MiniGraphView from "./MiniGraphView";
-import { SelectionPlaceholder } from "./selectionPlaceholder";
+import { SelectionPlaceholder } from "./SelectionPlaceholder";
 
 import GlobalStoreContext from '../store';
 import { getBoxWhiskersME, getEnsembleHistME, getImpactThresholdTable} from "../api/api";
@@ -27,6 +27,7 @@ export default function MinorityEffect(){
     // state change
     useEffect(() => {
         if (!selectedState) return;
+        
         Promise.allSettled([
             getBoxWhiskersME(selectedState),
             getEnsembleHistME(selectedState),
