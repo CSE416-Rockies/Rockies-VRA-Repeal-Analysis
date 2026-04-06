@@ -29,7 +29,7 @@ export default function NavBar(){
 
     return(
         <div id = "navbar" 
-            className = {`flex flex-col relative z-50 h-screen bg-white backdrop-blur-sm shadow-md  overflow-hidden transition-all duration-500 ease-in-out ${expand ? 'w-72' : 'w-16'}`} 
+            className = {`flex flex-col relative z-[100] h-screen bg-white backdrop-blur-sm shadow-md  overflow-hidden transition-all duration-500 ease-in-out ${expand ? 'w-72' : 'w-16'}`} 
             onMouseEnter={() => setExpand(true)}
             onMouseLeave={() => setExpand(false)}
         >

@@ -34,24 +34,6 @@ th{
 }
 
 
-@keyframes slideInL {
-    from { transform: translateX(-100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-}
-
-.slideInL {
-    animation: slideInL 0.5s;
-}
-
-@keyframes slideInR {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0%); opacity: 1; }
-}
-
-.slideInR {
-    animation: slideInR  0.5s;
-}
-
 .leaflet-tooltip {
     background: transparent !important;
     border: none !important;
@@ -63,7 +45,6 @@ th{
     outline: none !important;
 }
 
-/* ------------------------------------------- graph axis styling */
 
 .axisColor line, 
 .axisColor path{
@@ -105,9 +86,47 @@ th{
     font-size: 13px;
     pointer-events: none;
     opacity: 0;
-    pointer-events: none;
+    z-index: 100;
 }
 
 .tooltip.visible {
     opacity: 1;
 }
+
+/* ------------------------------------------- animations */
+@keyframes slideInL {
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.slideInL {
+    animation: slideInL 0.5s;
+}
+
+@keyframes slideInR {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0%); opacity: 1; }
+}
+
+.slideInR {
+    animation: slideInR  0.5s;
+}
+
+.fullscreen-back{
+    animation: fadeIn 0.2s ease-out;
+}
+
+.fullscreen-panel{
+    animation: scaleIn 0.2s ease-out;
+}
+
+@keyframes fadeIn{
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes scaleIn{
+    from { opacity: 0; transform: scale(0.95);}
+    to { opacity: 1; transform: scale(1);}
+}
+

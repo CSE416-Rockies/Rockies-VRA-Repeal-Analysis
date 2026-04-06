@@ -2,12 +2,13 @@ import * as d3 from "d3";
 
 export function drawBars({svg, height, x, y, entries, color, xOffset = 0, barWidth = x.bandwidth(), tooltipHTML }){
 
-    let tooltip = d3.select(".tooltip");
-    if (tooltip.empty()) {
-        tooltip = d3.select("body")
+    if (!d3.select("#vra-tooltip").node()) {
+        d3.select("body")
             .append("div")
+            .attr("id", "vra-tooltip")
             .attr("class", "tooltip");
-    }   
+    }
+    const tooltip = d3.select("#vra-tooltip"); 
     
     svg.selectAll(`.bar-${color.replace("#", "")}`)
         .data(entries)

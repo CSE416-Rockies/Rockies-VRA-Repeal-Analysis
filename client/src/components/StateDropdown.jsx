@@ -30,7 +30,9 @@ export default function StateDropdown({onSelect, options}){
             </button>
 
             {open && (
-                <ul className="absolute inset-x-0 top-full mt-3 bg-white cursor-pointer rounded-xl shadow-md w-full py-2 z-50">
+                <ul className="absolute inset-x-0 top-full mt-3 bg-white cursor-pointer rounded-xl shadow-md w-full py-2 z-50"
+                    onClick={e => e.stopPropagation()}
+                >
                     {filterOptions.map((option) => (
                         <li
                             key={option.id || option}
