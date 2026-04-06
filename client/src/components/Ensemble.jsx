@@ -29,12 +29,13 @@ export default function Ensemble(){
      // state change
     useEffect(() => {
         if (!selectedState) return;
-        Promise.all([
+        
+        Promise.allSettled([
             getBoxWhiskers(selectedState),
             getEnsembleSplits(selectedState),
         ]).then(([boxRes, ensembleRes]) => {
-            setBoxWhiskerData(boxRes.data);
-            setEnsembleSplitsData(ensembleRes.data);
+            if (boxRes.status == "fulfilled") setBoxWhiskerData(boxRes.value.data);
+            if (ensembleRes.status == "fulfilled") setEnsembleSplitsData(ensembleRes.value.data);
         }).catch(err => console.error("Error loading data:", err));
         
     }, [selectedState]);

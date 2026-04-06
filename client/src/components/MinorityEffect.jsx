@@ -27,14 +27,14 @@ export default function MinorityEffect(){
     // state change
     useEffect(() => {
         if (!selectedState) return;
-        Promise.all([
+        Promise.allSettled([
             getBoxWhiskersME(selectedState),
             getEnsembleHistME(selectedState),
             getImpactThresholdTable(selectedState),
         ]).then(([boxRes, ensembleRes, thresholdRes]) => {
-            setBoxData(boxRes.data);
-            setEnsembleData(ensembleRes.data);
-            setThresholdData(thresholdRes.data);
+            if (boxRes.status === "fulfilled") setBoxData(boxRes.value.data);
+            if (ensembleRes.status === "fulfilled") setEnsembleData(ensembleRes.value.data);
+            if (thresholdRes.status === "fulfilled") setThresholdData(thresholdRes.value.data);
         }).catch(err => console.error("Error loading data:", err));
     }, [selectedState]);
 
