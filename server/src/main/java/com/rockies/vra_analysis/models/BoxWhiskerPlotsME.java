@@ -25,35 +25,4 @@ public class BoxWhiskerPlotsME extends StateDocument{
     public Map<String, BoxStats> getRaceBlind() { return raceBlind; }
     public Map<String, BoxStats> getVra() { return vra; }
     public Map<String, Integer> getEnactedCounts() { return enactedCounts; }
-    
-
-    /* static nested classes ---------------------------------- */
-    public static class GroupEffectiveness{
-        private BoxStats raceBlind;
-        private BoxStats vra;
-        private int enactedCount;
-
-        public GroupEffectiveness(){}
-
-        public BoxStats getRaceBlind() { return raceBlind; }
-        public BoxStats getVra() { return vra; }
-        public int getEnactedCount() { return enactedCount; }
-    }
-
-    public static class BoxStats{
-        private double min;
-        private double q1;
-        private double median;
-        private double q3;
-        private double max;
-
-        public BoxStats() {}
-
-        public double getMin() { return min; }
-        public double getQ1() { return q1; }
-        public double getMedian() { return median; }
-        public double getQ3() { return q3; }
-        public double getMax() { return max; }
-    }
-
 }

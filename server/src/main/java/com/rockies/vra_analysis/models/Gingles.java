@@ -31,7 +31,7 @@ public class Gingles extends StateDocument{
 
         public Regression(){}
 
-        public Map<String, List<Candidate>> getFits() { return fits; }
+        public  Map<String, List<Candidate>>  getFits() { return fits; }
     }
 
     public static class Candidate{

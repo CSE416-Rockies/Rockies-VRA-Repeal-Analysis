@@ -24,23 +24,13 @@ public class BoxWhiskerPlots extends StateDocument{
     public Map<String, List<EnsembleDetail>> getVra() { return vra; }
 
     /* static nested classes ---------------------------------- */
-    public static class EnsembleDetail {
+    public static class EnsembleDetail extends BoxStats{
         private int districtIndex;
-        private double min;
-        private double q1;
-        private double median;
-        private double q3;
-        private double max;
         private double enacted;
 
         public EnsembleDetail() {}
 
         public int getDistrictIndex() { return districtIndex; }
-        public double getMin() { return min; }
-        public double getQ1() { return q1; }
-        public double getMedian() { return median; }
-        public double getQ3() { return q3; }
-        public double getMax() { return max; }
         public double getEnacted() { return enacted; }
     }
 }
