@@ -35,7 +35,7 @@ proposal = partial(
     recom,
     pop_col="Total_population",
     pop_target=ideal_population,
-    epsilon=0.1,
+    epsilon=0.2,
     node_repeats=100,
     method = partial(
         bipartition_tree,
@@ -75,19 +75,23 @@ recom_chain = MarkovChain(
     constraints=[contiguous, compactness_bound, county_constraint],
     accept=accept.always_accept,
     initial_state=initial_partition,
-    total_steps=300
+    total_steps=11
 )
 
 district_plans = []
 
+import time
+before = time.time()
 for i, plan in enumerate(recom_chain):
-    if len(district_plans) >= 250:
-        print("district_plan length is 250")
+    print(f"generating {i}th plan\n")
+    if len(district_plans) >= 10:
+        print("district_plan length is 10")
         break
     
     district_plans.append(plan.assignment)
-        
-with open("../outputs/ar_250.pkl", "wb") as f:
+now = time.time()
+print(f"total took {now-before} time\n")
+with open("../outputs/ar_10.pkl", "wb") as f:
     pickle.dump(district_plans, f)
 
-print("Done: saved 250 plans")
+print("Done: saved 10 plans")
