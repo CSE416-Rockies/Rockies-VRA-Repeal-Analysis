@@ -79,7 +79,7 @@ compactness_bound = constraints.UpperBound(
 
 # VRA Constraints - effective district calculation
 THRESHOLD = 0.6
-MINORITY_RACES = ['Black', 'Latino']
+MINORITY_RACES = ['Black']
 prefer_lookup = prefer.set_index("District").to_dict(orient="index")
 
 def count_minority_effective_districts(partition):
@@ -125,10 +125,10 @@ minority_constraint = constraints.LowerBound(
 #recom chain
 recom_chain = MarkovChain(
     proposal=proposal,
-    constraints=[contiguous, compactness_bound, county_constraint],
+    constraints=[contiguous, compactness_bound, county_constraint, minority_constraint],
     accept=accept.always_accept,
     initial_state=initial_partition,
-    total_steps=300
+    total_steps=250
 )
 
 district_plans = []
@@ -142,7 +142,7 @@ for i, plan in enumerate(recom_chain):
     
     district_plans.append(plan.assignment)
         
-with open("../outputs/ga_vra_250.pkl", "wb") as f:
+with open("../outputs/ga_vra_250_local.pkl", "wb") as f:
     pickle.dump(district_plans, f)
 
 print("Done: saved VRA 250 plans")
