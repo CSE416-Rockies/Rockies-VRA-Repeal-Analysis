@@ -75,7 +75,7 @@ recom_chain = MarkovChain(
     constraints=[contiguous, compactness_bound, county_constraint],
     accept=accept.always_accept,
     initial_state=initial_partition,
-    total_steps=5000
+    total_steps=250
 )
 
 district_plans = []
@@ -83,18 +83,18 @@ district_plans = []
 import time
 before = time.time()
 for i, plan in enumerate(recom_chain):
-    if len(district_plans)%1000==0:
-        elapsed = time.time() - before
-        print(f"Step {i}/5000 — {len(district_plans)} plans saved — {elapsed:.1f}s elapsed")
+    # if len(district_plans)%1000==0:
+    #     elapsed = time.time() - before
+    #     print(f"Step {i}/5000 — {len(district_plans)} plans saved — {elapsed:.1f}s elapsed")
 
-    if len(district_plans) >= 5000:
-        print("district_plan length is 5000")
+    if len(district_plans) >= 250:
+        print("district_plan length is 250")
         break
     
     district_plans.append(plan.assignment)
 now = time.time()
 print(f"total took {now-before} time\n")
-with open("../outputs/ar_5000.pkl", "wb") as f:
+with open("../outputs/ar_raceblind_250.pkl", "wb") as f:
     pickle.dump(district_plans, f)
 
-print("Done: saved 5000 plans")
+print("Done: saved 250 plans")
