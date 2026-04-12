@@ -7,8 +7,10 @@ import { SelectionPlaceholder } from './SelectionPlaceholder';
 import { UserGroupIcon } from '@heroicons/react/24/solid';
 
 import { drawEIAnalysis } from '../utils/drawEIAnalysis';
+import { drawEIBar } from '../utils/drawEIBar';
 import { useD3 } from '../hooks/useD3';
 import { RACES, PRESIDENT_CAND_LEGEND, getPrimarySecondaryColors } from "../utils/constants"
+import { CHART_VIEWS } from '../utils/constants';
 
 import { getEIAnalysis } from '../api/api';
 
@@ -20,6 +22,7 @@ export default function EIAnalysis(){
 
     const [candView, setCandView] = useState('trump'); 
     const [eiAnalysisData, setEIAnalysisData] = useState(null); 
+    const [graphType, setGraphType] = useState('density');
 
     const ref = useRef(null);
     const margin = {top: 20, right: 20, bottom: 60, left: 80};
@@ -37,11 +40,32 @@ export default function EIAnalysis(){
     // draw d3 
     useD3(ref, (svg)=>{
         if(!eiAnalysisData || !racialGroup|| !ref.current) return;
-        drawEIAnalysis({givenSVG: svg, data: eiAnalysisData, margin, racialLabel: racialGroup, candView});
-    }, [eiAnalysisData, candView, racialGroup]);
+        const drawFn = graphType === 'bar' ? drawEIBar : drawEIAnalysis;
+        drawFn({ givenSVG: svg, data: eiAnalysisData, margin, racialLabel: racialGroup, candView });
+    }, [eiAnalysisData, candView, racialGroup, graphType]);
     
+    const graphToggle = (
+        <div className = 'flex items-center bg-gray-100 rounded-lg p-1 gap-1'>
+            { CHART_VIEWS.map((view) =>(
+                <button
+                    key={view.id}
+                    onClick={() => setGraphType(view.id)}
+                    className={`flex items-center gap-2 px-1 py-1 rounded-md text-xs font-medium transition-colors
+                        ${graphType === view.id
+                            ? 'bg-white text-gray-800 shadow-sm'
+                            : 'text-gray-500 hover:text-gray-700'
+                        }`}
+                >
+                    <view.Icon className='w-4 h-4' />
+                    {view.label}
+            </button>
+            ))
 
-    const choiceMenu = 
+            }
+        </div>
+    )
+
+    const choiceMenu = (
         <div className = 'flex gap-5 items-center'>
             <DropDownMenu options = {RACES} onSelect = {setRacialGroup} icon = {UserGroupIcon} toolTipDesc=""/>
             <div className = 'flex items-center text-gray-500 gap-5'>
@@ -53,6 +77,7 @@ export default function EIAnalysis(){
                 ))}
             </div>
         </div>
+    )
 
 
     return(
@@ -62,6 +87,7 @@ export default function EIAnalysis(){
             legendItems = {getPrimarySecondaryColors(racialGroup)}
             menus = {choiceMenu}
             svgRef = {ref}
+            toggle = {graphToggle}
         >
             {(!racialGroup) && (
                 <SelectionPlaceholder 

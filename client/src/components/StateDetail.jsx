@@ -3,6 +3,7 @@ import {useState, useEffect, useContext} from 'react'
 import GlobalStoreContext from '../store';
 
 import CongressRepDetail from './CongressRepDetail';
+import DetailPanel from './DetailPanel';
 
 import { PARTY_COLORS, APP_COLORS } from '../utils/constants';
 import { normalizeParty } from '../utils/helpers';
@@ -50,15 +51,7 @@ export default function StateDetail({expanded, onClick}){
 
 
     return(
-        <div className = 'bg-white rounded-2xl shadow-md flex flex-col w-full pt-5 text-sm overflow-hidden min-h-0 transition-all duration-700 ease-in-out border-divide' 
-             style={{ flex: expanded ? 1 : '0 0 auto'}}
-        >
-            
-            <div className = 'flex bg-white w-full justify-between text-xl px-5 pb-5 text-gray-500 cursor-pointer' onClick = {onClick} >
-                <div>State Detail</div>
-                { expanded ? <ChevronUpIcon className = 'w-5'/> : <ChevronDownIcon className = 'w-5'/> }
-            </div>
-
+        <DetailPanel title="State Detail" expanded={expanded} onClick={onClick}>
             <div className={`flex-1 relative gap-10 px-5 overflow-y-auto overflow-x-hidden ${expanded ? 'opacity-100' : 'max-h-0 opacity-0'}`}>
                 <div className = {`h-full ${view === 'reps' ? 'slideInR': 'slideInL'}`}>
                 { view === 'reps' ? 
@@ -74,13 +67,9 @@ export default function StateDetail({expanded, onClick}){
                     </div>
                 }
                 </div>
-                
-            </div>
 
-                
-                
-                
-        </div>
+            </div>                
+        </DetailPanel>
    )
 
 }
@@ -109,7 +98,7 @@ function BarSection({title, arr}){
             {arr.map(({label, percent, color, sublabel}, i) => (
             <div key = {`${label}-${i}`} className = 'w-full'>
                 <div className = 'flex justify-between'>
-                    <span>{label}</span>
+                    <span className = 'text-gray-400'>{label}</span>
                     <span className = 'flex gap-2'>
                         <span className = 'text-gray-400'>{sublabel.toLocaleString()}</span>
                         <span className = 'font-bold'>{percent.toFixed(2)}%</span>

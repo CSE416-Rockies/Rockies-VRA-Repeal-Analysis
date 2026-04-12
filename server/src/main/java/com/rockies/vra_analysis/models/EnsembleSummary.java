@@ -5,24 +5,42 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class EnsembleSummary extends StateDocument{
    
     /* private variables ------------------------------------------- */
-    private int raceBlindPlans;
-    private double raceBlindThreshold;
-    private int vraPlans;
-    private double vraThreshold;
+    private EnsembleData raceBlind;
+    private EnsembleData vra;
 
     /* constructors ------------------------------------------- */
     public EnsembleSummary() {}
-    public EnsembleSummary(String state, int raceBlindPlans, double raceBlindThreshold, int vraPlans, double vraThreshold){
+    public EnsembleSummary(String state, EnsembleData raceBlind, EnsembleData vra) {
         super(state);
-        this.raceBlindPlans = raceBlindPlans;
-        this.raceBlindThreshold = raceBlindThreshold;
-        this.vraPlans = vraPlans;
-        this.vraThreshold = vraThreshold;
+        this.raceBlind = raceBlind;
+        this.vra = vra;
     }
 
     /* methods ------------------------------------------- */
-    public int getRaceBlindPlans() { return this.raceBlindPlans; }
-    public double getRaceBlindThreshold() { return this.raceBlindThreshold; }
-    public int getVraPlans() { return this.vraPlans; }
-    public double getVraThreshold() { return this.vraThreshold; }
+    public EnsembleData getRaceBlind() { return this.raceBlind; }
+    public EnsembleData getVra() { return this.vra; }
+
+    /* nested class ------------------------------------------- */
+    public static class EnsembleData {
+        private int plans;
+        private double threshold;
+        private String modeSplit;
+        private double avgMinorityEffective;
+        private double avgOpportunityDistricts;
+
+        public EnsembleData() {}
+        public EnsembleData(int plans, double threshold, String modeSplit, double mostCommonSplitPercent, double avgMinorityEffective, double avgOpportunityDistricts) {
+            this.plans = plans;
+            this.threshold = threshold;
+            this.modeSplit = modeSplit;
+            this.avgMinorityEffective = avgMinorityEffective;
+            this.avgOpportunityDistricts = avgOpportunityDistricts;
+        }
+
+        public int getPlans() { return this.plans; }
+        public double getThreshold() { return this.threshold; }
+        public String getModeSplit() { return this.modeSplit; }
+        public double getAvgMinorityEffective() { return this.avgMinorityEffective; }
+        public double getAvgOpportunityDistricts() { return this.avgOpportunityDistricts; }
+    }
 }

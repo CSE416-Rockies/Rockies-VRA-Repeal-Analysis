@@ -16,8 +16,6 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
         console.error("Group data not found: ", racialLabel);
         return;
     }
-    console.log(racialLabel, Object.keys(candData.groups));
-    console.log("hihi ", groupData);
 
 
     var raceDensity = groupData.density.group;
@@ -40,7 +38,6 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
                 
     // Create y axis
     const allY = [...raceDensity, ...nonRaceDensity].map(d => d.y);
-    console.log(groupData.density.complement);
 
     const maxY = d3.max(allY) * 1.1;
     var y = d3.scaleLinear()

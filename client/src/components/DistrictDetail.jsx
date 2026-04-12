@@ -1,5 +1,6 @@
 import {ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/solid'
 import PageControls from './PageControls';
+import DetailPanel from './DetailPanel';
 
 import { usePaginate } from '../hooks/usePaginate';
 import { useEffect, useRef, useState, useContext } from 'react';
@@ -52,15 +53,8 @@ export default function DistrictDetail({expanded, onClick, selectedDistrict, onS
 
     return(
 
-        <div ref={containerRef} className = 'bg-white rounded-2xl shadow-md flex flex-col w-full py-4 text-sm overflow-hidden min-h-0 transition-all duration-700 ease-in-out' 
-             style={{ flex: expanded ? 1 : '0 0 auto'}}
-        >
-            <div ref={titleRef} className = 'flex bg-white w-full justify-between text-xl px-5 text-gray-500 cursor-pointer' onClick = {onClick} >
-                <div>District Detail</div>
-                { expanded ? <ChevronUpIcon className = 'w-5'/> : <ChevronDownIcon className = 'w-5'/> }
-            </div>
-        
-            <div className={`flex flex-col justify-center items-center gap-5 overflow-y-auto ${expanded ? 'opacity-100 pt-5' : 'max-h-0 opacity-0'}`}>
+        <DetailPanel title="District Detail" expanded={expanded} onClick={onClick} className="pt-4" containerRef={containerRef}>
+            <div className={`flex flex-col relative flex-1 justify-between items-center gap-5 overflow-y-auto ${expanded ? 'opacity-100 pt-5' : 'max-h-0 opacity-0'}`}>
                 <table className = 'w-full'>
                     <thead className = 'text-left text-gray-400' ref={theadRef}>
                         <tr>
@@ -98,11 +92,12 @@ export default function DistrictDetail({expanded, onClick, selectedDistrict, onS
                         ))}
                     </tbody>
                 </table>
-
-                <PageControls ref={pageRef} currPage = {currPage} prev = {goPrev} next = {goNext} hasPrev = {hasPrev} hasNext = {hasNext} />
+                <div className='sticky bottom-0 bg-white py-2 flex justify-center'>
+                    <PageControls ref={pageRef} currPage = {currPage} prev = {goPrev} next = {goNext} hasPrev = {hasPrev} hasNext = {hasNext} />
+                </div>
             </div>
             
-        </div>
+        </DetailPanel>
     )
 
 }

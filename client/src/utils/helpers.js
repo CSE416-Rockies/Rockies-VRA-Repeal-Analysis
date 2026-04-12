@@ -11,6 +11,9 @@ export function normalizeDistrict(district) {
     return String(district.replace(/\D/g, ""));
 }
 
+export const capitalize = (str) => str.replace(/\b\w/g, c => c.toUpperCase());
+
+
 export const getRaceLabel = (value) => 
     RACES.find(r => r.value === value)?.label ?? value;
 

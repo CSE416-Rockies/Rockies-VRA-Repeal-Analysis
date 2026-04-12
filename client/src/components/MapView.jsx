@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import GlobalStoreContext from "../store/index.jsx";
 import StateDetail from './StateDetail.jsx';
 import DistrictDetail from './DistrictDetail.jsx';
+import EnsembleDetail from "./EnsembleDetail.jsx";
 import MapSelect from './MapSelect.jsx';
 import StateSelection from "./StateSelection.jsx";
 import Heatmap_Legend from "./Heatmap_Legend.jsx";
@@ -26,7 +27,7 @@ export default function MapView(){
     const { store } = useContext(GlobalStoreContext); 
     const { name } = useParams();
 
-    const [expanded, setExpanded] = useState(true);
+    const [expanded, setExpanded] = useState('state') // expandable detail panels: 'state' | 'district' | 'ensemble'
     const [selectedDistrict, setSelectedDistrict] = useState(null);
     const [legendItems, setLegendItems] = useState([]); 
 
@@ -58,7 +59,7 @@ export default function MapView(){
             selectedDistrictRef.current = null;
         } else{
             selectedDistrictRef.current = normalized;
-            setExpanded(false);
+            setExpanded('district');
         }
         setSelectedDistrict(selectedDistrictRef.current);
     };
@@ -208,10 +209,11 @@ export default function MapView(){
                 <MapSelect/>
                 
                 <div style={{ top: 'calc(var(--state-selection-height) + 1.25rem)', width: 'var(--sidebar-width)'  }}
-                    className = 'flex flex-col absolute gap-5 my-5 bottom-5 z-50 right-5 pointer-events-auto'
+                    className = 'flex flex-col absolute gap-3 my-5 bottom-5 z-50 right-5 pointer-events-auto'
                 >
-                    <StateDetail expanded = {expanded} onClick = {()=>setExpanded(!expanded)} className = 'absolute top-0 '/>
-                    <DistrictDetail expanded = {!expanded} onClick = {()=>setExpanded(!expanded)} selectedDistrict = {selectedDistrict} onSelect = {selectDistrict} className = 'absolute bottom-0 '/>
+                    <StateDetail expanded = {expanded === 'state'} onClick = {()=>setExpanded('state')} />
+                    <DistrictDetail expanded = {expanded === 'district'} onClick = {()=>setExpanded('district')} selectedDistrict = {selectedDistrict} onSelect = {selectDistrict} />
+                    <EnsembleDetail expanded = {expanded === 'ensemble'} onClick = {()=>setExpanded('ensemble')} />
                 </div>
    
                 {isLoading && (

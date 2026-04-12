@@ -2,13 +2,13 @@ import * as d3 from "d3";
 
 export function drawBars({svg, height, x, y, entries, color, xOffset = 0, barWidth = x.bandwidth(), tooltipHTML }){
 
-    if (!d3.select("#vra-tooltip").node()) {
+    if (!d3.select("#chart-tooltip").node()) {
         d3.select("body")
             .append("div")
-            .attr("id", "vra-tooltip")
+            .attr("id", "chart-tooltip")
             .attr("class", "tooltip");
     }
-    const tooltip = d3.select("#vra-tooltip"); 
+    const tooltip = d3.select("#chart-tooltip");
     
     svg.selectAll(`.bar-${color.replace("#", "")}`)
         .data(entries)
@@ -18,7 +18,7 @@ export function drawBars({svg, height, x, y, entries, color, xOffset = 0, barWid
         .attr("width", barWidth)
         .attr("height", d => Math.max(0, height - y(d.y)))
         .attr("fill", color)
-        .attr("stroke", "#000")
+        .attr("stroke", d3.color(color).darker(1.5))
         .attr("stroke-width", 2)
         .attr("opacity", 0.8)
         .on("mouseover", (event, d) => {

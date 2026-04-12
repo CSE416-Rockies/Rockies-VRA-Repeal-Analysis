@@ -22,7 +22,7 @@ export default function CongressRepDetail({repArr, onClick}){
                              <img src = {`/imgs/representatives/${imageId}.jpg`} className = 'w-16 h-20 object-cover rounded-md'/>
                         }
                         <div className = 'flex flex-col gap-0.5 justify-center'>
-                            <div className = 'text-sm font-semibold'>{name ?? "Vacant"}</div>
+                            <div className = 'text-sm font-semibold text-gray-700'>{name ?? "Vacant"}</div>
                             <div className = 'text-xs text-gray-500'>District {districtNumber}</div>
                             <div className = "text-xs capitalize rounded-xl"
                                 style={{ color: PARTY_COLORS[normalizeParty(party)]}}>

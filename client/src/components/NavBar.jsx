@@ -20,12 +20,13 @@ export default function NavBar(){
     const selectedStateName = store?.selectedState || "";
     const [expand, setExpand] = useState(false);
     const navItems = [
-        {to: `/map/${selectedStateName}`, id: "map-nav", icon: MapIcon, label: "Map"},
-        {to: "/gingles", id: "gingles-nav", icon: ScatterIcon, label: "Gingles"},
-        {to: "/eiAnalysis", id: "boxplot-nav", icon: EIAnalysisIcon, label: "EI Analysis"},
-        {to: "/ensembles", id: "ensembles-nav", icon: BoxPlotIcon, label: "Ensemble Visualizations"},
-        {to: "/minorityEffect", id: "minority-nav", icon: MinorityIcon, label: "Minority Effectiveness"},
+        {to: `/map/${selectedStateName}`, id: "map-nav", Icon: MapIcon, label: "Map"},
+        {to: "/gingles", id: "gingles-nav", Icon: ScatterIcon, label: "Gingles"},
+        {to: "/eiAnalysis", id: "boxplot-nav", Icon: EIAnalysisIcon, label: "EI Analysis"},
+        {to: "/ensembles", id: "ensembles-nav", Icon: BoxPlotIcon, label: "Ensemble Visualizations"},
+        {to: "/minorityEffect", id: "minority-nav", Icon: MinorityIcon, label: "Minority Effectiveness"},
     ]
+
 
     return(
         <div id = "navbar" 
@@ -45,15 +46,15 @@ export default function NavBar(){
             
             <div className = "w-full border-divide border-gray-300 mb-2 overflow-hidden whitespace-nowrap border-top">
             
-                {navItems.map(({to, id, icon: Icon, label})=> {
-                    const active = location.pathname == to;
+                {navItems.map((item)=> {
+                    const active = location.pathname == item.to;
 
                     return(
-                        <Link key = {id} to = {to} id = {id} className = "nav-link group">
+                        <Link key = {item.id} to = {item.to} id = {item.id} className = "nav-link group">
                             <div className= "flex items-center justify-center w-12">
-                                <Icon className= {`nav-icon ${active ? "text-emerald-500":""}`}/>
+                                <item.Icon className= {`nav-icon ${active ? "text-emerald-500":""}`}/>
                             </div>
-                            <div className = {`nav-label p-4 transition-opacity duration-500 ${active? 'text-emerald-500':""} ${expand? 'opacity-100' : 'opacity-0'}`}>{label}</div>
+                            <div className = {`nav-label p-4 transition-opacity duration-500 ${active? 'text-emerald-500':""} ${expand? 'opacity-100' : 'opacity-0'}`}>{item.label}</div>
                         </Link>
                     )
 

@@ -82,7 +82,7 @@ export default function Ensemble(){
                         />
                             
                         <MiniGraphView 
-                            title={`${ensemble} Ensemble Splits for ${racialGroup} `}
+                            title={`Ensemble Splits for ${racialGroup} `}
                             data = {ensembleSplitsData} 
                             racialGroup = {racialGroup}
                             margin = {margin} 
