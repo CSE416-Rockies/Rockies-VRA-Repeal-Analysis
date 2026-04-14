@@ -2,6 +2,7 @@ package com.rockies.vra_analysis.models;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
 import java.util.List;
 import java.util.Map;
 
@@ -50,23 +51,18 @@ public class Gingles extends StateDocument{
 
     public static class Precinct{
         private int id;
-        private Map<String, GroupPoint> groups;
+        private Map<String, Double> groups;
+        
+        @Field("harris_vote_share")
+        private double harrisVoteShare;
+        @Field("trump_vote_share")
+        private double trumpVoteShare;
 
         public Precinct(){}
 
         public int getId() { return id; }
-        public Map<String, GroupPoint> getGroups() { return groups; }
-    }
-    public static class GroupPoint{
-        @Field("pct_demo")
-        private double pctDemo;
-        private double harris;
-        private double trump;
-
-        public GroupPoint(){}
-
-        public double getPctDemo() { return pctDemo;}
-        public double getHarris() { return harris;}
-        public double getTrump() { return trump;}
+        public Map<String, Double> getGroups() { return groups; }
+        public double getHarrisVoteShare() { return harrisVoteShare; }
+        public double getTrumpVoteShare() { return trumpVoteShare; }
     }
 }

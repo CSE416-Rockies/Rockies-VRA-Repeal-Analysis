@@ -52,7 +52,7 @@ public class StateController {
 
     @GetMapping("/gingles")
     public Gingles getGingles(@PathVariable String stateName) {
-        System.out.println("requested gingels");
+        System.out.println("requested gingles");
         return stateService.getGingles(stateName);
     }
 

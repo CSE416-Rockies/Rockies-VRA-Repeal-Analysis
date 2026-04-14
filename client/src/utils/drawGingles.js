@@ -17,14 +17,16 @@ export function drawGingles({ givenSVG, data, margin, racialLabel }) {
     if (width <= 0 || height <= 0) return;
 
     /* ------------------------------------------------------------------ Transformation */
+
     const flatData = data.precincts.flatMap(d => {
-        const g = d.groups[racialLabel];
-        if (!g) return [];
+        const pctDemo = d.groups[racialLabel];
+        if (pctDemo == null) return [];
         return [
-            { precinct: d.id, racial_pct: g.pctDemo * 100, vote_share: g.harris * 100, party: "dem" },
-            { precinct: d.id, racial_pct: g.pctDemo * 100, vote_share: g.trump * 100, party: "rep" }
-        ]
+            { racial_pct: pctDemo * 100, vote_share: d.harrisVoteShare * 100, party: "dem" },
+            { racial_pct: pctDemo * 100, vote_share: d.trumpVoteShare * 100, party: "rep" }
+        ];
     });
+
 
     const fits = data.regression.fits[racialLabel];
     if (!fits) return;
@@ -35,8 +37,8 @@ export function drawGingles({ givenSVG, data, margin, racialLabel }) {
 
     const regression = {
         [racialLabel]: {
-            dem: { model: harrisFit.model, params: harrisFit.params },
-            rep: { model: trumpFit.model,  params: trumpFit.params }
+            dem: { model: harrisFit.model, params: harrisFit.params, formula: harrisFit.formula },
+            rep: { model: trumpFit.model,  params: trumpFit.params, formula: trumpFit.formula }
         }
     };
 
@@ -72,7 +74,7 @@ export function drawGingles({ givenSVG, data, margin, racialLabel }) {
     svg.append('g')
         .selectAll("dot")
         .data(flatData)                                     // bind data to dots
-        .join("circle")                                 // create circle
+        .join("circle")                                     // create circle
             .attr("cx", d => x(d.racial_pct))
             .attr("cy", d => y(d.vote_share) )
             .attr("r", 2)
@@ -84,14 +86,12 @@ export function drawGingles({ givenSVG, data, margin, racialLabel }) {
     const lineDataByParty = {};
 
     ['dem', 'rep'].forEach(party => {
-        const { model, params } = raceRegression[party];
+        const { model, params, formula } = raceRegression[party];
         const lineData = d3.range(0, xMax + 1, 1).map(xVal => ({
             x: xVal,
-            y: Math.min(100, Math.max(0, predict(model, params, xVal/100)*100))
+            y: Math.min(100, Math.max(0, predict(model, params, formula, xVal/100)*100))
         }));    
         
-        
-
         lineDataByParty[party] = lineData;
 
         svg.append("path")
