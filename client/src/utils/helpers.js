@@ -21,19 +21,33 @@ export const toPercent = (value, decimals = 1) => {
     return (value * 100).toFixed(decimals);
 }
 
-export function predict(model, params, x) {
+export function predict(model, params, formula, x) {
 
     switch(model) {
         case 'sigmoid':
+            console.assert(formula === "vote_share = L / (1 + exp(-(b0 + b1 * pct_demo)))", `Unexpected formula for sigmoid: ${formula}`);
+            if (params.L == null || params.b0 == null || params.b1 == null) { console.error("sigmoid missing params", params); return 0; }
             return (params.L / (1 + Math.exp(-(params.b0 + params.b1 * x))));
+
         case 'poly2':
+            console.assert(formula === "vote_share = a * pct_demo^2 + b * pct_demo + c", `Unexpected formula for poly2: ${formula}`);
+            if (params.a == null || params.b == null || params.c == null) { console.error("poly2 missing params", params); return 0; }
             return (params.a * x**2 + params.b * x + params.c);
+
         case 'power':
+            console.assert(formula === "vote_share = a * pct_demo^b", `Unexpected formula for power: ${formula}`);
+            if (params.a == null || params.b == null) { console.error("power missing params", params); return 0; }
             return (params.a * Math.pow(x, params.b));
+
         case 'exponential':
+            console.assert(formula === "vote_share = a * exp(b * pct_demo) + c", `Unexpected formula for exponential: ${formula}`);
+            if (params.a == null || params.b == null || params.c == null) { console.error("exponential missing params", params); return 0; }
             return (params.a * Math.exp(params.b * x) + params.c);
+
         case 'linear':
+            if (params.m == null || params.b == null) { console.error("linear missing params", params); return 0; }
             return (params.m * x + params.b);
+
         default:
             return 0;
     }
