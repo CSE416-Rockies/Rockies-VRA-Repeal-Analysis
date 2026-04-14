@@ -55,19 +55,31 @@ export default function MinorityEffect(){
                         /> 
                     </div>
                     
-                    
                     : 
 
                     <div className = 'flex h-full justify-center items-center gap-5'>
-                        <div className = "flex flex-col flex-1 h-full justify-center items-center gap-5">
-                            <MiniGraphView 
-                                title = "Minority Effectiveness Distribution by Ensemble Type"
-                                data = {boxData} 
-                                racialGroup = {racialGroup} 
-                                margin = {margin} 
-                                drawFunc = {drawBoxWhiskerME}
-                                legendItems = {BOX_WHISKER_ME_LEGEND}
-                            />
+                        <div className = "flex flex-col w-full h-full justify-center items-center gap-5">
+                            <div className = 'flex w-full gap-5 h-1/2'>
+                                <div className = 'flex-1'>
+                                    <MiniGraphView 
+                                        title = "Minority Effectiveness Distribution by Ensemble Type"
+                                        data = {boxData} 
+                                        racialGroup = {racialGroup} 
+                                        margin = {margin} 
+                                        drawFunc = {drawBoxWhiskerME}
+                                        legendItems = {BOX_WHISKER_ME_LEGEND}
+                                    />
+                                </div>
+                                <div className = 'p-5 h-full justify-center items-center gap-5 bg-white rounded-xl'
+                                    style = {{width: 'var(--sidebar-width'}}
+                                >
+                                    <div className = 'flex flex-col items-center gap-2'>
+                                        <div> VRA Impact Threshold Table <span className = 'text-emerald-500 font-bold capitalize'> [{racialGroup}]</span></div>
+                                        <ThresholdTable data = {thresholdData} racialGroup = {racialGroup}/>
+                                    </div>
+                                </div>
+                            </div>
+
                             <MiniGraphView 
                                 title = {`${racialGroup} Effective District Distribution`} 
                                 data = {ensembleData} 
@@ -78,22 +90,6 @@ export default function MinorityEffect(){
                             />
                         </div>
                     
-                    
-
-                    <div className = 'flex flex-col p-5 h-full justify-center items-center gap-5 bg-white rounded-xl'
-                        style = {{width: 'var(--sidebar-width'}}
-                    >
-                        <div className = 'flex flex-col items-center gap-2'>
-                            <div> VRA Impact Threshold Table <span className = 'text-emerald-500 font-bold'> [{racialGroup}]</span></div>
-                            <ThresholdTable data = {thresholdData} racialGroup = {racialGroup}/>
-                        </div>
-
-                        <div className = 'flex flex-col items-center gap-2'>
-                            <> General Minority VRA Threshold Table</>
-                            <ThresholdTable data = {thresholdData} racialGroup = {racialGroup} aggregate = {true}/>
-                        </div>
-                        
-                    </div>
                 </div>
                
                 }

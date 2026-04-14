@@ -29,14 +29,7 @@ public class EnsembleSummary extends StateDocument{
         private double avgOpportunityDistricts;
 
         public EnsembleData() {}
-        public EnsembleData(int plans, double threshold, String modeSplit, double mostCommonSplitPercent, double avgMinorityEffective, double avgOpportunityDistricts) {
-            this.plans = plans;
-            this.threshold = threshold;
-            this.modeSplit = modeSplit;
-            this.avgMinorityEffective = avgMinorityEffective;
-            this.avgOpportunityDistricts = avgOpportunityDistricts;
-        }
-
+        
         public int getPlans() { return this.plans; }
         public double getThreshold() { return this.threshold; }
         public String getModeSplit() { return this.modeSplit; }

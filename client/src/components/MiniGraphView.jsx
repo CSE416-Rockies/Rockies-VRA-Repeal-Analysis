@@ -18,7 +18,7 @@ export default function MiniGraphView({ title, drawFunc, data, racialGroup, marg
 
     return (
         <>
-        <div className='relative flex flex-col w-full h-1/2 justify-center items-center gap-3 bg-white rounded-xl p-5'>
+        <div className='relative flex flex-col w-full h-full justify-center items-center gap-3 bg-white rounded-xl p-5'>
             <button 
                 onClick = {()=> setFullScreen(true)}
                 className = 'absolute top-5 right-5 text-gray-400 hover:text-gray-700 hover:scale-110 transition-all'
