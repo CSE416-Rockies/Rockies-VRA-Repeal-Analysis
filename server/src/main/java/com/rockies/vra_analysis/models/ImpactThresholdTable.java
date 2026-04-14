@@ -6,15 +6,13 @@ import java.util.Map;
 public class ImpactThresholdTable extends StateDocument {
     
     /* private variables -------------------------------------- */
-    private Map<String, GroupThresholds> groups;    // per race
-    private GroupThresholds aggregate;              // all minorities combined
+    private Map<String, GroupThresholds> groups;  
 
     /* constructors  ------------------------------------------ */
     public ImpactThresholdTable(){}
 
     /* methods  ----------------------------------------------- */
     public Map<String, GroupThresholds> getGroups() { return groups; }
-    public GroupThresholds getAggregate() { return aggregate; }
 
     /* static nested classes ----------------------------------- */
     public static class GroupThresholds {

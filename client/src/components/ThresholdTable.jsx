@@ -1,10 +1,10 @@
 import Tooltip from "./Tooltip"
 import { toPercent } from "../utils/helpers";
 
-export default function ThresholdTable({data, racialGroup, aggregate = false}){
+export default function ThresholdTable({data, racialGroup}){
      if (!data) return null;
 
-    const groupData = aggregate ? data.aggregate : data.groups?.[racialGroup];
+    const groupData = data.groups?.[racialGroup];
 
     return(
         <table className = 'w-full text-sm border-2 rounded-md'>

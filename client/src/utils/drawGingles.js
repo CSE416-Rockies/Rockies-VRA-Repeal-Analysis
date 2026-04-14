@@ -44,8 +44,9 @@ export function drawGingles({ givenSVG, data, margin, racialLabel }) {
     /* ------------------------------------------------------------------ Axes */
     
     // Create x axis
+    const xMax = Math.ceil(d3.max(flatData, d => d.racial_pct) / 10) * 10;
     var x = d3.scaleLinear()
-        .domain([0,100])        // axis ticks
+        .domain([0,xMax])        // axis ticks
         .range([0,width]);      // graph width 
                 
     // Create y axis
@@ -84,10 +85,12 @@ export function drawGingles({ givenSVG, data, margin, racialLabel }) {
 
     ['dem', 'rep'].forEach(party => {
         const { model, params } = raceRegression[party];
-        const lineData = d3.range(0, 101, 1).map(xVal => ({
+        const lineData = d3.range(0, xMax + 1, 1).map(xVal => ({
             x: xVal,
             y: Math.min(100, Math.max(0, predict(model, params, xVal/100)*100))
-        }));        
+        }));    
+        
+        
 
         lineDataByParty[party] = lineData;
 
