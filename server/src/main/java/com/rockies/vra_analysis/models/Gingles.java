@@ -38,21 +38,19 @@ public class Gingles extends StateDocument{
     public static class Candidate{
         private String candidate;
         private String model;
-        private String formula;
         private Map<String, Double> params;
 
         public Candidate() {}
 
         public String getCandidate() { return candidate; }
         public String getModel() { return model; }
-        public String getFormula() { return formula; }
         public Map<String, Double> getParams() { return params; }
     }
 
     public static class Precinct{
         private int id;
         private Map<String, Double> groups;
-        
+
         @Field("harris_vote_share")
         private double harrisVoteShare;
         @Field("trump_vote_share")

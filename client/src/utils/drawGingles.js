@@ -37,8 +37,8 @@ export function drawGingles({ givenSVG, data, margin, racialLabel }) {
 
     const regression = {
         [racialLabel]: {
-            dem: { model: harrisFit.model, params: harrisFit.params, formula: harrisFit.formula },
-            rep: { model: trumpFit.model,  params: trumpFit.params, formula: trumpFit.formula }
+            dem: { model: harrisFit.model, params: harrisFit.params },
+            rep: { model: trumpFit.model,  params: trumpFit.params }
         }
     };
 
@@ -86,10 +86,10 @@ export function drawGingles({ givenSVG, data, margin, racialLabel }) {
     const lineDataByParty = {};
 
     ['dem', 'rep'].forEach(party => {
-        const { model, params, formula } = raceRegression[party];
+        const { model, params} = raceRegression[party];
         const lineData = d3.range(0, xMax + 1, 1).map(xVal => ({
             x: xVal,
-            y: Math.min(100, Math.max(0, predict(model, params, formula, xVal/100)*100))
+            y: Math.min(100, Math.max(0, predict(model, params, xVal/100)*100))
         }));    
         
         lineDataByParty[party] = lineData;
