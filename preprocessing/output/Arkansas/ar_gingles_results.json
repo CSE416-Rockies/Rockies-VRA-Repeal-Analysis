@@ -5,18 +5,16 @@
             "white": [
                 {
                     "candidate": "harris",
-                    "model": "poly2",
-                    "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
+                    "model": "exponential",
                     "params": {
-                        "a": 0.2460967292927894,
-                        "b": -0.9954745976927213,
-                        "c": 0.9256931122181093
+                        "a": 1.0226360812256676,
+                        "b": -1.6155297618981812,
+                        "c": 3.2008905134754503e-17
                     }
                 },
                 {
                     "candidate": "trump",
                     "model": "power",
-                    "formula": "vote_share = a * pct_demo^b",
                     "params": {
                         "a": 0.8096922728204122,
                         "b": 0.7237740038679672
@@ -26,62 +24,55 @@
             "black": [
                 {
                     "candidate": "harris",
-                    "model": "poly2",
-                    "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
+                    "model": "exponential",
                     "params": {
-                        "a": 0.3024685060891471,
-                        "b": 0.43612787591594565,
-                        "c": 0.23309475183748232
+                        "a": 0.24030588704325673,
+                        "b": 1.4733145722460306,
+                        "c": 2.688363640571443e-14
                     }
                 },
                 {
                     "candidate": "trump",
-                    "model": "poly2",
-                    "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
+                    "model": "exponential",
                     "params": {
-                        "a": -0.3103307637504129,
-                        "b": -0.428393748453776,
-                        "c": 0.745647391518733
+                        "a": 0.7597442609953942,
+                        "b": -1.1500252057036013,
+                        "c": 3.624191438059891e-14
                     }
                 }
             ],
             "latino": [
                 {
                     "candidate": "harris",
-                    "model": "poly2",
-                    "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
+                    "model": "sigmoid",
                     "params": {
-                        "a": -0.294990654643245,
-                        "b": 0.41080160179498937,
-                        "c": 0.29524207989819984
+                        "L": 0.5935737257547884,
+                        "b1": 2.2913760528778377,
+                        "b0": -5.138520361797551e-13
                     }
                 },
                 {
                     "candidate": "trump",
-                    "model": "poly2",
-                    "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
+                    "model": "exponential",
                     "params": {
-                        "a": 0.3351117983710896,
-                        "b": -0.45687007953409237,
-                        "c": 0.6858666056087693
+                        "a": 0.3105788528668818,
+                        "b": -1.3753587797564961,
+                        "c": 0.3744086701787057
                     }
                 }
             ],
             "other": [
                 {
                     "candidate": "harris",
-                    "model": "poly2",
-                    "formula": "vote_share = a * pct_demo^2 + b * pct_demo + c",
+                    "model": "power",
                     "params": {
-                        "a": 4.1606302029252324,
-                        "b": -0.6462768244913278,
-                        "c": 0.32627710898898554
+                        "a": 0.3120846705537754,
+                        "b": 3.40543484289723e-17
                     }
                 },
                 {
                     "candidate": "trump",
                     "model": "power",
-                    "formula": "vote_share = a * pct_demo^b",
                     "params": {
                         "a": 0.7040928262286847,
                         "b": 0.014046256280059767
