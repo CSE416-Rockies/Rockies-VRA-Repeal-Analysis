@@ -4,34 +4,35 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Document("ei-analysis")
 
     public class EIAnalysis extends StateDocument{
 
         /* private variables -------------------------------------- */
-        private List<Candidate> candidates;
+        private Set<Candidate> candidates;
 
         /* constructors ------------------------------------------- */
         public EIAnalysis() {}
-        public EIAnalysis(String state, List<Candidate> candidates) {
+        public EIAnalysis(String state, Set<Candidate> candidates) {
             super(state);
             this.candidates = candidates;
         }
 
         /* methods ------------------------------------------------ */
-        public List<Candidate> getCandidates() {return candidates;}
+        public Set<Candidate> getCandidates() {return candidates;}
 
         /* static nested classes ---------------------------------- */
         public static class Candidate{
             @Field("id")
             private String id; 
-            private Map<String, GroupResult> groups;
+            private Map<Race, GroupResult> groups;
 
             public Candidate() {}
 
             public String getId() { return id; }
-            public Map<String, GroupResult> getGroups() {
+            public Map<Race, GroupResult> getGroups() {
                 return groups;
             }
         }

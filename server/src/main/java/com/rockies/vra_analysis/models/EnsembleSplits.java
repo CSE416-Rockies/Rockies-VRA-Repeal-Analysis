@@ -8,12 +8,12 @@ public class EnsembleSplits extends StateDocument {
    
     /* private variables ------------------------------------------- */
     private int totalDistricts;
-    private Map<String, Splits> raceBlind;
-    private Map<String, Splits> vra;
+    private Map<Integer, Splits> raceBlind;
+    private Map<Integer, Splits> vra;
 
     /* constructors ------------------------------------------------ */
     public EnsembleSplits(){}
-    public EnsembleSplits(String state, int totalDistricts, Map<String, Splits> raceBlind, Map<String, Splits> vra){
+    public EnsembleSplits(String state, int totalDistricts, Map<Integer, Splits> raceBlind, Map<Integer, Splits> vra){
         super(state);
         this.totalDistricts = totalDistricts;
         this.raceBlind = raceBlind;
@@ -22,8 +22,8 @@ public class EnsembleSplits extends StateDocument {
 
     /* methods ------------------------------------------------------ */
     public int getTotalDistricts() { return totalDistricts; }
-    public Map<String, Splits> getRaceBlind() { return raceBlind; }
-    public Map<String, Splits> getVra() { return vra; }
+    public Map<Integer, Splits> getRaceBlind() { return raceBlind; }
+    public Map<Integer, Splits> getVra() { return vra; }
 
     /* static nested classes ---------------------------------------- */
     public static class Splits {

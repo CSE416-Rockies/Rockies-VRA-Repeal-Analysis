@@ -6,13 +6,13 @@ import java.util.Map;
 public class ImpactThresholdTable extends StateDocument {
     
     /* private variables -------------------------------------- */
-    private Map<String, GroupThresholds> groups;  
+    private Map<Race, GroupThresholds> groups;  
 
     /* constructors  ------------------------------------------ */
     public ImpactThresholdTable(){}
 
     /* methods  ----------------------------------------------- */
-    public Map<String, GroupThresholds> getGroups() { return groups; }
+    public Map<Race, GroupThresholds> getGroups() { return groups; }
 
     /* static nested classes ----------------------------------- */
     public static class GroupThresholds {
