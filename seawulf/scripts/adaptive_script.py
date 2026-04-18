@@ -317,7 +317,7 @@ def main():
                 "latino_share": (district_stats["Latino_population"] / district_stats["Total_population"]).tolist(),
                 "other_share": (district_stats["Other_population"] / district_stats["Total_population"]).tolist(),
                 
-                "assignment": {str(k): v for k, v in assignment.items()},
+                # "assignment": {str(k): v for k, v in assignment.items()},
             }
             
             f.write(json.dumps(result) + "\n")
