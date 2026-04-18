@@ -12,6 +12,8 @@ with open('../../outputs/ga_vra_5000.pkl', 'rb') as file:
 
 node_to_id = gdf['UNIQUE_ID'].to_dict()
 
+
+# processing palns --------------------------------------------------------------------------------------------
 vra_plans = []
 for plan in vra_pickle:
     df = pd.DataFrame(plan.items(), columns=['node_id', 'District'])
@@ -27,6 +29,7 @@ for plan in raceblind_pickle:
     raceblind_plans.append(df)
 
 print('Finished loading ensembles...')
+
 
 """Load Enacted Plan Points and store them into a dict of dataframes"""
 # Access white enacted_plan demographic points like this: enacted_plan_demo['white']
