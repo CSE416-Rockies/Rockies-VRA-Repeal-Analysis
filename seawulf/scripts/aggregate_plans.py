@@ -144,7 +144,7 @@ def main():
     enacted_plan_demo = load_enacted_plan(state, demographics)
     box_whisker = calculate_boxwhisker(combined_bins, demographics, enacted_plan_demo)
     box_whisker_data = create_json(state_full_name, mode, box_whisker, demographics)
-    with open(os.path.join(OUTPUT_DIR, state_full_name, f"{state}-box-whisker.json"), "w") as f:
+    with open(os.path.join(OUTPUT_DIR, state_full_name, f"{state}_{mode}_{total_plans}_box_whisker.json"), "w") as f:
         json.dump(box_whisker_data, f, indent=2)
 
 if __name__ == "__main__":

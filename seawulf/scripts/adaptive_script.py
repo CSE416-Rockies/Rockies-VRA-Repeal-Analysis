@@ -268,7 +268,11 @@ def main():
     os.makedirs(state_dir, exist_ok=True)
     out_path = os.path.join(state_dir, f"{state}_{mode}_{plans_per_core}_core_{core_id:03d}.jsonl")
     
+    if state == 'ar':
+        gdf = gdf.rename(columns={'Unique_ID': 'UNIQUE_ID'})
     node_to_id = gdf["UNIQUE_ID"].to_dict()
+    
+        
     plan_count = 0
     with open(out_path, "a") as f:
         for plan in chain:
