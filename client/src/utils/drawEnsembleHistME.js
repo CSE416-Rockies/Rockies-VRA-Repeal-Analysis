@@ -6,9 +6,11 @@ import { ME_COLORS } from "./constants";
 
 export function drawEnsembleHistME({givenSVG, data, margin, racialGroup}){
     if (!givenSVG || !data) return;
-        var svg = d3.select(givenSVG)
-            .append("g")
-            .attr("transform", `translate(${margin.left},${margin.top})`);
+    var svg = d3.select(givenSVG)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    console.log(data);
 
     /* ------------------------------------------------------------------- Dimensions */
     const width  = givenSVG.clientWidth  - margin.left - margin.right;
@@ -16,8 +18,8 @@ export function drawEnsembleHistME({givenSVG, data, margin, racialGroup}){
 
     /* -------------------------------------------------------------------- Data Manipulation */
     
-    const raceBlindEntries = Object.entries(data.raceBlind).map(([k, v]) => ({ x: +k, y: v[racialGroup] ?? 0 }));
-    const vraEntries       = Object.entries(data.vra      ).map(([k, v]) => ({ x: +k, y: v[racialGroup] ?? 0 }));
+    const raceBlindEntries = Object.entries(data.raceBlind).map(([k, v]) => ({ x: +k, y: v.counts?.[racialGroup] ?? 0 }));
+    const vraEntries       = Object.entries(data.vra      ).map(([k, v]) => ({ x: +k, y: v.counts?.[racialGroup] ?? 0 }));
 
     /* ------------------------------------------------------------------- Axes */
     const allX     = [...raceBlindEntries, ...vraEntries].map(d => d.x);

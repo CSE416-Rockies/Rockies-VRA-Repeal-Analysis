@@ -2,26 +2,28 @@ package com.rockies.vra_analysis.models;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Document("ei-analysis")
 
     public class EIAnalysis extends StateDocument{
 
         /* private variables -------------------------------------- */
-        private Set<Candidate> candidates;
+       private Map<Party, Candidate> candidates;
 
         /* constructors ------------------------------------------- */
         public EIAnalysis() {}
-        public EIAnalysis(String state, Set<Candidate> candidates) {
+        public EIAnalysis(String state, Map<Party, Candidate> candidates) {
             super(state);
             this.candidates = candidates;
         }
 
         /* methods ------------------------------------------------ */
-        public Set<Candidate> getCandidates() {return candidates;}
+        public Map<Party, Candidate> getCandidates() { return candidates; }
 
         /* static nested classes ---------------------------------- */
         public static class Candidate{
@@ -38,9 +40,9 @@ import java.util.Set;
         }
 
         public static class GroupResult{
-            @Field("posterior_mean")
+            @JsonProperty("posterior_mean")
             private PosteriorMean posteriorMean;
-            @Field("credible_interval_95")
+            @JsonProperty("credible_interval_95")
             private CredibleInterval credibleInterval95;
             private Density density;
 

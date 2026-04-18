@@ -29,15 +29,15 @@ export function drawEIBar({ givenSVG, data, margin, racialLabel, candView }) {
             label: racialLabel,
             color: primaryColor,
             peak: peakX(groupData.density.group),
-            ci: groupData.credibleInterval95.group,
-            mean: groupData.posteriorMean.group,
+            ci: groupData.credible_interval_95.group,
+            mean: groupData.posterior_mean.group,
         },
         {
             label: `Not ${racialLabel}`,
             color: secondaryColor,
             peak: peakX(groupData.density.complement),
-            ci: groupData.credibleInterval95.complement,
-            mean: groupData.posteriorMean.complement,
+            ci: groupData.credible_interval_95.complement,
+            mean: groupData.posterior_mean.complement,
         }
     ];
 

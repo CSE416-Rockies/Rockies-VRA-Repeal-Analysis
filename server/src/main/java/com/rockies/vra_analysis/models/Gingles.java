@@ -3,8 +3,10 @@ package com.rockies.vra_analysis.models;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Set;
-import java.util.Objects;
 import java.util.Map;
 
 @Document("gingles")
@@ -27,56 +29,57 @@ public class Gingles extends StateDocument{
     public Regression getRegression() { return regression; }
     public Set<Precinct> getPrecincts() {return precincts;}
 
+    public void setRegression(Regression regression) { this.regression = regression; }
+
     /* static nested classes ---------------------------------------- */
     public static class Regression{
-        private Map<Race, Set<Candidate>> fits;
+        private Map<Race, Map<Party, RegressionFit>> fits;
 
         public Regression(){}
+        public Regression(Map<Race, Map<Party, RegressionFit>> fits){this.fits = fits;}
 
-        public  Map<Race, Set<Candidate>>  getFits() { return fits; }
+        public  Map<Race, Map<Party, RegressionFit>>  getFits() { return fits; }
     }
 
-    public static class Candidate{
+    public static class RegressionFit{
         private String candidate;
         private String model;
         private Map<String, Double> params;
 
-        public Candidate() {}
+        public RegressionFit() {}
 
         public String getCandidate() { return candidate; }
         public String getModel() { return model; }
         public Map<String, Double> getParams() { return params; }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof Candidate)) return false;
-            Candidate c = (Candidate) o;
-            return Objects.equals(candidate, c.candidate);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(candidate);
-        }
     }
 
+    
     public static class Precinct{
         @Field("id")
         private int id;
         private Map<Race, Double> groups;
-
-        @Field("harris_vote_share")
-        private double harrisVoteShare;
-        @Field("trump_vote_share")
-        private double trumpVoteShare;
+        private Map<Party, Double> partyVoteShares;
 
         public Precinct(){}
+        
+        @JsonCreator
+        public Precinct(
+            @JsonProperty("id") int id,
+            @JsonProperty("groups") Map<Race, Double> groups,
+            @JsonProperty("harris_vote_share") double harris,
+            @JsonProperty("trump_vote_share") double trump
+        ) {
+            this.id = id;
+            this.groups = groups;
+            this.partyVoteShares = Map.of(
+                Party.DEMOCRAT, harris,
+                Party.REPUBLICAN, trump
+            );
+        }
 
         public int getId() { return id; }
         public Map<Race, Double> getGroups() { return groups; }
-        public double getHarrisVoteShare() { return harrisVoteShare; }
-        public double getTrumpVoteShare() { return trumpVoteShare; }
+        public Map<Party, Double> getPartyShares() { return partyVoteShares; }
 
         @Override
         public boolean equals(Object o) {

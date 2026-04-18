@@ -1,0 +1,16 @@
+{
+  "racialPopulation": {
+    "totalPopulation": 3088354,
+    "whitePopulation": 2055864,
+    "blackPopulation": 434109,
+    "otherPopulation": 303710,
+    "latinoPopulation": 294671
+  },
+  "voterDistribution": {
+    "democratPercent": 33.6,
+    "republicanPercent": 64.2,
+    "otherPercent": 2.2,
+    "partyControl": "Republican"
+  },
+  "state": "Arkansas"
+}

@@ -1,0 +1,68 @@
+{
+  "state": "Georgia",
+  "totalDistricts": 14,
+  "raceBlind": {
+    "2": {
+      "black": 8000,
+      "latino": 3000,
+      "other": 1500
+    },
+    "3": {
+      "black": 85000,
+      "latino": 20000,
+      "other": 8000
+    },
+    "4": {
+      "black": 210000,
+      "latino": 55000,
+      "other": 22000
+    },
+    "5": {
+      "black": 155000,
+      "latino": 40000,
+      "other": 17000
+    },
+    "6": {
+      "black": 38000,
+      "latino": 10000,
+      "other": 4000
+    },
+    "7": {
+      "black": 4000,
+      "latino": 1200,
+      "other": 500
+    }
+  },
+  "vra": {
+    "4": {
+      "black": 5000,
+      "latino": 1800,
+      "other": 700
+    },
+    "5": {
+      "black": 62000,
+      "latino": 18000,
+      "other": 7000
+    },
+    "6": {
+      "black": 180000,
+      "latino": 52000,
+      "other": 21000
+    },
+    "7": {
+      "black": 195000,
+      "latino": 57000,
+      "other": 23000
+    },
+    "8": {
+      "black": 52000,
+      "latino": 15000,
+      "other": 6000
+    },
+    "9": {
+      "black": 6000,
+      "latino": 1800,
+      "other": 700
+    }
+  }
+}

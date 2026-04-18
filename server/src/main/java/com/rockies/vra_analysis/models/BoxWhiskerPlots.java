@@ -8,20 +8,20 @@ import java.util.Map;
 public class BoxWhiskerPlots extends StateDocument{
 
     /* private variables -------------------------------------- */
-    private Map<String, List<EnsembleDetail>> raceBlind;
-    private Map<String, List<EnsembleDetail>> vra;
+    private Map<Race, List<EnsembleDetail>> raceBlind;
+    private Map<Race, List<EnsembleDetail>> vra;
 
     /* constructors ------------------------------------------- */
     public BoxWhiskerPlots() {}
-    public BoxWhiskerPlots(String state, Map<String, List<EnsembleDetail>> raceBlind, Map<String, List<EnsembleDetail>> vra) {
+    public BoxWhiskerPlots(String state, Map<Race, List<EnsembleDetail>> raceBlind, Map<Race, List<EnsembleDetail>> vra) {
         super(state);
         this.raceBlind = raceBlind;
         this.vra = vra;
     }
 
     /* methods ------------------------------------------------ */
-    public Map<String, List<EnsembleDetail>> getRaceBlind() { return raceBlind; }
-    public Map<String, List<EnsembleDetail>> getVra() { return vra; }
+    public Map<Race, List<EnsembleDetail>> getRaceBlind() { return raceBlind; }
+    public Map<Race, List<EnsembleDetail>> getVra() { return vra; }
 
     /* static nested classes ---------------------------------- */
     public static class EnsembleDetail extends BoxStats{

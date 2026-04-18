@@ -6,7 +6,7 @@ import CongressRepDetail from './CongressRepDetail';
 import DetailPanel from './DetailPanel';
 
 import { PARTY_COLORS, APP_COLORS } from '../utils/constants';
-import { normalizeParty } from '../utils/helpers';
+import { normalizeParty, capitalize } from '../utils/helpers';
 
 import { getStateDetail } from '../api/api';
 
@@ -21,18 +21,20 @@ export default function StateDetail({expanded, onClick}){
     const [stateDetail, setStateDetail] = useState(null);
 
     /* ------------------------------------------------------------------------- variables */
-    const voterDist = stateDetail ? [
-        { party: "Democrat",   partyColor: PARTY_COLORS.dem,   percent: stateDetail.voterDistribution.democratPercentage },
-        { party: "Republican", partyColor: PARTY_COLORS.rep,   percent: stateDetail.voterDistribution.republicanPercentage },
-        { party: "Other",      partyColor: PARTY_COLORS.other, percent: stateDetail.voterDistribution.otherPercentage },
-    ] : [];
 
-    const raceArr = stateDetail ? [
-        { race: "White",          popNumber: stateDetail.racialPopulation.whitePopulation,  percent: stateDetail.racialPopulation.whitePercentage },
-        { race: "Black",          popNumber: stateDetail.racialPopulation.blackPopulation,  percent: stateDetail.racialPopulation.blackPercentage },
-        { race: "Hispanic/Latino",popNumber: stateDetail.racialPopulation.latinoPopulation, percent: stateDetail.racialPopulation.latinoPercentage },
-        { race: "Other",          popNumber: stateDetail.racialPopulation.otherPopulation,  percent: stateDetail.racialPopulation.otherPercentage },
-    ] : [];
+    const voterDist = stateDetail ? 
+        Object.entries(stateDetail.voterDistribution.distributions).map(([party, percent]) => ({
+            party: capitalize(party),
+            partyColor: PARTY_COLORS[normalizeParty(party)],
+            percent: percent,
+        })).sort((a, b) => b.percent - a.percent): [];
+
+    const raceArr = stateDetail ? 
+        Object.entries(stateDetail.racialPopulation.populations).map(([race, pop]) => ({
+            race: capitalize(race),
+            popNumber: pop,
+            percent: (pop / stateDetail.racialPopulation.totalPopulation * 100)
+    })).sort((a, b) => b.percent - a.percent) : [];
 
     const statePopulation = stateDetail?.racialPopulation.total ?? 0;
     const partyControl = stateDetail?.voterDistribution.partyControl ?? "";
@@ -76,7 +78,6 @@ export default function StateDetail({expanded, onClick}){
 
 /* Bar percentage color code */
 function BarFill({percent, color}){
-
     return(
         <div className = "w-full bg-gray-100 rounded-md h-3">
             <div className = {`rounded-md h-3`} 

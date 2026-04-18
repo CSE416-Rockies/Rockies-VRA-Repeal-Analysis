@@ -25,7 +25,7 @@ export default function drawEnsembleSplits({ givenSVG, data, margin, ensemble, r
 
         const getCount = (v) =>{
             if(!racialGroup) return 0;
-            return v[racialGroup];
+            return v.splits?.[racialGroup] ?? 0;
         }
 
         const toEntries = (dataset) => Object.entries(dataset).map(([k, v]) => ({ x: +k, y: getCount(v) }));

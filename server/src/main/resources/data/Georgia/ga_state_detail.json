@@ -1,0 +1,16 @@
+{
+  "racialPopulation": {
+    "totalPopulation": 11029227,
+    "whitePopulation": 5713139,
+    "blackPopulation": 3650675,
+    "otherPopulation": 242643,
+    "latinoPopulation": 1202185
+  },
+  "voterDistribution": {
+    "democratPercent": 48.5,
+    "republicanPercent": 50.7,
+    "otherPercent": 0.8,
+    "partyControl": "Republican"
+  },
+  "state": "Georgia"
+}

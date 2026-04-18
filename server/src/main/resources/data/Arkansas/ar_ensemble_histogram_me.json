@@ -1,0 +1,58 @@
+{
+  "state": "Arkansas",
+  "totalDistricts": 4,
+  "raceBlind": {
+    "0": {
+      "black": 1200,
+      "latino": 400,
+      "other": 200
+    },
+    "1": {
+      "black": 18000,
+      "latino": 5000,
+      "other": 2000
+    },
+    "2": {
+      "black": 52000,
+      "latino": 12000,
+      "other": 5000
+    },
+    "3": {
+      "black": 38000,
+      "latino": 9000,
+      "other": 3500
+    },
+    "4": {
+      "black": 8000,
+      "latino": 2000,
+      "other": 800
+    }
+  },
+  "vra": {
+    "1": {
+      "black": 4000,
+      "latino": 1000,
+      "other": 400
+    },
+    "2": {
+      "black": 28000,
+      "latino": 7000,
+      "other": 2800
+    },
+    "3": {
+      "black": 65000,
+      "latino": 15000,
+      "other": 6000
+    },
+    "4": {
+      "black": 48000,
+      "latino": 11000,
+      "other": 4500
+    },
+    "5": {
+      "black": 9000,
+      "latino": 2200,
+      "other": 900
+    }
+  }
+}

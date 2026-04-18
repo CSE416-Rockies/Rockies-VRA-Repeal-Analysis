@@ -26,7 +26,10 @@ export default function Gingles(){
     useEffect(()=>{
         if(!selectedState) return;
         getGingles(selectedState)
-        .then(res => setGinglesData(res.data))
+        .then(res => {
+            setGinglesData(res.data);
+            console.log(res.data);
+        })
         .catch(err => console.error("Error loading Gingles data:", err));
     }, [selectedState]);
 

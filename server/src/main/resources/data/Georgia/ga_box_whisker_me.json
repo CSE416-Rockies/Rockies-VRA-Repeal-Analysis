@@ -1,0 +1,39 @@
+{
+  "state": "Georgia",
+  "raceBlind": {
+    "latino": {
+      "min": 1,
+      "q1": 3,
+      "median": 5,
+      "q3": 6,
+      "max": 9
+    },
+    "black": {
+      "min": 0,
+      "q1": 2,
+      "median": 3,
+      "q3": 4,
+      "max": 6
+    }
+  },
+  "vra": {
+    "latino": {
+      "min": 8,
+      "q1": 8,
+      "median": 9,
+      "q3": 10,
+      "max": 11
+    },
+    "black": {
+      "min": 4,
+      "q1": 4,
+      "median": 5,
+      "q3": 6,
+      "max": 7
+    }
+  },
+  "enactedCounts": {
+    "latino": 7,
+    "black": 4
+  }
+}

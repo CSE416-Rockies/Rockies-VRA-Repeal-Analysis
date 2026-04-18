@@ -5,7 +5,7 @@ import { drawAxes, drawGrid } from "./drawGridLines";
 export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }) {
 
     // find relevant racial group in file
-    const candData = data.candidates.find(c => c.id === candView.toLowerCase());
+    const candData = data.candidates[candView];
     if (!candData) {
         console.error("Candidate not found:", candView);
         return;
@@ -17,6 +17,7 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
         return;
     }
 
+      console.log(groupData);
 
     var raceDensity = groupData.density.group;
     var nonRaceDensity = groupData.density.complement;
@@ -69,15 +70,15 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
             data: raceDensity,
             fill: primaryColor,
             label: racialLabel,
-            mean: groupData.posteriorMean.group,
-            ci: groupData.credibleInterval95.group
+            mean: groupData.posterior_mean.group,
+            ci: groupData.credible_interval_95.group
         },
         {
             data: nonRaceDensity,
             fill: secondaryColor,
             label: `Not ${racialLabel}`,
-            mean: groupData.posteriorMean.complement,
-            ci: groupData.credibleInterval95.complement
+            mean: groupData.posterior_mean.complement,
+            ci: groupData.credible_interval_95.complement
         }   
     ];
 

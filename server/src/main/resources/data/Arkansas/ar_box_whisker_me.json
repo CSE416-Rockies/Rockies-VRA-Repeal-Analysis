@@ -1,0 +1,39 @@
+{
+  "state": "Arkansas",
+  "raceBlind": {
+    "latino": {
+      "min": 0,
+      "q1": 1,
+      "median": 2,
+      "q3": 3,
+      "max": 4
+    },
+    "black": {
+      "min": 1,
+      "q1": 2,
+      "median": 3,
+      "q3": 4,
+      "max": 5
+    }
+  },
+  "vra": {
+    "latino": {
+      "min": 2,
+      "q1": 3,
+      "median": 4,
+      "q3": 5,
+      "max": 6
+    },
+    "black": {
+      "min": 3,
+      "q1": 4,
+      "median": 5,
+      "q3": 6,
+      "max": 8
+    }
+  },
+  "enactedCounts": {
+    "latino": 3,
+    "black": 4
+  }
+}

@@ -20,7 +20,7 @@ export default function EIAnalysis(){
     const selectedState = store?.selectedState || "";
     const racialGroup = store.racialGroup;
 
-    const [candView, setCandView] = useState('trump'); 
+    const [candView, setCandView] = useState('democrat'); 
     const [eiAnalysisData, setEIAnalysisData] = useState(null); 
     const [graphType, setGraphType] = useState('density');
 
@@ -69,9 +69,9 @@ export default function EIAnalysis(){
         <div className = 'flex gap-5 items-center'>
             <DropDownMenu options = {RACES} onSelect = {setRacialGroup} icon = {UserGroupIcon} toolTipDesc=""/>
             <div className = 'flex items-center text-gray-500 gap-5'>
-                {PRESIDENT_CAND_LEGEND.map(({label})=>(
-                    <button key = {label} className = 'flex gap-2 text-lg items-center cursor-pointer group' onClick = {() => setCandView(label)}>
-                        <div className = {`rounded-md border-2 w-5 h-5 border-gray-500 capitalize ${candView == label? 'bg-gray-500 ': 'group-hover:bg-gray-300'}`}>  </div>
+                {PRESIDENT_CAND_LEGEND.map(({label, value})=>(
+                    <button key = {label} className = 'flex gap-2 text-lg items-center cursor-pointer group' onClick = {() => setCandView(value)}>
+                        <div className = {`rounded-md border-2 w-5 h-5 border-gray-500 capitalize ${candView == value? 'bg-gray-500 ': 'group-hover:bg-gray-300'}`}>  </div>
                         <div className = 'capitalize'>{label}</div>
                     </button>
                 ))}

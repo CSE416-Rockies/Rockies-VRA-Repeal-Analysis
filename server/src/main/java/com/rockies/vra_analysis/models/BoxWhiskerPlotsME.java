@@ -8,13 +8,13 @@ import java.util.Map;
 public class BoxWhiskerPlotsME extends StateDocument{
 
     /* private variables -------------------------------------- */
-    private Map<String, BoxStats> raceBlind;
-    private Map<String, BoxStats> vra;
-    private Map<String, Integer> enactedCounts;
+    private Map<Race, BoxStats> raceBlind;
+    private Map<Race, BoxStats> vra;
+    private Map<Race, Integer> enactedCounts;
 
     /* constructors ------------------------------------------- */
     public BoxWhiskerPlotsME(){}
-    public BoxWhiskerPlotsME(String state, Map<String, BoxStats> raceBlind, Map<String, BoxStats> vra, Map<String, Integer> enactedCounts) {
+    public BoxWhiskerPlotsME(String state, Map<Race, BoxStats> raceBlind, Map<Race, BoxStats> vra, Map<Race, Integer> enactedCounts) {
         super(state);
         this.raceBlind = raceBlind;
         this.vra = vra;
@@ -22,7 +22,7 @@ public class BoxWhiskerPlotsME extends StateDocument{
     }
 
     /* methods ------------------------------------------------ */
-    public Map<String, BoxStats> getRaceBlind() { return raceBlind; }
-    public Map<String, BoxStats> getVra() { return vra; }
-    public Map<String, Integer> getEnactedCounts() { return enactedCounts; }
+    public Map<Race, BoxStats> getRaceBlind() { return raceBlind; }
+    public Map<Race, BoxStats> getVra() { return vra; }
+    public Map<Race, Integer> getEnactedCounts() { return enactedCounts; }
 }

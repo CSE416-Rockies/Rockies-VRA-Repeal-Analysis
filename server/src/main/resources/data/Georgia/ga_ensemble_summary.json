@@ -1,0 +1,17 @@
+{
+  "state": "Georgia",
+  "raceBlind": {
+    "plans": 5000,
+    "threshold": 1,
+    "avgMinorityEffective": 1.3,
+    "avgOpportunityDistricts": 0.9,
+    "modeSplit": "9R/5D"
+  },
+  "vra": {
+    "plans": 5000,
+    "threshold": 1,
+    "avgMinorityEffective": 2.8,
+    "avgOpportunityDistricts": 2.1,
+    "modeSplit": "8R/6D"
+  }
+}

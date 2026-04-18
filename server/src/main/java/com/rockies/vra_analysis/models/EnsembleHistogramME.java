@@ -26,15 +26,13 @@ public class EnsembleHistogramME extends StateDocument{
     public Map<Integer, GroupCounts> getVra() { return vra; }
 
    /* static nested classes ---------------------------------- */
+
     public static class GroupCounts {
-        private int black;
-        private int latino;
-        private int other;
+        private Map<Race, Integer> counts;
 
         public GroupCounts() {}
-        
-        public int getBlack()  { return black; }
-        public int getLatino() { return latino; }
-        public int getOther()  { return other; }
+        public GroupCounts(Map<Race, Integer> counts) { this.counts = counts; }
+
+        public Map<Race, Integer> getCounts() { return counts; }
     }
 }

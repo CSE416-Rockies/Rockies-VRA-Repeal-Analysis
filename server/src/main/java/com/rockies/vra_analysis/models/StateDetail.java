@@ -1,7 +1,11 @@
 package com.rockies.vra_analysis.models;
 
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Map;
 
 @Document("state-detail")
 public class StateDetail extends StateDocument{
@@ -25,45 +29,62 @@ public class StateDetail extends StateDocument{
     /* static nested classes ----------------------------------- */
     public static class VoterDistribution{
         private String partyControl;
-        @Field("democratPercent")
-        private double democratPercentage;
-        @Field("republicanPercent")
-        private double republicanPercentage;
-        @Field("otherPercent")
-        private double otherPercentage;
+        private Map<Party, Double> distributions;
 
         public VoterDistribution() {}
 
-        public String getPartyControl() { return this.partyControl; }
-        public double getDemocratPercentage() {return this.democratPercentage; }
-        public double getRepublicanPercentage() {return this.republicanPercentage; }
-        public double getOtherPercentage() {return this.otherPercentage; }
+        @JsonCreator
+        public VoterDistribution(
+            @JsonProperty("partyControl") String partyControl,
+            @JsonProperty("democratPercent") double democrat,
+            @JsonProperty("republicanPercent") double republican,
+            @JsonProperty("otherPercent") double other
+        ) {
+            this.partyControl = partyControl;
+            this.distributions = Map.of(
+                Party.DEMOCRAT, democrat,
+                Party.REPUBLICAN, republican,
+                Party.OTHER, other
+            );
+        }
+
+        public String getPartyControl() { return partyControl; }
+        public double getPartyPercentage(Party party) { 
+            return distributions.getOrDefault(party, 0.0); 
+        }
+        public Map<Party, Double> getDistributions() { return distributions; }
     }
 
-    public static class RacialPopulation{
-        @Field("totalPopulation")
+   public static class RacialPopulation {
         private int total;
-        @Field("whitePopulation")
-        private int white;
-        @Field("blackPopulation")
-        private int black;
-        @Field("latinoPopulation")
-        private int latino;
-        @Field("otherPopulation")
-        private int other;
+        private Map<Race, Integer> populations;
 
         public RacialPopulation() {}
 
-        public int getTotal(){ return this.total; }
-        public int getWhitePopulation() { return this.white; }
-        public int getBlackPopulation() { return this.black; }
-        public int getLatinoPopulation() { return this.latino; }
-        public int getOtherPopulation() { return this.other; }
-        public double getWhitePercentage() { return (double) white / total * 100; }
-        public double getBlackPercentage() { return (double) black / total * 100; }
-        public double getLatinoPercentage() { return (double) latino / total * 100; }
-        public double getOtherPercentage() { return (double) other / total * 100; }
+        @JsonCreator
+        public RacialPopulation(
+            @JsonProperty("totalPopulation") int total,
+            @JsonProperty("whitePopulation") int white,
+            @JsonProperty("blackPopulation") int black,
+            @JsonProperty("latinoPopulation") int latino,
+            @JsonProperty("otherPopulation") int other
+        ) {
+            this.total = total;
+            this.populations = Map.of(
+                Race.WHITE, white,
+                Race.BLACK, black,
+                Race.LATINO, latino,
+                Race.OTHER, other
+            );
+        }
         
+        public int getTotal() { return total; }
+        public Map<Race, Integer> getPopulations() { return populations; }
+
+        public int getRacePopulation(Race race) {
+            return populations.getOrDefault(race, 0);
+        }
     }
-    
+
+        
 }

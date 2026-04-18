@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import { PARTY_COLORS } from "./constants";
 import { drawAxes, drawGrid } from "./drawGridLines";
 import { drawBisector } from "./drawBisector";
-import { predict } from "./helpers";
+import { predict, normalizeParty } from "./helpers";
 
 export function drawGingles({ givenSVG, data, margin, racialLabel }) { 
     
@@ -21,27 +21,20 @@ export function drawGingles({ givenSVG, data, margin, racialLabel }) {
     const flatData = data.precincts.flatMap(d => {
         const pctDemo = d.groups[racialLabel];
         if (pctDemo == null) return [];
-        return [
-            { racial_pct: pctDemo * 100, vote_share: d.harrisVoteShare * 100, party: "dem" },
-            { racial_pct: pctDemo * 100, vote_share: d.trumpVoteShare * 100, party: "rep" }
-        ];
+        return Object.entries(d.partyShares).map(([party, share]) => ({
+            racial_pct: pctDemo * 100,
+            vote_share: share * 100,
+            party: normalizeParty(party)
+        }));
     });
 
 
     const fits = data.regression.fits[racialLabel];
     if (!fits) return;
 
-    const harrisFit = fits.find(c => c.candidate === "harris");
-    const trumpFit = fits.find(c => c.candidate === "trump");
-    if (!harrisFit || !trumpFit) return;
-
-    const regression = {
-        [racialLabel]: {
-            dem: { model: harrisFit.model, params: harrisFit.params },
-            rep: { model: trumpFit.model,  params: trumpFit.params }
-        }
-    };
-
+    const demFit = fits.democrat;
+    const repFit = fits.republican;
+    if (!demFit || !repFit) return;
 
     /* ------------------------------------------------------------------ Axes */
     
@@ -82,11 +75,12 @@ export function drawGingles({ givenSVG, data, margin, racialLabel }) {
             .style("fill-opacity", 0.3)
 
     /* Draw regression lines from coefficients */
-    const raceRegression = regression[racialLabel];
-    const lineDataByParty = {};
 
+    const lineDataByParty = {};
     ['dem', 'rep'].forEach(party => {
-        const { model, params} = raceRegression[party];
+        const fit = party === 'dem' ? demFit : repFit;
+        const { model, params } = fit;
+        
         const lineData = d3.range(0, xMax + 1, 1).map(xVal => ({
             x: xVal,
             y: Math.min(100, Math.max(0, predict(model, params, xVal/100)*100))

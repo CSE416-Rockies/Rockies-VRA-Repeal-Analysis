@@ -26,28 +26,19 @@ public class EnsembleSplits extends StateDocument {
     public Map<Integer, Splits> getVra() { return vra; }
 
     /* static nested classes ---------------------------------------- */
+
     public static class Splits {
         private int total;
-        private int white;
-        private int black;
-        private int latino;
-        private int other;
+        private Map<Race, Integer> splits;
 
         public Splits() {}
-
-        public Splits(int total, int white, int black, int latino, int other){
+        public Splits(int total, Map<Race, Integer> splits) {
             this.total = total;
-            this.white = white;
-            this.black = black;
-            this.latino = latino;
-            this.other = other;
+            this.splits = splits;
         }
 
         public int getTotal() { return total; }
-        public int getWhite() { return white; }
-        public int getBlack() { return black; }
-        public int getLatino() { return latino; }
-        public int getOther() { return other; }
-
+        public Map<Race, Integer> getSplits() { return splits; }
+        public int getRaceSplit(Race race) { return splits.getOrDefault(race, 0); }
     }
 }
