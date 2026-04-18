@@ -50,58 +50,51 @@ def load_enacted_plan(state, demographics):
         enacted_plan_demo[demo] = df
     return enacted_plan_demo
 
-def calculate_boxwhisker(all_plans, demographics, enacted_plan_demo):
-    # rebuild pop_shares from pre-computed jsonl fields
-    pop_shares = []
-    for p in all_plans:
-        df = pd.DataFrame({
-            "white_share":  p["white_share"],
-            "black_share":  p["black_share"],
-            "latino_share": p["latino_share"],
-            "other_share":  p["other_share"],
-        })
-        pop_shares.append(df)
+def combine_bins(state_dir, total_plans, demographics, total_districts):
+    combined_bins = {
+        demo: [[] for _ in range(total_districts)]
+        for demo in demographics
+    }
+    
+    bin_files = sorted(glob.glob(os.path.join(state_dir, f"bins_core_{total_plans}_*.json")))
+    print(f"Found {len(bin_files)} bin files")
+    
+    for fpath in bin_files:
+        with open(fpath) as f:
+            core_bins = json.load(f)
+        for demo in demographics:
+            for i in range(total_districts):
+                combined_bins[demo][i].extend(core_bins[demo][i])
+    
+    return combined_bins
 
-    # rest stays exactly the same as before
+def calculate_boxwhisker(combined_bins, demographics, enacted_plan_demo):
     summaries = {}
     for demo in demographics:
-        sorted_plans = []
-        for df in pop_shares:
-            df_sorted = (
-                df.sort_values(f"{demo}_share")
-                  .reset_index(drop=True)
-                  .assign(districtIndex=lambda d: d.index + 1)
-            )
-            sorted_plans.append(df_sorted)
-
-        all_plans_df = pd.concat(sorted_plans, ignore_index=True)
-
-        summary = (
-            all_plans_df.groupby("districtIndex")[f"{demo}_share"]
-            .agg(
-                min="min",
-                q1=lambda x: x.quantile(0.25),
-                median="median",
-                q3=lambda x: x.quantile(0.75),
-                max="max"
-            )
-            .reset_index()
-            .merge(enacted_plan_demo[demo], on="districtIndex", how="left")
-        )
+        summary = []
+        for i, values in enumerate(combined_bins[demo]):
+            s = pd.Series(values)
+            summary.append({
+                "districtIndex": i + 1,
+                "min": s.min(),
+                "q1": s.quantile(0.25),
+                "median": s.quantile(0.5),
+                "q3": s.quantile(0.75),
+                "max": s.max(),
+                "enacted": enacted_plan_demo[demo].loc[
+                    enacted_plan_demo[demo]["districtIndex"] == i + 1, "enacted"
+                ].values[0]
+            })
         summaries[demo] = summary
-
+        
     return summaries
 
 def create_json(state, mode, summary, demographics):
     data = {'state': state}
-
     ensemble = {}
-
     for demo in demographics:
-        ensemble[demo] = summary[demo].to_dict(orient="records")
-
+        ensemble[demo] = summary[demo]
     data[mode] = ensemble
-    
     return data
 
 def main():
@@ -147,10 +140,9 @@ def main():
     summary_df.to_csv(os.path.join(OUTPUT_DIR, state_full_name, f"{state}_{mode}_{total_plans}_summary.csv"), index=False)
     
     #SW-11
-    
+    combined_bins = combine_bins(state_dir, total_plans, demographics, TOTAL_DISTRICTS)
     enacted_plan_demo = load_enacted_plan(state, demographics)
-        
-    box_whisker = calculate_boxwhisker(all_plans, demographics, enacted_plan_demo)
+    box_whisker = calculate_boxwhisker(combined_bins, demographics, enacted_plan_demo)
     box_whisker_data = create_json(state_full_name, mode, box_whisker, demographics)
     with open(os.path.join(OUTPUT_DIR, state_full_name, f"{state}-box-whisker.json"), "w") as f:
         json.dump(box_whisker_data, f, indent=2)

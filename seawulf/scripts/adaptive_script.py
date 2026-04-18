@@ -15,6 +15,7 @@ MINORITY_RACES = ['Black']
 OUTPUT_DIR = "../outputs/"
 TOTAL_DISTRICT = 14
 EFFECTIVE_THRESHOLD = 0.6
+demographics = ['white', 'black', 'latino', 'other']
 
 # ARG PARSER ---------------------------------------------------------------------------------------------------------
 def parse_arg():
@@ -252,6 +253,10 @@ def main():
     mode = args.mode
     state_dir = os.path.join(OUTPUT_DIR, state_full_name, mode, str(total_plans))
     
+    bins = {
+        demo: [[] for _ in range(TOTAL_DISTRICT)] for demo in demographics
+    }
+    
     
     print(f"Core {core_id} | state={state} | mode={mode} | plans={plans_per_core}")
 
@@ -322,6 +327,13 @@ def main():
             
             f.write(json.dumps(result) + "\n")
             f.flush()
+            
+            for demo in demographics:
+                shares = (district_stats[f"{demo.capitalize()}_population"] / 
+                        district_stats["Total_population"]).sort_values().tolist()
+                for i, share in enumerate(shares):
+                    bins[demo][i].append(share)
+            
             plan_count += 1
             if plan_count % 10 == 0:
                 print(f"Core {core_id}: {plan_count}/{plans_per_core} plans", flush=True)
@@ -329,6 +341,11 @@ def main():
                 break
     
     print(f"Core {core_id}: done — saved {plan_count} plans to {out_path}")
+    
+    bins_path = os.path.join(state_dir, f"bins_core_{total_plans}_{core_id:03d}.json")
+    with open(bins_path, "w") as f:
+        json.dump(bins, f)
+    print(f"Core {core_id}: saved bins to {bins_path}")
     
 if __name__ == "__main__":
     main()
