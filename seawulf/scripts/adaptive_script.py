@@ -209,6 +209,8 @@ def scale_score(df, district_score):
 
 
 def calc_minority_effectiveness(district_stats, preferred_candidate):
+    preferred_candidate['District'] = preferred_candidate["District"].astype(str)
+    district_stats['District'] = district_stats['District'].astype(str)
     df = district_stats.merge(preferred_candidate, on="District", how="left")
 
     _, _, district_score = count_effective(df)
@@ -252,7 +254,9 @@ def main():
     plans_per_core = args.plans
     mode = args.mode
     state_dir = os.path.join(OUTPUT_DIR, state_full_name, mode, str(total_plans))
-    
+    if state == 'ar':
+        TOTAL_DISTRICT = 4
+        
     bins = {
         demo: [[] for _ in range(TOTAL_DISTRICT)] for demo in demographics
     }

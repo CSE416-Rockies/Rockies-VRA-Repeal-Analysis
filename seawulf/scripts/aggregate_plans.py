@@ -102,9 +102,13 @@ def main():
     state = args.state
     mode = args.mode
     state_full_name = 'Georgia' if state == 'ga' else "Arkansas"
+    if state == 'ar':
+        TOTAL_DISTRICTS = 4
+        
     total_plans = args.total_plans
     state_dir = os.path.join(OUTPUT_DIR, state_full_name, mode, str(total_plans))
     plans_per_core = args.plans
+    
     
     pattern = os.path.join(state_dir, f"{state}_{mode}_{plans_per_core}_core_*.jsonl")
     core_files = sorted(glob.glob(pattern))
