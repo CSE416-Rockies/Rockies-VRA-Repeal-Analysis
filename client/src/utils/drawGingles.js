@@ -21,7 +21,7 @@ export function drawGingles({ givenSVG, data, margin, racialLabel }) {
     const flatData = data.precincts.flatMap(d => {
         const pctDemo = d.groups[racialLabel];
         if (pctDemo == null) return [];
-        return Object.entries(d.partyShares).map(([party, share]) => ({
+        return Object.entries(d.partyVoteShares).map(([party, share]) => ({
             racial_pct: pctDemo * 100,
             vote_share: share * 100,
             party: normalizeParty(party)

@@ -29,7 +29,7 @@ public class GinglesSeeder extends BaseSeeder {
 
     public void seed(String state) throws Exception{
         if (alreadySeeded("gingles", state)){
-            System.out.println("Migration: BoxWhisker Plots already populated. Skipping.");
+            System.out.println("Migration: Gingles already populated. Skipping.");
             return;
         }
 
