@@ -1,7 +1,6 @@
 package com.rockies.vra_analysis.models;
 
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -27,13 +26,13 @@ import java.util.Map;
 
         /* static nested classes ---------------------------------- */
         public static class Candidate{
-            @Field("id")
-            private String id; 
+            @JsonProperty("id")
+            private String candidate; 
             private Map<Race, GroupResult> groups;
 
             public Candidate() {}
 
-            public String getId() { return id; }
+            public String getCandidate() { return candidate; }
             public Map<Race, GroupResult> getGroups() {
                 return groups;
             }

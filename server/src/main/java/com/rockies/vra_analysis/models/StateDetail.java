@@ -49,9 +49,6 @@ public class StateDetail extends StateDocument{
         }
 
         public String getPartyControl() { return partyControl; }
-        public double getPartyPercentage(Party party) { 
-            return distributions.getOrDefault(party, 0.0); 
-        }
         public Map<Party, Double> getDistributions() { return distributions; }
     }
 
@@ -80,10 +77,6 @@ public class StateDetail extends StateDocument{
         
         public int getTotal() { return total; }
         public Map<Race, Integer> getPopulations() { return populations; }
-
-        public int getRacePopulation(Race race) {
-            return populations.getOrDefault(race, 0);
-        }
     }
 
         

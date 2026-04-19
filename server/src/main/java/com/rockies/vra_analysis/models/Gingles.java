@@ -79,7 +79,7 @@ public class Gingles extends StateDocument{
 
         public int getId() { return id; }
         public Map<Race, Double> getGroups() { return groups; }
-        public Map<Party, Double> getPartyShares() { return partyVoteShares; }
+        public Map<Party, Double> getPartyVoteShares() { return partyVoteShares; }
 
         @Override
         public boolean equals(Object o) {
