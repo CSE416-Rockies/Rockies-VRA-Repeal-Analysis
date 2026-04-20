@@ -3,15 +3,27 @@
   "raceBlind": {
     "plans": 1000,
     "threshold": 1,
-    "avgMinorityEffective": 0.8,
-    "avgOpportunityDistricts": 0.4,
-    "modeSplit": "4R/0D"
+    "modeSplit": "4R/0D",
+    "avgEffectiveDistricts": {
+      "black": 0.8,
+      "latino": 0.2
+    },
+    "avgOpportunityDistricts": {
+      "black": 0.4,
+      "latino": 0.1
+    }
   },
   "vra": {
     "plans": 1000,
     "threshold": 1,
-    "avgMinorityEffective": 1.6,
-    "avgOpportunityDistricts": 1.2,
-    "modeSplit": "3R/1D"
+    "modeSplit": "3R/1D",
+    "avgEffectiveDistricts": {
+      "black": 1.6,
+      "latino": 0.4
+    },
+    "avgOpportunityDistricts": {
+      "black": 1.2,
+      "latino": 0.3
+    }
   }
 }

@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import DetailPanel from "./DetailPanel";
 import GlobalStoreContext from "../store";
 import { getEnsembleSummary } from "../api/api";
+import { capitalize } from "../utils/helpers";
 
 export default function EnsembleDetail({expanded, onClick}){
 
@@ -27,11 +28,20 @@ export default function EnsembleDetail({expanded, onClick}){
         { label: 'VRA', key: "VRA",  plans: ensembleSummary.vra.plans, threshold: ensembleSummary.vra.threshold },
     ] : []
     
+    const races = ensembleSummary ? Object.keys(ensembleSummary.raceBlind.avgEffectiveDistricts) : [];
 
     const rows = ensembleSummary ? [
         { label: 'Most Frequent R/D Split', raceBlind: ensembleSummary.raceBlind.modeSplit, vra: ensembleSummary.vra.modeSplit },
-        { label: 'Avg. Minority Effective Districts',raceBlind: ensembleSummary.raceBlind.avgMinorityEffective, vra: ensembleSummary.vra.avgMinorityEffective },
-        { label: 'Avg. Opportunity Districts', raceBlind: ensembleSummary.raceBlind.avgOpportunityDistricts, vra: ensembleSummary.vra.avgOpportunityDistricts },
+        ...races.map(race => ({
+            label: `Avg. ${capitalize(race)} Effective Districts`,
+            raceBlind: ensembleSummary.raceBlind.avgEffectiveDistricts[race],
+            vra: ensembleSummary.vra.avgEffectiveDistricts[race]
+        })),
+        ...races.map(race => ({
+            label: `Avg. ${capitalize(race)} Opportunity Districts`,
+            raceBlind: ensembleSummary.raceBlind.avgOpportunityDistricts[race],
+            vra: ensembleSummary.vra.avgOpportunityDistricts[race]
+        })),
     ] : []
 
 
@@ -65,7 +75,7 @@ export default function EnsembleDetail({expanded, onClick}){
                     </thead>
                     <tbody className = 'border-divide'>
                         {rows.map(({label, raceBlind, vra})=>(
-                            <tr key = {label} className = 'h-12'>
+                            <tr key = {label} className = 'h-10'>
                                 <td className = 'text-gray-400'>{label}</td>
                                 <td className={`font-bold pr-2 transition-colors duration-120 ${hoveredCard === 'RB' ? 'text-emerald-500' : 'text-gray-500'}`}>
                                     {raceBlind ?? "-"}

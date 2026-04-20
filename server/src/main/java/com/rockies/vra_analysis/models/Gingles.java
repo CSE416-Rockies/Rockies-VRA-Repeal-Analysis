@@ -57,7 +57,7 @@ public class Gingles extends StateDocument{
     public static class Precinct{
         @Field("id")
         private int id;
-        private Map<Race, Double> groups;
+        private Map<Race, Double> groupsPct;
         private Map<Party, Double> partyVoteShares;
 
         public Precinct(){}
@@ -65,12 +65,12 @@ public class Gingles extends StateDocument{
         @JsonCreator
         public Precinct(
             @JsonProperty("id") int id,
-            @JsonProperty("groups") Map<Race, Double> groups,
+            @JsonProperty("groups") Map<Race, Double> groupsPct,
             @JsonProperty("harris_vote_share") double harris,
             @JsonProperty("trump_vote_share") double trump
         ) {
             this.id = id;
-            this.groups = groups;
+            this.groupsPct = groupsPct;
             this.partyVoteShares = Map.of(
                 Party.DEMOCRAT, harris,
                 Party.REPUBLICAN, trump
@@ -78,7 +78,7 @@ public class Gingles extends StateDocument{
         }
 
         public int getId() { return id; }
-        public Map<Race, Double> getGroups() { return groups; }
+        public Map<Race, Double> getGroupsPct() { return groupsPct; }
         public Map<Party, Double> getPartyVoteShares() { return partyVoteShares; }
 
         @Override

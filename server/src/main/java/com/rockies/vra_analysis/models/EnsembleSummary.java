@@ -1,6 +1,6 @@
 package com.rockies.vra_analysis.models;
 import org.springframework.data.mongodb.core.mapping.Document;
-
+import java.util.Map;
 @Document(collection = "ensemble-summary")
 public class EnsembleSummary extends StateDocument{
    
@@ -25,15 +25,15 @@ public class EnsembleSummary extends StateDocument{
         private int plans;
         private double threshold;
         private String modeSplit;
-        private double avgMinorityEffective;
-        private double avgOpportunityDistricts;
+        private Map<Race, Double> avgEffectiveDistricts;
+        private Map<Race, Double> avgOpportunityDistricts;
 
         public EnsembleData() {}
         
         public int getPlans() { return this.plans; }
         public double getThreshold() { return this.threshold; }
         public String getModeSplit() { return this.modeSplit; }
-        public double getAvgMinorityEffective() { return this.avgMinorityEffective; }
-        public double getAvgOpportunityDistricts() { return this.avgOpportunityDistricts; }
+        public Map<Race, Double> getAvgEffectiveDistricts() { return this.avgEffectiveDistricts; }
+        public Map<Race, Double> getAvgOpportunityDistricts() { return this.avgOpportunityDistricts; }
     }
 }
