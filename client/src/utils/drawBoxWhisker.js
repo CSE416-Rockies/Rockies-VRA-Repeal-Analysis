@@ -7,6 +7,7 @@ import { ME_COLORS } from "./constants";
 export function drawBoxWhisker({ givenSVG, data, margin, racialGroup, ensemble }) {
     if(!givenSVG) return;  
     
+    console.log(data);
     const svg = d3.select(givenSVG)
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);

@@ -3,6 +3,7 @@ package com.rockies.vra_analysis.seeders;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import com.rockies.vra_analysis.enums.State;
 
 
 @Component
@@ -38,7 +39,7 @@ public class DataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        for (String state : BaseSeeder.STATE_CODES.keySet()) {
+        for (State state : State.values()) {
             ginglesSeeder.seed(state);
             eiAnalysisSeeder.seed(state);
             stateDetailSeeder.seed(state);

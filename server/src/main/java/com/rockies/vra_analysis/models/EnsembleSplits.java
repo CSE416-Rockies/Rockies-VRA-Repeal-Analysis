@@ -1,6 +1,9 @@
 package com.rockies.vra_analysis.models;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.rockies.vra_analysis.enums.Race;
+import com.rockies.vra_analysis.enums.State;
+
 import java.util.Map;
 
 @Document("ensemble-splits")
@@ -13,7 +16,7 @@ public class EnsembleSplits extends StateDocument {
 
     /* constructors ------------------------------------------------ */
     public EnsembleSplits(){}
-    public EnsembleSplits(String state, int totalDistricts, Map<Integer, Splits> raceBlind, Map<Integer, Splits> vra){
+    public EnsembleSplits(State state, int totalDistricts, Map<Integer, Splits> raceBlind, Map<Integer, Splits> vra){
         super(state);
         this.totalDistricts = totalDistricts;
         this.raceBlind = raceBlind;

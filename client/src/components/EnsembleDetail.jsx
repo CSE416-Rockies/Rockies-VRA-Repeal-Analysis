@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from "react";
 import DetailPanel from "./DetailPanel";
 import GlobalStoreContext from "../store";
 import { getEnsembleSummary } from "../api/api";
-import { capitalize } from "../utils/helpers";
 
 export default function EnsembleDetail({expanded, onClick}){
 
@@ -27,22 +26,7 @@ export default function EnsembleDetail({expanded, onClick}){
         { label: 'RACE-BLIND', key: "RB", plans: ensembleSummary.raceBlind.plans, threshold: ensembleSummary.raceBlind.threshold },
         { label: 'VRA', key: "VRA",  plans: ensembleSummary.vra.plans, threshold: ensembleSummary.vra.threshold },
     ] : []
-    
-    const races = ensembleSummary ? Object.keys(ensembleSummary.raceBlind.avgEffectiveDistricts) : [];
 
-    const rows = ensembleSummary ? [
-        { label: 'Most Frequent R/D Split', raceBlind: ensembleSummary.raceBlind.modeSplit, vra: ensembleSummary.vra.modeSplit },
-        ...races.map(race => ({
-            label: `Avg. ${capitalize(race)} Effective Districts`,
-            raceBlind: ensembleSummary.raceBlind.avgEffectiveDistricts[race],
-            vra: ensembleSummary.vra.avgEffectiveDistricts[race]
-        })),
-        ...races.map(race => ({
-            label: `Avg. ${capitalize(race)} Opportunity Districts`,
-            raceBlind: ensembleSummary.raceBlind.avgOpportunityDistricts[race],
-            vra: ensembleSummary.vra.avgOpportunityDistricts[race]
-        })),
-    ] : []
 
 
     return(
@@ -73,7 +57,7 @@ export default function EnsembleDetail({expanded, onClick}){
                             <th>VRA</th> */}
                         </tr>
                     </thead>
-                    <tbody className = 'border-divide'>
+                    {/* <tbody className = 'border-divide'>
                         {rows.map(({label, raceBlind, vra})=>(
                             <tr key = {label} className = 'h-10'>
                                 <td className = 'text-gray-400'>{label}</td>
@@ -85,7 +69,7 @@ export default function EnsembleDetail({expanded, onClick}){
                                 </td>
                             </tr>
                        ))}
-                    </tbody>
+                    </tbody> */}
                 </table>
 
             </div> 

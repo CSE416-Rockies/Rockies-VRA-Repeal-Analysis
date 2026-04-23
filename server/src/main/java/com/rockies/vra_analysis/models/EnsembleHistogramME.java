@@ -1,6 +1,9 @@
 package com.rockies.vra_analysis.models;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.rockies.vra_analysis.enums.Race;
+import com.rockies.vra_analysis.enums.State;
+
 import java.util.Map;
 
 @Document(collection = "ensemble-histogram-me")
@@ -13,7 +16,7 @@ public class EnsembleHistogramME extends StateDocument{
 
     /* constructors ------------------------------------------- */
     public EnsembleHistogramME() {}
-    public EnsembleHistogramME(String state, int totalDistricts, Map<Integer, GroupCounts> raceBlind, Map<Integer, GroupCounts> vra) {
+    public EnsembleHistogramME(State state, int totalDistricts, Map<Integer, GroupCounts> raceBlind, Map<Integer, GroupCounts> vra) {
         super(state);
         this.totalDistricts = totalDistricts;
         this.raceBlind = raceBlind;

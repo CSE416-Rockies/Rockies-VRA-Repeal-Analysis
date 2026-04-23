@@ -5,7 +5,7 @@ import { drawBars } from "./drawBars";
 import { capitalize } from "./helpers";
 
 export function drawEIBar({ givenSVG, data, margin, racialLabel, candView }) {
-    const candData = data.candidates.find(c => c.id === candView.toLowerCase());
+    const candData = data.candidates[candView];
     if (!candData) return;
 
     const groupData = candData.groups[racialLabel];

@@ -5,6 +5,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.rockies.vra_analysis.enums.Party;
+import com.rockies.vra_analysis.enums.Race;
+import com.rockies.vra_analysis.enums.State;
 
 import java.util.Set;
 import java.util.Map;
@@ -19,7 +22,7 @@ public class Gingles extends StateDocument{
 
     /* constructors ------------------------------------------------ */
     public Gingles(){}
-    public Gingles(String state, Regression regression, Set<Precinct> precincts) {
+    public Gingles(State state, Regression regression, Set<Precinct> precincts) {
         super(state);
         this.regression = regression;
         this.precincts = precincts;

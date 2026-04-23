@@ -1,0 +1,11 @@
+{
+  "state": "Georgia",
+  "raceBlind": {
+    "plans": 5000,
+    "threshold": 1
+  },
+  "vra": {
+    "plans": 5000,
+    "threshold": 1
+  }
+}

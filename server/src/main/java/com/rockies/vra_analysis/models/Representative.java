@@ -2,6 +2,8 @@ package com.rockies.vra_analysis.models;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.rockies.vra_analysis.enums.State;
+
 @Document("representatives")
 public class Representative extends StateDocument{
    
@@ -20,7 +22,7 @@ public class Representative extends StateDocument{
 
     /* constructors --------------------------------------------- */
     public Representative() {}
-    public Representative(String state, int districtNumber, String name, String party, String racialEthnicGroup, double voteMarginPercent, String imageId, String status) {
+    public Representative(State state, int districtNumber, String name, String party, String racialEthnicGroup, double voteMarginPercent, String imageId, String status) {
         super(state);
         this.districtNumber = districtNumber;
         this.name = name;

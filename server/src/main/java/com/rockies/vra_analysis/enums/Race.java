@@ -1,4 +1,4 @@
-package com.rockies.vra_analysis.models;
+package com.rockies.vra_analysis.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

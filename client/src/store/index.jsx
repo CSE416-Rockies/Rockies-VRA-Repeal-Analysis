@@ -1,4 +1,5 @@
 import { createContext, useContext, useReducer, useMemo } from "react";
+import { STATE_CODE } from "../utils/constants";
 
 export const GlobalStoreContext = createContext({});
 
@@ -82,7 +83,7 @@ export function GlobalStoreContextProvider(props) {
         setSelectedState: (stateName) => {
             dispatch({ 
                 type: GlobalStoreActionType.SELECT_STATE, 
-                payload: stateName 
+                payload: STATE_CODE[stateName] ?? stateName
             });
         },
         setMapMode: (mapMode) => {

@@ -8,11 +8,10 @@ import java.util.Map;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import com.fasterxml.jackson.databind.JsonNode;
-
+import com.rockies.vra_analysis.enums.Party;
+import com.rockies.vra_analysis.enums.Race;
+import com.rockies.vra_analysis.enums.State;
 import com.rockies.vra_analysis.models.Gingles;
-import com.rockies.vra_analysis.models.Party;
-import com.rockies.vra_analysis.models.Race;
-
 import com.rockies.vra_analysis.models.Gingles.RegressionFit;
 import com.rockies.vra_analysis.models.Gingles.Precinct;
 import com.rockies.vra_analysis.models.Gingles.Regression;
@@ -27,7 +26,7 @@ public class GinglesSeeder extends BaseSeeder {
         super(mongoTemplate, mapper);
     }
 
-    public void seed(String state) throws Exception{
+    public void seed(State state) throws Exception{
         if (alreadySeeded("gingles", state)){
             System.out.println("Migration: Gingles already populated. Skipping.");
             return;
@@ -58,7 +57,8 @@ public class GinglesSeeder extends BaseSeeder {
         Set<Precinct> precincts = new HashSet<>();
         root.get("precincts").forEach(e -> precincts.add(mapper.convertValue(e, Precinct.class)));
 
-        mongoTemplate.save(new Gingles(root.get("state").asText(), new Regression(fits), precincts));
+        State stateEnum = State.fromValue(root.get("state").asText());
+        mongoTemplate.save(new Gingles(stateEnum, new Regression(fits), precincts));
         System.out.println("Migration: Successfully seeded Gingles for " + state);
     }
 }

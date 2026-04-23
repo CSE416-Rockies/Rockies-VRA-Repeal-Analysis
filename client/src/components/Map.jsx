@@ -24,7 +24,7 @@ export default function Map() {
   const mapRef = useRef(null);
   const geoJsonRef = useRef(null);
 
-  const isStateOption = (name) => STATE_OPTIONS.some(s => s.id === name);
+  const isStateOption = (name) => STATE_OPTIONS.some(s => s.label === name);
   
   /* US State Lines Style */
   const lineStyle = (feature) => {

@@ -4,6 +4,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
+import com.rockies.vra_analysis.enums.State;
 import com.rockies.vra_analysis.models.StateDetail;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,7 +16,7 @@ public class StateDetailSeeder extends BaseSeeder{
         super(mongoTemplate, mapper);
     }
 
-    public void seed(String state) throws Exception{
+    public void seed(State state) throws Exception{
         if (alreadySeeded("state-detail", state)){
             System.out.println("Migration: State Detail already populated. Skipping.");
             return;

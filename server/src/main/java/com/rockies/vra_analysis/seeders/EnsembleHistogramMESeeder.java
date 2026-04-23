@@ -1,7 +1,8 @@
 package com.rockies.vra_analysis.seeders;
 
+import com.rockies.vra_analysis.enums.Race;
+import com.rockies.vra_analysis.enums.State;
 import com.rockies.vra_analysis.models.EnsembleHistogramME;
-import com.rockies.vra_analysis.models.Race;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.InputStream;
@@ -23,7 +24,7 @@ public class EnsembleHistogramMESeeder extends BaseSeeder{
         super(mongoTemplate, mapper);
     }
     
-    public void seed(String state) throws Exception{
+    public void seed(State state) throws Exception{
         if (alreadySeeded("ensemble-histogram-me", state)){
             System.out.println("Migration: Ensemble Histogram ME already populated. Skipping.");
             return;

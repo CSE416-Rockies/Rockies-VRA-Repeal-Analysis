@@ -7,9 +7,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
+
+import com.rockies.vra_analysis.enums.Race;
+import com.rockies.vra_analysis.enums.State;
 import com.rockies.vra_analysis.models.EnsembleSplits;
 import com.rockies.vra_analysis.models.EnsembleSplits.Splits;
-import com.rockies.vra_analysis.models.Race;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +24,7 @@ public class EnsembleSplitsSeeder extends BaseSeeder{
         super(mongoTemplate, mapper);
     }
 
-    public void seed(String state) throws Exception{
+    public void seed(State state) throws Exception{
         if (alreadySeeded("ensemble-splits", state)) {
             System.out.println("Migration: Ensemble Splits already populated. Skipping.");
             return;
