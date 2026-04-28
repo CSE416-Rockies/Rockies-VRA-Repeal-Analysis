@@ -11,12 +11,12 @@ public class EnsembleHistogramME extends StateDocument{
     
     /* private variables -------------------------------------- */
     private int totalDistricts;
-    private Map<Integer, GroupCounts> raceBlind;
-    private Map<Integer, GroupCounts> vra;
+    private Map<Race, Map<Integer, Integer>> raceBlind;
+    private Map<Race, Map<Integer, Integer>> vra;
 
     /* constructors ------------------------------------------- */
     public EnsembleHistogramME() {}
-    public EnsembleHistogramME(State state, int totalDistricts, Map<Integer, GroupCounts> raceBlind, Map<Integer, GroupCounts> vra) {
+    public EnsembleHistogramME(State state, int totalDistricts, Map<Race, Map<Integer, Integer>> raceBlind, Map<Race, Map<Integer, Integer>> vra) {
         super(state);
         this.totalDistricts = totalDistricts;
         this.raceBlind = raceBlind;
@@ -25,17 +25,6 @@ public class EnsembleHistogramME extends StateDocument{
 
     /* methods ------------------------------------------- */
     public int getTotalDistricts() { return totalDistricts; }
-    public Map<Integer, GroupCounts> getRaceBlind() { return raceBlind; }
-    public Map<Integer, GroupCounts> getVra() { return vra; }
-
-   /* static nested classes ---------------------------------- */
-
-    public static class GroupCounts {
-        private Map<Race, Integer> counts;
-
-        public GroupCounts() {}
-        public GroupCounts(Map<Race, Integer> counts) { this.counts = counts; }
-
-        public Map<Race, Integer> getCounts() { return counts; }
-    }
+    public Map<Race, Map<Integer, Integer>> getRaceBlind() { return raceBlind; }
+    public Map<Race, Map<Integer, Integer>> getVra() { return vra; }
 }

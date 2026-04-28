@@ -40,6 +40,11 @@ export const MINORITIES = [
     { value: "other",   label: "Other" },
 ];
 
+export const MINORITIES_ENSEMBLES = [
+    { value: "black",   label: "Black" },
+    { value: "latino",  label: "Latino" },
+];
+
 export const ENSEMBLES = ["VRA", "Race-Blind"];
 
 export const BOX_WHISKER_LEGEND = [

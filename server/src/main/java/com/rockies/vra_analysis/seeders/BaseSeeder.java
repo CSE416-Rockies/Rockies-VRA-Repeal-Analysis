@@ -25,6 +25,12 @@ public abstract class BaseSeeder {
         return "data/" + state + "/" + code + "_" + filename + ".json"; 
     }
 
+    // e.g: ga_vra_5000.jsonl
+    protected String jsonlPath(State state, String filename){
+        String code = state.getValue().toLowerCase();
+        return "data/" + state + "/" + code + "_" + filename + ".jsonl"; 
+    }
+
     protected boolean alreadySeeded(String collection, State state){
         return mongoTemplate.exists(
             Query.query(Criteria.where("state").is(state.getValue())),
