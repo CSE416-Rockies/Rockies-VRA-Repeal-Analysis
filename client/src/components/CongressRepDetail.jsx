@@ -1,10 +1,15 @@
+import { useContext } from "react";
 import { usePaginate } from "../hooks/usePaginate";
 import { PARTY_COLORS } from "../utils/constants";
 import { normalizeParty } from "../utils/helpers";
 import PageControls from './PageControls';
 import { UserIcon } from "@heroicons/react/24/solid";
+import GlobalStoreContext from '../store';
 
-export default function CongressRepDetail({repArr, onClick}){
+
+export default function CongressRepDetail({ onClick}){
+    const {store}= useContext(GlobalStoreContext);
+    const repArr = store?.representatives || [];
     const perPage = 4;
     const {onPage, currPage, goPrev, goNext, hasPrev, hasNext, _ } = usePaginate(repArr, perPage);
 

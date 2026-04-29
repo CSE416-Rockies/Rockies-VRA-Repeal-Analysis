@@ -15,9 +15,8 @@ export default function StateDetail({expanded, onClick}){
 
     const { store } = useContext(GlobalStoreContext);
     const selectedState = store?.selectedState || "";
-    const repArr = store?.representatives || [];
 
-    const [view, setView] = useState('page1');
+    const [view, setView] = useState('population');
     const [stateDetail, setStateDetail] = useState(null);
 
     /* ------------------------------------------------------------------------- variables */
@@ -36,7 +35,8 @@ export default function StateDetail({expanded, onClick}){
             percent: (pop / stateDetail.racialPopulation.totalPopulation * 100)
     })).sort((a, b) => b.percent - a.percent) : [];
 
-    const statePopulation = stateDetail?.racialPopulation.total ?? 0;
+    const statePopulation = stateDetail?.racialPopulation.totalPopulation ?? 0;
+    console.log(stateDetail);
     const partyControl = stateDetail?.voterDistribution.partyControl ?? "";
 
     useEffect(() => {
@@ -58,13 +58,13 @@ export default function StateDetail({expanded, onClick}){
                 <div className = {`h-full ${view === 'reps' ? 'slideInR': 'slideInL'}`}>
                 { view === 'reps' ? 
                     <div className = 'flex flex-col h-full gap-5 w-full'>
-                        <RepDetailButton chevronDir = 'L' toWhere = {()=>setView('page2')}/>
-                        <CongressRepDetail repArr = {repArr} />
+                        <RepDetailButton chevronDir = 'L' toWhere = {()=>setView('politics')}/>
+                        <CongressRepDetail />
                     </div>
                 :
                     <div className = 'flex flex-col gap-5 h-full w-full'>
                         <DefaultDetail races = {raceArr} stateVoterDist = {voterDist} partyControl = {partyControl} pageNum = {view} statePopulation = {statePopulation}/>
-                        {view==='page2' && <RepDetailButton chevronDir = 'R' toWhere = {()=>setView('reps')}/> }
+                        {view==='politics' && <RepDetailButton chevronDir = 'R' toWhere = {()=>setView('reps')}/> }
                         <PageNum pageNum = {view} setPageNum = {setView}/>
                     </div>
                 }
@@ -121,7 +121,7 @@ function DefaultDetail({races, stateVoterDist, partyControl, pageNum, statePopul
 
     return(
     <div className = 'flex flex-col border-divide gap-3 w-full'>
-        {pageNum === 'page1' ?
+        {pageNum === 'population' ?
             <>
             <div className = 'flex text-gray-500 justify-between pt-3'>
                 <span>State Population</span>
@@ -148,11 +148,35 @@ function DefaultDetail({races, stateVoterDist, partyControl, pageNum, statePopul
 /* "Congressional Represenatives > " button logic */
 
 function RepDetailButton({chevronDir, toWhere}){
+     const { store } = useContext(GlobalStoreContext);
+
+    const repArr = store?.representatives || [];
+
     const isLeft = (chevronDir === 'L');
+
+    const repCounts = repArr.reduce((acc, rep)=>{
+        const party = normalizeParty(rep.party);
+        acc[party] = (acc[party] || 0) + 1;
+        return acc;
+    }, {});
+
     return(
         <div className = 'group flex text-gray-500 justify-between cursor-pointer hover:bg-gray-100 px-5 -mx-5 py-3' onClick = {toWhere}
             style = {{flexDirection: isLeft? "row-reverse" : "row"}}>
-            <span className = {`transition-transform duration-300 ${isLeft ? 'group-hover:-translate-x-2' : 'group-hover:translate-x-2'}`}>Congressional Representatives</span>
+            <div className = {`flex items-center gap-2 transition-transform duration-300 ${isLeft ? 'group-hover:-translate-x-2' : 'group-hover:translate-x-2'}`}>
+                Congressional Representatives
+                { !isLeft &&
+                <span className='text-xs flex gap-1'>
+                    (
+                    <span className = 'font-bold' style={{ color: PARTY_COLORS.dem }}> {repCounts.dem ?? 0}D </span> / 
+                    <span className = 'font-bold' style={{ color: PARTY_COLORS.rep }}> {repCounts.rep ?? 0}R</span>
+                    )
+                </span> 
+            }
+                
+                
+            </div>
+            
             {isLeft  ? 
             (<ChevronLeftIcon className = 'w-5 transition-transform duration-300 group-hover:-translate-x-2 '/>)
             :
@@ -163,12 +187,10 @@ function RepDetailButton({chevronDir, toWhere}){
 }
 
 function PageNum({pageNum, setPageNum}){
-    const page = pageNum === "page1"? 1:2;
-
     return(
         <div className = 'flex items-center justify-center gap-2 w-full text-center cursor-pointer absolute bottom-5 left-0 right-0'>
-            <button onClick = {()=>setPageNum('page1')} className = {`rounded-md border-2 border-gray-200 py-1 w-7 hover:bg-gray-200 ${page === 1 ? 'bg-gray-200':''}`}>1</button>
-            <button onClick = {()=>setPageNum('page2')} className = {`rounded-md border-2 border-gray-200 py-1 w-7 hover:bg-gray-200 ${page === 2 ? 'bg-gray-200':''}`}>2</button>
+            <button onClick = {()=>setPageNum('population')} className = {`rounded-md border-2 border-gray-200 py-1 px-2 hover:bg-gray-200 text-gray-400 ${pageNum === 'population' ? 'border-gray-500 text-gray-500':''}`}>Population</button>
+            <button onClick = {()=>setPageNum('politics')} className = {`rounded-md border-2 border-gray-200 py-1 px-2 hover:bg-gray-200  text-gray-400 ${pageNum === 'politics' ? 'border-gray-500 text-gray-500':''}`}>Political </button>
         </div>
     )
 }

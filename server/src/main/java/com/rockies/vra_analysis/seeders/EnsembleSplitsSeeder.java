@@ -1,9 +1,13 @@
 package com.rockies.vra_analysis.seeders;
 
 import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.apache.tomcat.jni.Buffer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
@@ -11,7 +15,6 @@ import org.springframework.stereotype.Component;
 import com.rockies.vra_analysis.enums.Race;
 import com.rockies.vra_analysis.enums.State;
 import com.rockies.vra_analysis.models.EnsembleSplits;
-import com.rockies.vra_analysis.models.EnsembleSplits.Splits;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,40 +33,42 @@ public class EnsembleSplitsSeeder extends BaseSeeder{
             return;
         }
 
-        InputStream inputStream = new ClassPathResource(jsonPath(state, "ensemble_splits")).getInputStream();
-        JsonNode root = mapper.readTree(inputStream);
+        String rbPath = jsonlPath(state, "rb_5000");
+        String vraPath = jsonlPath(state, "vra_5000");
+        int totalDistricts = findTotalDistricts(rbPath);
 
-        int totalDistricts = root.get("totalDistricts").asInt();
-
-        // build ensemble maps
-        Map<Integer, Splits> raceBlind = parseSplits(root.get("raceBlind"));
-        Map<Integer, Splits> vra = parseSplits(root.get("vra"));
+        Map<Integer, Integer> raceBlind = aggregateFromJsonl(rbPath);
+        Map<Integer, Integer> vra = aggregateFromJsonl(vraPath);
 
         EnsembleSplits splits = new EnsembleSplits(state, totalDistricts, raceBlind, vra);
         mongoTemplate.save(splits);
         System.out.println("Migration: Successfully seeded EnsembleSplits for " + state);
+        
     }
 
-    private Map<Integer, EnsembleSplits.Splits> parseSplits(JsonNode node) {
+    private int findTotalDistricts(String path) throws Exception{
+        InputStream is = new ClassPathResource(path).getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
-        Map<Integer, Splits> result = new HashMap<>();
+        String firstLine = reader.readLine();
+        JsonNode plan = mapper.readTree(firstLine);
+        return plan.get("republican_wins").asInt() + plan.get("democrat_wins").asInt();
+    }
 
-        // for each district
-        node.properties().forEach(entry -> {
+    private Map<Integer, Integer> aggregateFromJsonl(String path) throws Exception{
+        InputStream is = new ClassPathResource(path).getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
-            int district = Integer.parseInt(entry.getKey());
-            JsonNode splitsNode = entry.getValue();
-            int total = splitsNode.has("total") ? splitsNode.get("total").asInt() : 0;
-            Map<Race, Integer> raceSplits = new HashMap<>();
-            
-            splitsNode.properties().forEach(r -> {
-                if (!r.getKey().equals("total")) {
-                    raceSplits.put(Race.fromValue(r.getKey()), r.getValue().asInt());
-                }
-            });
+        Map<Integer, Integer> counts = new HashMap<>();
+        String line;
+        while((line = reader.readLine()) != null){
+            if (line.isBlank()) continue;
+            JsonNode plan = mapper.readTree(line);
 
-            result.put(district, new Splits(total, raceSplits));
-        });
-        return result;
+            int repWins = plan.get("republican_wins").asInt();
+            counts.merge(repWins, 1, Integer::sum);
+        }
+
+        return counts;
     }
 }

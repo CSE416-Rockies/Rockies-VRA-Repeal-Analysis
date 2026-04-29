@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import { drawAxes, drawGrid } from "./drawGridLines";
-import { drawBarsOverlap } from "./drawBarsOverlap";
+import { drawBars} from "./drawBars";
 import { ME_COLORS } from "./constants";
 
 
@@ -51,16 +51,14 @@ export function drawEnsembleHistME({givenSVG, data, margin, racialGroup}){
         Districts: ${d.x}<br/>
         Plans: ${d.y.toLocaleString()}
     `;
-    
-    drawBarsOverlap({
-        svg, x, y, height,
-        datasets: [
-            { entries: raceBlindEntries, color: ME_COLORS["raceBlind"], label: "Race-Blind" },
-            { entries: vraEntries, color: ME_COLORS["vra"], label: "VRA-Constrained" }
-        ],
-        tooltipHTML
-    });
 
+    const datasets = [
+        { entries: raceBlindEntries, color: ME_COLORS["raceBlind"], label: "Race-Blind"},
+        { entries: vraEntries, color: ME_COLORS["vra"], label: "VRA-Constrained"}
+    ].sort((a,b)=> d3.max(b.entries, d=> d.y) - d3.max(a.entries, d=>d.y));
     
+    datasets.forEach(({entries, color, label})=>{
+        drawBars({ svg, x, y, height, entries, color, tooltipHTML: tooltipHTML(label) });
+    })
 
 }

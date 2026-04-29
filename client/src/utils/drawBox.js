@@ -1,10 +1,10 @@
-export function drawBox(boxGroup, {cx, bandwidth, y, d, color, isHighlighted = false}){
+export function drawBox(boxGroup, {cx, bandwidth, y, d, color}){
     // ── Whisker line (min to max) ──────────────────────────────────
     boxGroup.append("line")
         .attr("x1", cx).attr("x2", cx)
         .attr("y1", y(d.min)).attr("y2", y(d.max))
         .attr("stroke", "#555")
-        .attr("stroke-width", isHighlighted ?  2.5 : 1.5);
+        .attr("stroke-width", 1.5);
 
     // ── Whisker caps ───────────────────────────────────────────────
     const capW = bandwidth * 0.4;
