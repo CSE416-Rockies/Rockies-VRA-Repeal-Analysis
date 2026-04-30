@@ -7,12 +7,10 @@ import java.io.InputStreamReader;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.apache.tomcat.jni.Buffer;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
-import com.rockies.vra_analysis.enums.Race;
 import com.rockies.vra_analysis.enums.State;
 import com.rockies.vra_analysis.models.EnsembleSplits;
 
