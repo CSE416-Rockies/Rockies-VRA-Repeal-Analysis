@@ -31,7 +31,7 @@ export function drawBoxWhiskerME({givenSVG, data, margin, racialGroup}){
     var xOuter = d3.scaleBand()
         .domain(groups.map(d => d.race))
         .range([0, width])
-        .padding(0.1);
+        .padding(0);
 
     // inner X scale for vra vs raceBlind
     var xInner = d3.scaleBand()
@@ -64,13 +64,23 @@ export function drawBoxWhiskerME({givenSVG, data, margin, racialGroup}){
         const groupX = xOuter(g.race);
         const isHighlighted = (g.race === racialGroup);
 
+        if (isHighlighted) {
+            svg.append("rect")
+                .attr("x", xOuter(g.race))
+                .attr("y", 0)
+                .attr("width", xOuter.bandwidth())
+                .attr("height", height)
+                .attr("fill", "black")
+                .attr("opacity", 0.05);
+        }
+
         // boxes
         ensembleTypes.forEach(type => {
             const stats = g[type];
             const cx = groupX + xInner(type) + xInner.bandwidth() / 2;  
             const bandwidth = xInner.bandwidth();
             
-            drawBox(svg, { cx, bandwidth, y, d: stats, isHighlighted, color: ME_COLORS[type] });          
+            drawBox(svg, { cx, bandwidth, y, d: stats, color: ME_COLORS[type] });          
         });
         
         // circle
@@ -85,7 +95,7 @@ export function drawBoxWhiskerME({givenSVG, data, margin, racialGroup}){
         // dashed line
         if (i < groups.length - 1) {
             const lineX = groupX + xOuter.bandwidth() + (xOuter.step() * xOuter.paddingInner()) / 2;
-            svg.append("line")
+            svg.append("line") 
                 .attr("x1", lineX)
                 .attr("x2", lineX)
                 .attr("y1", 0)

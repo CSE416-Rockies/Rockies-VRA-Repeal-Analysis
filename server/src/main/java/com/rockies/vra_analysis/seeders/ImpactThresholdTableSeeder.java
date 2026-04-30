@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
+import com.rockies.vra_analysis.enums.State;
 import com.rockies.vra_analysis.models.ImpactThresholdTable;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ public class ImpactThresholdTableSeeder extends BaseSeeder{
     }
 
 
-    public void seed(String state) throws Exception {
+    public void seed(State state) throws Exception {
         if (alreadySeeded("impact-threshold-table", state)){
             System.out.println("Migration: Impact Threshold Table already populated. Skipping.");
             return;

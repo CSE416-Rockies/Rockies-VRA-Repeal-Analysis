@@ -60,7 +60,11 @@ export default function StateSelection({ onClose }){
                 <span className = 'flex gap-2'>
                     <span className = "text-gray-500">{selectedState ? 'Selected:' : 'Select a State:'}</span>
                     
-                    {selectedState && (<span className = "font-bold">{selectedState}</span>)}
+                    {selectedState && (
+                        <span className = "font-bold">
+                            {STATE_OPTIONS.find(s => s.id === selectedState)?.label || selectedState}
+                        </span>
+                    )}
                 </span>
                 {(!selectedState || isGraph) && <StateDropdown options={STATE_OPTIONS} onSelect={(state)=> setSelectedState(state)} />}
                 {selectedState && !isGraph && <XCircleIcon className = 'cursor-pointer text-red-500 w-7 transition-transform duration-500 ease-in-out hover:scale-125'

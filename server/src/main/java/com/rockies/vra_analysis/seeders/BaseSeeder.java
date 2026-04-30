@@ -6,8 +6,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.Map;
+import com.rockies.vra_analysis.enums.State;
 
 @Component
 public abstract class BaseSeeder {
@@ -15,24 +14,26 @@ public abstract class BaseSeeder {
     protected final MongoTemplate mongoTemplate;
     protected final ObjectMapper mapper;
 
-    protected static final Map<String, String> STATE_CODES = Map.of(
-        "Arkansas", "ar",
-        "Georgia", "ga"
-    );
-
     public BaseSeeder(MongoTemplate mongoTemplate, ObjectMapper mapper){
         this.mongoTemplate = mongoTemplate;
         this.mapper = mapper;
     }
 
     // e.g: ga_ei_models.json
-    protected String jsonPath(String state, String filename){
-        return "data/" + state + "/" + STATE_CODES.get(state) + "_" + filename + ".json"; 
+    protected String jsonPath(State state, String filename){
+        String code = state.getValue().toLowerCase();
+        return "data/" + state + "/" + code + "_" + filename + ".json"; 
     }
 
-    protected boolean alreadySeeded(String collection, String state){
+    // e.g: ga_vra_5000.jsonl
+    protected String jsonlPath(State state, String filename){
+        String code = state.getValue().toLowerCase();
+        return "data/" + state + "/" + code + "_" + filename + ".jsonl"; 
+    }
+
+    protected boolean alreadySeeded(String collection, State state){
         return mongoTemplate.exists(
-            Query.query(Criteria.where("state").is(state)),
+            Query.query(Criteria.where("state").is(state.getValue())),
             collection
         );
     }

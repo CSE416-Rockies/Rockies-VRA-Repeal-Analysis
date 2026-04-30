@@ -26,13 +26,7 @@ export default function EnsembleDetail({expanded, onClick}){
         { label: 'RACE-BLIND', key: "RB", plans: ensembleSummary.raceBlind.plans, threshold: ensembleSummary.raceBlind.threshold },
         { label: 'VRA', key: "VRA",  plans: ensembleSummary.vra.plans, threshold: ensembleSummary.vra.threshold },
     ] : []
-    
 
-    const rows = ensembleSummary ? [
-        { label: 'Most Frequent R/D Split', raceBlind: ensembleSummary.raceBlind.modeSplit, vra: ensembleSummary.vra.modeSplit },
-        { label: 'Avg. Minority Effective Districts',raceBlind: ensembleSummary.raceBlind.avgMinorityEffective, vra: ensembleSummary.vra.avgMinorityEffective },
-        { label: 'Avg. Opportunity Districts', raceBlind: ensembleSummary.raceBlind.avgOpportunityDistricts, vra: ensembleSummary.vra.avgOpportunityDistricts },
-    ] : []
 
 
     return(
@@ -63,9 +57,9 @@ export default function EnsembleDetail({expanded, onClick}){
                             <th>VRA</th> */}
                         </tr>
                     </thead>
-                    <tbody className = 'border-divide'>
+                    {/* <tbody className = 'border-divide'>
                         {rows.map(({label, raceBlind, vra})=>(
-                            <tr key = {label} className = 'h-12'>
+                            <tr key = {label} className = 'h-10'>
                                 <td className = 'text-gray-400'>{label}</td>
                                 <td className={`font-bold pr-2 transition-colors duration-120 ${hoveredCard === 'RB' ? 'text-emerald-500' : 'text-gray-500'}`}>
                                     {raceBlind ?? "-"}
@@ -75,7 +69,7 @@ export default function EnsembleDetail({expanded, onClick}){
                                 </td>
                             </tr>
                        ))}
-                    </tbody>
+                    </tbody> */}
                 </table>
 
             </div> 

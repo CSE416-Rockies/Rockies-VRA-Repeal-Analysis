@@ -1,15 +1,17 @@
 package com.rockies.vra_analysis.seeders;
 
+import com.rockies.vra_analysis.enums.Race;
+import com.rockies.vra_analysis.enums.State;
 import com.rockies.vra_analysis.models.EnsembleHistogramME;
-import com.rockies.vra_analysis.models.Race;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
-import com.rockies.vra_analysis.models.EnsembleHistogramME.GroupCounts;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -23,41 +25,53 @@ public class EnsembleHistogramMESeeder extends BaseSeeder{
         super(mongoTemplate, mapper);
     }
     
-    public void seed(String state) throws Exception{
+    public void seed(State state) throws Exception{
         if (alreadySeeded("ensemble-histogram-me", state)){
             System.out.println("Migration: Ensemble Histogram ME already populated. Skipping.");
             return;
         }
 
-        InputStream inputStream = new ClassPathResource(jsonPath(state, "ensemble_histogram_me")).getInputStream();
-        JsonNode root = mapper.readTree(inputStream);
+        String rbPath = jsonlPath(state, "rb_5000");
+        String vraPath = jsonlPath(state, "vra_5000");
 
-        int totalDistricts = root.get("totalDistricts").asInt();
-        Map<Integer, GroupCounts> raceBlind = parseGroupCounts(root.get("raceBlind"));
-        Map<Integer, GroupCounts> vra = parseGroupCounts(root.get("vra"));
+        Map<Race, Map<Integer, Integer>> raceBlind = aggregateFromJsonl(rbPath);
+        Map<Race, Map<Integer, Integer>> vra = aggregateFromJsonl(vraPath);
+        int totalDistricts = findTotalDistricts(rbPath);
 
         EnsembleHistogramME histogram = new EnsembleHistogramME(state, totalDistricts, raceBlind, vra);
         mongoTemplate.save(histogram);
         System.out.println("Migration: Successfully seeded EnsembleHistogramME for " + state);
     }
 
-    private Map<Integer, GroupCounts> parseGroupCounts(JsonNode node){
-        Map<Integer, GroupCounts> res = new HashMap<>();
+    private int findTotalDistricts(String path) throws Exception{
+        InputStream is = new ClassPathResource(path).getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        String firstLine = reader.readLine();
+        JsonNode plan = mapper.readTree(firstLine);
+        return plan.get("republican_wins").asInt() + plan.get("democrat_wins").asInt();     // = num districts
+    }
 
-        // for each # of minority effective districts
+    private Map<Race, Map<Integer, Integer>> aggregateFromJsonl(String path) throws Exception{
+        InputStream is = new ClassPathResource(path).getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
-        node.properties().forEach(entry ->{
-            int district = Integer.parseInt(entry.getKey());
-            JsonNode counts = entry.getValue();
+        Map<Race, Map<Integer, Integer>> counts = new HashMap<>();
+        counts.put(Race.BLACK, new HashMap<>());
+        counts.put(Race.LATINO, new HashMap<>());
 
-            // build counts for each race
-            Map<Race, Integer> raceCounts = new HashMap<>();
+        // assemble map of minority-effective district counts
+        String line;
+        while ((line = reader.readLine()) != null) {
+            if (line.isBlank()) continue;               
+            JsonNode plan = mapper.readTree(line);
 
-            counts.properties().forEach(e -> raceCounts.put(Race.fromValue(e.getKey()), e.getValue().asInt()));
-            res.put(district, new GroupCounts(raceCounts));
+            int blackCount = plan.get("black_effective_score_cnt").asInt();
+            int latinoCount = plan.get("latino_effective_score_cnt").asInt();
 
-        });
+            counts.get(Race.BLACK).merge(blackCount, 1, Integer::sum);
+            counts.get(Race.LATINO).merge(latinoCount, 1, Integer::sum);
+        }
 
-        return res;
-    } 
+        return counts;
+    }
 }

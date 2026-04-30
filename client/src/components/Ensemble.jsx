@@ -72,7 +72,7 @@ export default function Ensemble(){
                    
                     <div className = "flex flex-col flex-1 h-full justify-center items-center gap-5">
                         <MiniGraphView 
-                            title = {`${racialGroup} Population Share`}
+                            title = {`Box & Whisker Plots [${racialGroup}]`}
                             data = {boxWhiskerData} 
                             racialGroup = {racialGroup} 
                             margin = {margin} 
@@ -82,7 +82,7 @@ export default function Ensemble(){
                         />
                             
                         <MiniGraphView 
-                            title={`Ensemble Splits for ${racialGroup} `}
+                            title={`Ensemble Splits`}
                             data = {ensembleSplitsData} 
                             racialGroup = {racialGroup}
                             margin = {margin} 

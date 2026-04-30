@@ -235,13 +235,13 @@ def calc_minority_population(district_stats):
 
 # ── SW-8: Republican/Democratic split ────────────────────────────────────────
 
-def calc_splits(district_stats):
+def calc_splits(district_stats, total_district):
     dem_wins = sum(
         1 for _, row in district_stats.iterrows()
         if row["Kamala D. Harris"] > row["Donald J. Trump"]
     )
     
-    return dem_wins, TOTAL_DISTRICT - dem_wins
+    return dem_wins, total_district - dem_wins
 
 
 # MAIN FUNCTION  ────────────────────────────────────────────────────-────────────────────────────────────────────────────
@@ -288,7 +288,7 @@ def main():
             
             # run analysis on this single plan
             winner = calc_election_winners(district_stats)
-            dem_wins, rep_wins = calc_splits(district_stats)
+            dem_wins, rep_wins = calc_splits(district_stats, TOTAL_DISTRICT)
             
             black_over, black_eff, latino_over, latino_eff = calc_minority_effectiveness(district_stats, prefer)
             black_effective_districts = [str(d) for d, v in black_eff.items() if v > EFFECTIVE_THRESHOLD]

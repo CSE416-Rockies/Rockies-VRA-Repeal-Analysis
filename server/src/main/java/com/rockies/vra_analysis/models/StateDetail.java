@@ -4,6 +4,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.rockies.vra_analysis.enums.Party;
+import com.rockies.vra_analysis.enums.Race;
+import com.rockies.vra_analysis.enums.State;
 
 import java.util.Map;
 
@@ -16,7 +19,7 @@ public class StateDetail extends StateDocument{
 
     /* constructor --------------------------------------------- */
     public StateDetail(){}
-    public StateDetail(String state, RacialPopulation racialPopulation, VoterDistribution voterDistribution){
+    public StateDetail(State state, RacialPopulation racialPopulation, VoterDistribution voterDistribution){
         super(state);
         this.racialPopulation = racialPopulation;
         this.voterDistribution = voterDistribution;

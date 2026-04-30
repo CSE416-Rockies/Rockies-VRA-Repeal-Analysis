@@ -3,6 +3,9 @@ package com.rockies.vra_analysis.models;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.rockies.vra_analysis.enums.Party;
+import com.rockies.vra_analysis.enums.Race;
+import com.rockies.vra_analysis.enums.State;
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +19,7 @@ import java.util.Map;
 
         /* constructors ------------------------------------------- */
         public EIAnalysis() {}
-        public EIAnalysis(String state, Map<Party, Candidate> candidates) {
+        public EIAnalysis(State state, Map<Party, Candidate> candidates) {
             super(state);
             this.candidates = candidates;
         }

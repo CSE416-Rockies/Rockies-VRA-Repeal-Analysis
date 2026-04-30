@@ -1,5 +1,8 @@
 package com.rockies.vra_analysis.models;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.rockies.vra_analysis.enums.Race;
+
 import java.util.Map;
 
 @Document("impact-threshold-table")

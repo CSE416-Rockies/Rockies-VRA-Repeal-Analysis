@@ -5,6 +5,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.rockies.vra_analysis.enums.Party;
+import com.rockies.vra_analysis.enums.Race;
+import com.rockies.vra_analysis.enums.State;
 
 import java.util.Set;
 import java.util.Map;
@@ -19,7 +22,7 @@ public class Gingles extends StateDocument{
 
     /* constructors ------------------------------------------------ */
     public Gingles(){}
-    public Gingles(String state, Regression regression, Set<Precinct> precincts) {
+    public Gingles(State state, Regression regression, Set<Precinct> precincts) {
         super(state);
         this.regression = regression;
         this.precincts = precincts;
@@ -57,7 +60,7 @@ public class Gingles extends StateDocument{
     public static class Precinct{
         @Field("id")
         private int id;
-        private Map<Race, Double> groups;
+        private Map<Race, Double> groupsPct;
         private Map<Party, Double> partyVoteShares;
 
         public Precinct(){}
@@ -65,12 +68,12 @@ public class Gingles extends StateDocument{
         @JsonCreator
         public Precinct(
             @JsonProperty("id") int id,
-            @JsonProperty("groups") Map<Race, Double> groups,
+            @JsonProperty("groups") Map<Race, Double> groupsPct,
             @JsonProperty("harris_vote_share") double harris,
             @JsonProperty("trump_vote_share") double trump
         ) {
             this.id = id;
-            this.groups = groups;
+            this.groupsPct = groupsPct;
             this.partyVoteShares = Map.of(
                 Party.DEMOCRAT, harris,
                 Party.REPUBLICAN, trump
@@ -78,7 +81,7 @@ public class Gingles extends StateDocument{
         }
 
         public int getId() { return id; }
-        public Map<Race, Double> getGroups() { return groups; }
+        public Map<Race, Double> getGroupsPct() { return groupsPct; }
         public Map<Party, Double> getPartyVoteShares() { return partyVoteShares; }
 
         @Override

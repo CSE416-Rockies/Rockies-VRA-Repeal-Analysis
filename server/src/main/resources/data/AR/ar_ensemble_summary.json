@@ -1,0 +1,11 @@
+{
+  "state": "Arkansas",
+  "raceBlind": {
+    "plans": 1000,
+    "threshold": 1
+  },
+  "vra": {
+    "plans": 1000,
+    "threshold": 1
+  }
+}

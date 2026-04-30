@@ -10,9 +10,10 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
+import com.rockies.vra_analysis.enums.Race;
+import com.rockies.vra_analysis.enums.State;
 import com.rockies.vra_analysis.models.BoxWhiskerPlots;
 import com.rockies.vra_analysis.models.BoxWhiskerPlots.EnsembleDetail;
-import com.rockies.vra_analysis.models.Race;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -24,7 +25,7 @@ public class BoxWhiskerSeeder extends BaseSeeder{
         super(mongoTemplate, mapper);
     }
 
-    public void seed(String state) throws Exception{
+    public void seed(State state) throws Exception{
         
         if (alreadySeeded("box-whisker-plots", state)){
             System.out.println("Migration: BoxWhisker Plots already populated. Skipping.");
@@ -40,7 +41,8 @@ public class BoxWhiskerSeeder extends BaseSeeder{
         Map<Race, List<EnsembleDetail>> vra = parseBoxWhisker(vraRoot.get("vra"));
 
         // initilaize constructor
-        mongoTemplate.save(new BoxWhiskerPlots(rbRoot.get("state").asText(), raceBlind,  vra));
+        State stateEnum = State.fromValue(rbRoot.get("state").asText());
+        mongoTemplate.save(new BoxWhiskerPlots(stateEnum, raceBlind,  vra));
         System.out.println("Migration: Successfully seeded BoxWhisker for " + state);
         
     }

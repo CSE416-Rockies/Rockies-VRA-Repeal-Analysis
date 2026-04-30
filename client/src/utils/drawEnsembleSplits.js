@@ -3,7 +3,7 @@ import { ME_COLORS } from "./constants";
 import { drawAxes, drawGrid } from "./drawGridLines";
 import { drawBars } from "./drawBars";
 
-export default function drawEnsembleSplits({ givenSVG, data, margin, ensemble, racialGroup}){
+export default function drawEnsembleSplits({ givenSVG, data, margin, ensemble}){
     if (!ensemble) return;
     // create svg element
     var svg = d3.select(givenSVG).append("g")
@@ -23,14 +23,9 @@ export default function drawEnsembleSplits({ givenSVG, data, margin, ensemble, r
         )).sort((a, b) => a - b);
         const totalDistricts = data.totalDistricts;
 
-        const getCount = (v) =>{
-            if(!racialGroup) return 0;
-            return v.splits?.[racialGroup] ?? 0;
-        }
-
-        const toEntries = (dataset) => Object.entries(dataset).map(([k, v]) => ({ x: +k, y: getCount(v) }));
+        const toEntries = (dataset) => Object.entries(dataset).map(([k, v]) => ({ x: +k, y: v }));
         const maxCount = d3.max(allEntries.flatMap(entry => 
-            Object.values(entry.series || {}).map(getCount)
+            Object.values(entry.series || {}).map(v => v ?? 0)
         ));
 
 

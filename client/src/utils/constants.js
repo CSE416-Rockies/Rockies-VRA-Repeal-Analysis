@@ -40,6 +40,11 @@ export const MINORITIES = [
     { value: "other",   label: "Other" },
 ];
 
+export const MINORITIES_ENSEMBLES = [
+    { value: "black",   label: "Black" },
+    { value: "latino",  label: "Latino" },
+];
+
 export const ENSEMBLES = ["VRA", "Race-Blind"];
 
 export const BOX_WHISKER_LEGEND = [
@@ -78,9 +83,14 @@ export const CHART_VIEWS = [
 
 /* ----------------------------------------------------- Maps */
 export const STATE_OPTIONS = [
-    {id: 'Arkansas', label: 'Arkansas'}, 
-    {id: 'Georgia',  label: 'Georgia'}
+    {id: 'AR', label: 'Arkansas'}, 
+    {id: 'GA',  label: 'Georgia'}
 ];
+
+export const STATE_CODE = {
+    "Arkansas": "AR",
+    "Georgia": "GA",
+};
 
 export const CHOROPLETH_COLORS = ["#ECFDF5", "#D1FAE5", "#6EE7B7", "#10B981", "#047857", "#063E2F"];
 
@@ -92,12 +102,12 @@ export const US_BOUNDS = [
 ]
 
 export const STATE_BOUNDS = {
-    Arkansas: [
+    AR: [
         [33.0, -94.6],  
         [36.5, -89.6], 
     
     ],
-    Georgia: [
+    GA: [
         [30.357, -85.605],
         [35.000, -80.751],
     ],

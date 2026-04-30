@@ -1,6 +1,10 @@
 package com.rockies.vra_analysis.models;
 
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.rockies.vra_analysis.enums.Race;
+import com.rockies.vra_analysis.enums.State;
+
 import java.util.Map;
 
 
@@ -14,7 +18,7 @@ public class BoxWhiskerPlotsME extends StateDocument{
 
     /* constructors ------------------------------------------- */
     public BoxWhiskerPlotsME(){}
-    public BoxWhiskerPlotsME(String state, Map<Race, BoxStats> raceBlind, Map<Race, BoxStats> vra, Map<Race, Integer> enactedCounts) {
+    public BoxWhiskerPlotsME(State state, Map<Race, BoxStats> raceBlind, Map<Race, BoxStats> vra, Map<Race, Integer> enactedCounts) {
         super(state);
         this.raceBlind = raceBlind;
         this.vra = vra;
