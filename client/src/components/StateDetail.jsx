@@ -51,8 +51,7 @@ export default function StateDetail({expanded, onClick}){
             })
             .catch((err) => {
                 console.error("Error loading state detail json:", err);
-                if (!err.response) setError("Unable to connect to the server.");
-                else setError("Failed to load data.");
+                setError("Failed to load data.");
             });
 
     }, [selectedState]);

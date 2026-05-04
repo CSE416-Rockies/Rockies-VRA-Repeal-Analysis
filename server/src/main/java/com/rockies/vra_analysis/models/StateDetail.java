@@ -13,11 +13,9 @@ import java.util.Map;
 @Document("state-detail")
 public class StateDetail extends StateDocument{
    
-    /* private variables -------------------------------------- */
     private RacialPopulation racialPopulation;
     private VoterDistribution voterDistribution;
 
-    /* constructor --------------------------------------------- */
     public StateDetail(){}
     public StateDetail(State state, RacialPopulation racialPopulation, VoterDistribution voterDistribution){
         super(state);
@@ -25,11 +23,9 @@ public class StateDetail extends StateDocument{
         this.voterDistribution = voterDistribution;
     }
 
-    /* constructor --------------------------------------------- */
     public RacialPopulation getRacialPopulation() { return this.racialPopulation; }
     public VoterDistribution getVoterDistribution() { return this.voterDistribution; }
 
-    /* static nested classes ----------------------------------- */
     public static class VoterDistribution{
         private String partyControl;
         private Map<Party, Double> distributions;

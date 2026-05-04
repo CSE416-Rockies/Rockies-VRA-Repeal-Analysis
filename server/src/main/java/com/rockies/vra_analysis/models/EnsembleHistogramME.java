@@ -9,12 +9,10 @@ import java.util.Map;
 @Document(collection = "ensemble-histogram-me")
 public class EnsembleHistogramME extends StateDocument{
     
-    /* private variables -------------------------------------- */
     private int totalDistricts;
     private Map<Race, Map<Integer, Integer>> raceBlind;
     private Map<Race, Map<Integer, Integer>> vra;
 
-    /* constructors ------------------------------------------- */
     public EnsembleHistogramME() {}
     public EnsembleHistogramME(State state, int totalDistricts, Map<Race, Map<Integer, Integer>> raceBlind, Map<Race, Map<Integer, Integer>> vra) {
         super(state);
@@ -23,7 +21,6 @@ public class EnsembleHistogramME extends StateDocument{
         this.vra = vra;
     }
 
-    /* methods ------------------------------------------- */
     public int getTotalDistricts() { return totalDistricts; }
     public Map<Race, Map<Integer, Integer>> getRaceBlind() { return raceBlind; }
     public Map<Race, Map<Integer, Integer>> getVra() { return vra; }

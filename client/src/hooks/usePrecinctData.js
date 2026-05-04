@@ -28,8 +28,7 @@ export function usePrecinctData(name, mapMode){
                 })
                 .catch((err) => {
                     console.error("Error loading geojson:", err);
-                    if (!err.response) setError("Unable to connect to the server.");
-                    else setError("Failed to load map data.");
+                    setError("Failed to load map data.");
                 });
         }
     }, [name, mapMode, precinctData]);

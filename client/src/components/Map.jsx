@@ -106,8 +106,7 @@ export default function Map() {
       .then((res) => setStateLines(res.data))
       .catch((err) => {
         console.error("Error loading geojson:", err);
-        if (!err.response) setError("Unable to connect to the server.");
-        else setError("Failed to load data.");
+        setError("Failed to load data.");
       });
 }, []);
 

@@ -10,11 +10,9 @@ import java.util.Map;
 @Document("box-whisker-plots")
 public class BoxWhiskerPlots extends StateDocument{
 
-    /* private variables -------------------------------------- */
     private Map<Race, List<EnsembleDetail>> raceBlind;
     private Map<Race, List<EnsembleDetail>> vra;
 
-    /* constructors ------------------------------------------- */
     public BoxWhiskerPlots() {}
     public BoxWhiskerPlots(State state, Map<Race, List<EnsembleDetail>> raceBlind, Map<Race, List<EnsembleDetail>> vra) {
         super(state);
@@ -22,11 +20,9 @@ public class BoxWhiskerPlots extends StateDocument{
         this.vra = vra;
     }
 
-    /* methods ------------------------------------------------ */
     public Map<Race, List<EnsembleDetail>> getRaceBlind() { return raceBlind; }
     public Map<Race, List<EnsembleDetail>> getVra() { return vra; }
 
-    /* static nested classes ---------------------------------- */
     public static class EnsembleDetail extends BoxStats{
         private int districtIndex;
         private double enacted;

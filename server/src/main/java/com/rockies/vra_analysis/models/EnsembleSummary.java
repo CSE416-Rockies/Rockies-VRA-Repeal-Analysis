@@ -5,11 +5,9 @@ import com.rockies.vra_analysis.enums.State;
 @Document(collection = "ensemble-summary")
 public class EnsembleSummary extends StateDocument{
    
-    /* private variables ------------------------------------------- */
     private EnsembleData raceBlind;
     private EnsembleData vra;
 
-    /* constructors ------------------------------------------- */
     public EnsembleSummary() {}
     public EnsembleSummary(State state, EnsembleData raceBlind, EnsembleData vra) {
         super(state);
@@ -17,11 +15,9 @@ public class EnsembleSummary extends StateDocument{
         this.vra = vra;
     }
 
-    /* methods ------------------------------------------- */
     public EnsembleData getRaceBlind() { return this.raceBlind; }
     public EnsembleData getVra() { return this.vra; }
 
-    /* nested class ------------------------------------------- */
     public static class EnsembleData {
         private int plans;
         private double threshold;

@@ -8,16 +8,12 @@ import java.util.Map;
 @Document("impact-threshold-table")
 public class ImpactThresholdTable extends StateDocument {
     
-    /* private variables -------------------------------------- */
     private Map<Race, GroupThresholds> groups;  
 
-    /* constructors  ------------------------------------------ */
     public ImpactThresholdTable(){}
 
-    /* methods  ----------------------------------------------- */
     public Map<Race, GroupThresholds> getGroups() { return groups; }
 
-    /* static nested classes ----------------------------------- */
     public static class GroupThresholds {
         private EnsembleProportion enactedThreshold;
         private EnsembleProportion proportionalThreshold;

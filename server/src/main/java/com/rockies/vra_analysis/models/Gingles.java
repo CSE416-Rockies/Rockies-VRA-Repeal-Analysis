@@ -16,11 +16,9 @@ import java.util.Map;
 
 public class Gingles extends StateDocument{
 
-    /* private variables ------------------------------------------- */
     private Regression regression;
     private Set<Precinct> precincts;
 
-    /* constructors ------------------------------------------------ */
     public Gingles(){}
     public Gingles(State state, Regression regression, Set<Precinct> precincts) {
         super(state);
@@ -28,13 +26,10 @@ public class Gingles extends StateDocument{
         this.precincts = precincts;
     }
     
-    /* methods ------------------------------------------------------ */
     public Regression getRegression() { return regression; }
     public Set<Precinct> getPrecincts() {return precincts;}
-
     public void setRegression(Regression regression) { this.regression = regression; }
 
-    /* static nested classes ---------------------------------------- */
     public static class Regression{
         private Map<Race, Map<Party, RegressionFit>> fits;
 

@@ -37,8 +37,7 @@ export default function EIAnalysis(){
                 })
             .catch( err => {
                 console.error("Error loading EI Analysis data:", err);
-                if (!err.response) setError("Unable to connect to the server.");
-                else setError("Failed to load data.");
+                setError("Failed to load data.");
             });
     }, [selectedState]);
 

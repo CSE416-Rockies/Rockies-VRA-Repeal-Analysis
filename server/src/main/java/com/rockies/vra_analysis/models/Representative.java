@@ -7,7 +7,6 @@ import com.rockies.vra_analysis.enums.State;
 @Document("representatives")
 public class Representative extends StateDocument{
    
-    /* private variables -------------------------------------- */
     @Field("district_number")
     private int districtNumber;
     private String name;
@@ -20,7 +19,6 @@ public class Representative extends StateDocument{
     private String imageId;
     private String status;
 
-    /* constructors --------------------------------------------- */
     public Representative() {}
     public Representative(State state, int districtNumber, String name, String party, String racialEthnicGroup, double voteMarginPercent, String imageId, String status) {
         super(state);
@@ -33,7 +31,6 @@ public class Representative extends StateDocument{
         this.status = status;
     }
 
-    /* methods ------------------------------------------------- */
     public int getDistrictNumber() { return districtNumber; }
     public String getName() { return name; }
     public String getParty() { return party; }
