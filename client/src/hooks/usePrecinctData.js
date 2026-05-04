@@ -4,10 +4,11 @@ import { feature } from "topojson-client"
 
 export function usePrecinctData(name, mapMode){
     const [precinctData, setPrecinctData] = useState(null);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         if(mapMode === 'precinct' && !precinctData) {
-            getPrecinctMap(name)                     //(put path of precinct geojsons)
+            getPrecinctMap(name)                    
                 .then((res) => {
                     console.log("RAW RES:", res);
                     return res.data
@@ -26,9 +27,13 @@ export function usePrecinctData(name, mapMode){
                     );
                     setPrecinctData(geojson);
                 })
-                .catch((err) => console.error("Error loading geojson:", err));
+                .catch((err) => {
+                    console.error("Error loading geojson:", err);
+                    if (!err.response) setError("Unable to connect to the server.");
+                    else setError("Failed to load map data.");
+                });
         }
     }, [name, mapMode, precinctData]);
 
-    return { precinctData }
+    return { precinctData, error }
 }

@@ -40,8 +40,8 @@ export default function MapView(){
     const selectedState = store?.selectedState || "";
     const districtArr = store?.representatives || [];
 
-    const { districtPlan } = useDistrictData(name);
-    const { precinctData } = usePrecinctData(name, store.mapMode);
+    const { districtPlan, error: districtError  } = useDistrictData(name);
+    const { precinctData, error: precinctError  } = usePrecinctData(name, store.mapMode);
 
     const navigate = useNavigate();
 
@@ -214,9 +214,10 @@ export default function MapView(){
                     <EnsembleDetail expanded = {expanded === 'ensemble'} onClick = {()=>setExpanded('ensemble')} />
                 </div>
    
-                {isLoading && (
-                    <LoadingView text = "Loading map..."/>
-                )}
+                {(districtError || precinctError) 
+                    ? <LoadingView text="Unable to connect to the server." />
+                    : isLoading && <LoadingView text="Loading map..." />
+                }
                 
                 <MapContainer
                     bounds={STATE_BOUNDS[name]}

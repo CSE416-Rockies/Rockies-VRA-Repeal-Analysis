@@ -8,6 +8,7 @@ import {US_BOUNDS, STATE_BOUNDS, STATE_OPTIONS} from "../utils/constants";
 import { highlightStateStyle } from "../utils/mapStyles";
 
 import { getStateLines } from "../api/api.js";
+import ErrorMsg from "./ErrorMsg.jsx";
 
 
 function MapController({ mapRef }) {
@@ -19,6 +20,8 @@ function MapController({ mapRef }) {
 export default function Map() {
   const { store, setSelectedState } = useContext(GlobalStoreContext);
   const [stateLines, setStateLines] = useState(null);
+  const [error, setError] = useState(null);
+
   const navigate = useNavigate();
   
   const mapRef = useRef(null);
@@ -101,7 +104,11 @@ export default function Map() {
   useEffect(() => {
     getStateLines()
       .then((res) => setStateLines(res.data))
-      .catch((err) => console.error("Error loading geojson:", err));
+      .catch((err) => {
+        console.error("Error loading geojson:", err);
+        if (!err.response) setError("Unable to connect to the server.");
+        else setError("Failed to load data.");
+      });
 }, []);
 
   
@@ -121,10 +128,15 @@ export default function Map() {
         {stateLines && <GeoJSON ref = {geoJsonRef} data={stateLines} style={lineStyle} onEachFeature={onEachState}/>}
       </MapContainer>
       <div className='absolute bottom-5 left-5 z-[1000]  bg-white rounded-lg px-10 py-5 shadow-md'>
-        <div className = 'font-semibold text-3xl text-gray-600'>VRA Repeal Analysis </div>
-        <div className = 'flex items-center text-xl text-gray-500'>
-            <div>Rockies 2026</div>
-        </div>
+        { error ? <ErrorMsg message={error}/>
+        :
+          <>
+            <div className = 'font-semibold text-3xl text-gray-600'>VRA Repeal Analysis </div>
+            <div className = 'flex items-center text-xl text-gray-500'>
+                <div>Rockies 2026</div>
+            </div>
+          </>
+        }
       </div>
     </div>
   );

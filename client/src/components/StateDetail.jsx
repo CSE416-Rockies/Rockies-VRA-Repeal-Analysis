@@ -9,6 +9,7 @@ import { PARTY_COLORS, APP_COLORS } from '../utils/constants';
 import { normalizeParty, capitalize } from '../utils/helpers';
 
 import { getStateDetail } from '../api/api';
+import ErrorMsg from './ErrorMsg';
 
 
 export default function StateDetail({expanded, onClick}){
@@ -18,6 +19,7 @@ export default function StateDetail({expanded, onClick}){
 
     const [view, setView] = useState('population');
     const [stateDetail, setStateDetail] = useState(null);
+    const [error, setError] = useState(null);
 
     /* ------------------------------------------------------------------------- variables */
 
@@ -47,7 +49,11 @@ export default function StateDetail({expanded, onClick}){
                 console.log("State detail from server:", res.data);
                 setStateDetail(res.data);
             })
-            .catch((err) => console.error("Error loading state detail json:", err));
+            .catch((err) => {
+                console.error("Error loading state detail json:", err);
+                if (!err.response) setError("Unable to connect to the server.");
+                else setError("Failed to load data.");
+            });
 
     }, [selectedState]);
 
@@ -55,7 +61,12 @@ export default function StateDetail({expanded, onClick}){
     return(
         <DetailPanel title="State Detail" expanded={expanded} onClick={onClick}>
             <div className={`flex-1 relative gap-10 px-5 overflow-y-auto overflow-x-hidden ${expanded ? 'opacity-100' : 'max-h-0 opacity-0'}`}>
-                <div className = {`h-full ${view === 'reps' ? 'slideInR': 'slideInL'}`}>
+                {error ? 
+                    <div className = 'flex justify-center py-5'>
+                        <ErrorMsg message = {error}/>
+                    </div>
+                :   
+                    <div className = {`h-full ${view === 'reps' ? 'slideInR': 'slideInL'}`}>
                 { view === 'reps' ? 
                     <div className = 'flex flex-col h-full gap-5 w-full'>
                         <RepDetailButton chevronDir = 'L' toWhere = {()=>setView('politics')}/>
@@ -69,9 +80,12 @@ export default function StateDetail({expanded, onClick}){
                     </div>
                 }
                 </div>
+                }
+                
 
             </div>                
         </DetailPanel>
+
    )
 
 }

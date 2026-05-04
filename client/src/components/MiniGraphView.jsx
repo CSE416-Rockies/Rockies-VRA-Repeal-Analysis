@@ -7,7 +7,7 @@ import FullGraphView from "./FullGraphView";
 import { ArrowsPointingOutIcon } from "@heroicons/react/24/solid";
 
 
-export default function MiniGraphView({ title, drawFunc, data, racialGroup, margin, legendItems, extraProps = {} }) {
+export default function MiniGraphView({ title, drawFunc, data, racialGroup, margin, legendItems, extraProps = {}, children }) {
     const ref = useRef(null);
     const [fullScreen, setFullScreen] = useState(false);
 
@@ -25,6 +25,7 @@ export default function MiniGraphView({ title, drawFunc, data, racialGroup, marg
             >
                     <ArrowsPointingOutIcon className = 'w-4 h-4'/>
             </button>
+            {children ? children :
             <div className='flex flex-col gap-2 w-full h-full justify-center items-center'>
                 <div className='text-md capitalize font-semibold text-gray-700'>{title}</div>
             
@@ -33,6 +34,7 @@ export default function MiniGraphView({ title, drawFunc, data, racialGroup, marg
                     {legendItems.length > 0 && <Legend items={legendItems} small = {true} />}
                 </div>
             </div>
+            }
             
         </div>
 

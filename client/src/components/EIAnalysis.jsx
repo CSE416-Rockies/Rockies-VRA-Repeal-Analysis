@@ -12,6 +12,7 @@ import { useD3 } from '../hooks/useD3';
 import { RACES, PRESIDENT_CAND_LEGEND, PARTY_REFS, getCandidateColors, getCompareColors } from "../utils/constants"
 
 import { getEIAnalysis } from '../api/api';
+import ErrorMsg from './ErrorMsg';
 
 
 export default function EIAnalysis(){
@@ -21,6 +22,8 @@ export default function EIAnalysis(){
 
     const [candView, setCandView] = useState('dem'); 
     const [eiAnalysisData, setEIAnalysisData] = useState(null); 
+    const [error, setError] = useState(null);
+
 
     const ref = useRef(null);
     const margin = {top: 20, right: 20, bottom: 60, left: 80};
@@ -32,7 +35,11 @@ export default function EIAnalysis(){
             .then(res => {
                 setEIAnalysisData(res.data)
                 })
-            .catch(err => console.error("Error loading EI Analysis data:", err));
+            .catch( err => {
+                console.error("Error loading EI Analysis data:", err);
+                if (!err.response) setError("Unable to connect to the server.");
+                else setError("Failed to load data.");
+            });
     }, [selectedState]);
 
     // draw d3 
@@ -77,7 +84,9 @@ export default function EIAnalysis(){
             svgRef = {ref}
             extraDisplay={{ label: "Overlap Percentage", data: overlapPct }}
         >
-            {(!racialGroup) && (
+            {error ? <ErrorMsg message={error} />
+            : 
+            (!racialGroup) && (
                 <SelectionPlaceholder 
                     message={`Please select a racial group`} 
                 />

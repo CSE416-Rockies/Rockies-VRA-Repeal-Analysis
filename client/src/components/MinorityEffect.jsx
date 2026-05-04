@@ -11,6 +11,7 @@ import GlobalStoreContext from '../store';
 import { getBoxWhiskersME, getEnsembleHistME, getImpactThresholdTable} from "../api/api";
 import {drawEnsembleHistME } from "../utils/drawEnsembleHistME";
 import { drawBoxWhiskerME } from "../utils/drawBoxWhiskerME";
+import ErrorMsg from "./ErrorMsg";
 
 export default function MinorityEffect(){
 
@@ -21,6 +22,11 @@ export default function MinorityEffect(){
     const [boxData, setBoxData] = useState(null);
     const [ensembleData, setEnsembleData] = useState(null);
     const [thresholdData, setThresholdData] = useState(null);
+
+    const [boxError, setBoxError] = useState(null);
+    const [ensembleError, setEnsembleError] = useState(null);
+    const [thresholdError, setThresholdError] = useState(null);
+
     
     const margin = {top: 20, right: 20, bottom: 40, left: 80}
     
@@ -34,8 +40,13 @@ export default function MinorityEffect(){
             getImpactThresholdTable(selectedState),
         ]).then(([boxRes, ensembleRes, thresholdRes]) => {
             if (boxRes.status === "fulfilled") setBoxData(boxRes.value.data);
+            else setBoxError("Failed to load box whisker data.");
+
             if (ensembleRes.status === "fulfilled") setEnsembleData(ensembleRes.value.data);
+            else setEnsembleError("Failed to load ensemble data.");
+
             if (thresholdRes.status === "fulfilled") setThresholdData(thresholdRes.value.data);
+            else setThresholdError("Failed to load threshold data.");
         }).catch(err => console.error("Error loading data:", err));
     }, [selectedState]);
 
@@ -68,15 +79,19 @@ export default function MinorityEffect(){
                                         margin = {margin} 
                                         drawFunc = {drawBoxWhiskerME}
                                         legendItems = {BOX_WHISKER_ME_LEGEND}
-                                    />
+                                    >
+                                        {boxError && <ErrorMsg message={boxError} />}
+                                    </MiniGraphView>
                                 </div>
-                                <div className = 'p-5 h-full justify-center items-center gap-5 bg-white rounded-xl'
+                                <div className = 'flex p-5 h-full justify-center items-center gap-5 bg-white rounded-xl'
                                     style = {{width: 'var(--sidebar-width'}}
                                 >
-                                    <div className = 'flex flex-col items-center gap-2'>
+                                    {thresholdError ? <ErrorMsg message={thresholdError} /> :
+                                    <div className = 'flex flex-col items-center gap-2 justify-center'>
                                         <div> VRA Impact Threshold Table <span className = 'text-emerald-500 font-bold capitalize'> [{racialGroup}]</span></div>
                                         <ThresholdTable data = {thresholdData} racialGroup = {racialGroup}/>
                                     </div>
+                                    }
                                 </div>
                             </div>
 
@@ -87,7 +102,9 @@ export default function MinorityEffect(){
                                 margin = {margin} 
                                 drawFunc = {drawEnsembleHistME}
                                 legendItems = {ENSEMBLE_LEGEND}
-                            />
+                            >
+                                {ensembleError && <ErrorMsg message={ensembleError} />}
+                            </MiniGraphView>
                         </div>
                     
                 </div>

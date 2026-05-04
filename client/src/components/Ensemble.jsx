@@ -11,7 +11,7 @@ import drawEnsembleSplits from "../utils/drawEnsembleSplits";
 import { BOX_WHISKER_ME_LEGEND, ENSEMBLE_LEGEND, RACES, ENSEMBLE_VIEW_OPTIONS } from '../utils/constants';
 
 import { getBoxWhiskers, getEnsembleSplits } from '../api/api';
-
+import ErrorMsg from './ErrorMsg';
 
 export default function Ensemble(){
     const { store, setRacialGroup, setEnsemble} = useContext(GlobalStoreContext);
@@ -23,8 +23,10 @@ export default function Ensemble(){
 
     const [boxWhiskerData, setBoxWhiskerData] = useState(null);
     const [ensembleSplitsData, setEnsembleSplitsData] = useState(null);    
+    
+    const [boxError, setBoxError] = useState(null);
+    const [splitsError, setSplitsError] = useState(null);
 
-     // state change
     useEffect(() => {
         if (!selectedState) return;
         
@@ -33,8 +35,13 @@ export default function Ensemble(){
             getEnsembleSplits(selectedState),
         ]).then(([boxRes, ensembleRes]) => {
             if (boxRes.status == "fulfilled") setBoxWhiskerData(boxRes.value.data);
+            else setBoxError("Failed to load box whisker data.");
+            
             if (ensembleRes.status == "fulfilled") setEnsembleSplitsData(ensembleRes.value.data);
-        }).catch(err => console.error("Error loading data:", err));
+            else setSplitsError("Failed to load ensemble splits data.");
+        }).catch(err => {
+            console.error("Error loading data:", err);
+        });
         
     }, [selectedState]);
 
@@ -79,7 +86,9 @@ export default function Ensemble(){
                             drawFunc = {drawBoxWhisker}
                             legendItems = {BOX_WHISKER_ME_LEGEND}
                             extraProps={{ensemble}}
-                        />
+                        >
+                            {boxError && <ErrorMsg message={boxError} /> }
+                        </MiniGraphView>
                             
                         <MiniGraphView 
                             title={`Ensemble Splits`}
@@ -89,7 +98,9 @@ export default function Ensemble(){
                             drawFunc = {drawEnsembleSplits}
                             legendItems = {ENSEMBLE_LEGEND}
                             extraProps={{ensemble}}
-                        />
+                        >
+                            {splitsError && <ErrorMsg message={splitsError} /> }
+                        </MiniGraphView>
                     </div>
                     }
                 </div>

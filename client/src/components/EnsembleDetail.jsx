@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import DetailPanel from "./DetailPanel";
 import GlobalStoreContext from "../store";
 import { getEnsembleSummary } from "../api/api";
+import ErrorMsg from "./ErrorMsg";
 
 export default function EnsembleDetail({expanded, onClick}){
 
@@ -9,6 +10,7 @@ export default function EnsembleDetail({expanded, onClick}){
     const selectedState = store?.selectedState || "";
     const [ensembleSummary, setEnsembleSummary] = useState(null);
     const [hoveredCard, setHoveredCard] = useState(null);  // ensemble options: 'RB' | 'VRA' | null
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         if(!selectedState) return;
@@ -18,7 +20,11 @@ export default function EnsembleDetail({expanded, onClick}){
                 console.log("Ensemble summary from server:", res.data);
                 setEnsembleSummary(res.data);
             })
-            .catch((err) => console.error("Error loading ensemble summary json:", err));
+            .catch((err) => {
+                console.error("Error loading ensemble summary json:", err);
+                if (!err.response) setError("Unable to connect to the server.");
+                else setError("Failed to load data.");
+            });
 
     }, [selectedState]);
 
@@ -28,10 +34,11 @@ export default function EnsembleDetail({expanded, onClick}){
     ] : []
 
 
-
     return(
         <DetailPanel title="Ensemble Summary" expanded={expanded} onClick={onClick} >
             <div className={`flex flex-col relative flex-1 px-5 items-center gap-5 overflow-y-auto ${expanded ? 'opacity-100 pt-5' : 'max-h-0 opacity-0'}`}>
+                {error ? <ErrorMsg message = {error} />
+                :
                 <div className = 'flex gap-2 w-full'>
                     { cards.map(({label, key, plans, threshold})=>(
                         <div
@@ -48,7 +55,7 @@ export default function EnsembleDetail({expanded, onClick}){
                         ))
                     }
                 </div>
-
+            }
             </div> 
         </DetailPanel>
     )
