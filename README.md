@@ -61,13 +61,34 @@ Connect:
 # Mac/Linux
 ssh netid@login.seawulf.stonybrook.edu
 
+# for higher demand work
+ssh netid@milan.seawulf.stonybrook.edu 
+
 # Windows: use MobaXterm
 ```
 
 Submit a Job: 
 ```bash
 module load slurm
-sbatch python/your_job.slurm
+module load cuda
+module load python
+sbatch scripts/your_job.slurm
+```
+
+Copy file to SeaWulf:
+```
+scp file.txt netid@login.seawulf.stonybrook.edu:~/vra_analysis/inputs
+```
+
+Copy directory:
+```
+scp -r vra_analysis/ netid@login.seawulf.stonybrook.edu:~/vra_analysis/
+```
+
+Monitoring Jobs:
+```
+squeue -u $USER
+scancel <job_id>
 ```
 
 ## Postman Testing
