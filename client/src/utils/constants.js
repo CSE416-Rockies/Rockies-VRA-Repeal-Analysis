@@ -1,31 +1,10 @@
-import { ChartBarIcon, PresentationChartLineIcon } from '@heroicons/react/24/solid';
 
-/* ----------------------------------------------------------------- Colors */
-export const PARTY_COLORS = {
-    rep:  "#EF4444",
-    dem:  "#3B82F6",
-    other: '#6B7280',
+/* ----------------------------------------------------------------- Label Mapping */
+
+export const CAND_LABEL = {
+    dem: { key: 'democrat', label: 'Democratic' },
+    rep: { key: 'republican', label: 'Republican' },
 }
-
-export const MAP_PARTY_COLORS = {
-    rep:  "#E03130",
-    dem:  "#4375E0",
-    other: '#d8d8d8',
-}
-
-export const APP_COLORS = {
-    accentGreen: '#10B981'
-}
-
-export const getPrimarySecondaryColors = (racialGroup) => [
-    { label: racialGroup, color: "#10B981" },
-    { label: `Not ${racialGroup}`, color: "#EAB308" }
-]
-
-export const PRESIDENT_CAND_LEGEND = [
-    {label: "Harris", value: "democrat", color: PARTY_COLORS.dem},
-    {label: "Trump",  value: "republican", color: PARTY_COLORS.rep}
-]
 
 export const RACES = [
     { value: "white",   label: "White" },
@@ -45,11 +24,44 @@ export const MINORITIES_ENSEMBLES = [
     { value: "latino",  label: "Latino" },
 ];
 
-export const ENSEMBLES = ["VRA", "Race-Blind"];
+export const ENSEMBLE_VIEW_OPTIONS = [
+  { value: "raceBlind", label: "Race-Blind" },
+  { value: "vra", label: "VRA" },
+  { value: "both", label: "Both" },
+];
 
-export const BOX_WHISKER_LEGEND = [
-    { label: "Ensemble", color: "black", shape:  "boxplot"},
-    { label: "Enacted", color: "#10B981", shape: "circle"},
+/* ----------------------------------------------------------------- Colors */
+export const PARTY_COLORS = {
+    rep:  "#EF4444",
+    dem:  "#3B82F6",
+    other: '#6B7280',
+}
+
+export const MAP_PARTY_COLORS = {
+    rep:  "#E03130",
+    dem:  "#4375E0",
+    other: '#d8d8d8',
+}
+
+export const APP_COLORS = {
+    accentGreen: '#10B981'
+}
+
+export const getCandidateColors = (racialGroup, candView) => [
+    { label: racialGroup, color: PARTY_COLORS[candView] },
+    { label: `Not ${racialGroup}`, color: candView === 'dem' ? '#BFDBFE' : '#FECACA' },
+];
+
+// for EI analysis
+export const getCompareColors = () => [
+    { label: CAND_LABEL.dem.label, color: PARTY_COLORS.dem },
+    { label: CAND_LABEL.rep.label, color: PARTY_COLORS.rep },
+];
+ 
+// graph arbitrary duotone
+export const getPrimarySecondaryColors = (racialGroup) => [
+    { label: racialGroup, color: "#10B981" },
+    { label: `Not ${racialGroup}`, color: "#EAB308" }
 ]
 
 export const ME_COLORS = {
@@ -57,6 +69,13 @@ export const ME_COLORS = {
     vra: "#EAB308",
     enacted: "#5D3FD3",
 };
+
+/* ----------------------------------------------------------------- Legends */
+
+export const BOX_WHISKER_LEGEND = [
+    { label: "Ensemble", color: "black", shape:  "boxplot"},
+    { label: "Enacted", color: "#10B981", shape: "circle"},
+]
 
 export const ENSEMBLE_LEGEND = [
   { label: "Race-Blind", color: "#10B981", shape: "square" },
@@ -69,19 +88,13 @@ export const BOX_WHISKER_ME_LEGEND = [
   { label: "Enacted", color: "#5D3FD3", shape: "circle" },
 ];
 
-export const ENSEMBLE_VIEW_OPTIONS = [
-  { value: "raceBlind", label: "Race-Blind" },
-  { value: "vra", label: "VRA" },
-  { value: "both", label: "Both" },
-];
-
-export const CHART_VIEWS = [
-    { id: 'density', label: 'Density', Icon: PresentationChartLineIcon },
-    { id: 'bar',     label: 'Bars',     Icon: ChartBarIcon },
-];
-
+export const PRESIDENT_CAND_LEGEND = [
+    {label: "Harris", value: "dem", color: PARTY_COLORS.dem},
+    {label: "Trump",  value: "rep", color: PARTY_COLORS.rep}
+]
 
 /* ----------------------------------------------------- Maps */
+
 export const STATE_OPTIONS = [
     {id: 'AR', label: 'Arkansas'}, 
     {id: 'GA',  label: 'Georgia'}
