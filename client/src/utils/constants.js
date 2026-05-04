@@ -1,7 +1,7 @@
 
 /* ----------------------------------------------------------------- Label Mapping */
 
-export const CAND_LABEL = {
+export const PARTY_REFS = {
     dem: { key: 'democrat', label: 'Democratic' },
     rep: { key: 'republican', label: 'Republican' },
 }
@@ -54,8 +54,8 @@ export const getCandidateColors = (racialGroup, candView) => [
 
 // for EI analysis
 export const getCompareColors = () => [
-    { label: CAND_LABEL.dem.label, color: PARTY_COLORS.dem },
-    { label: CAND_LABEL.rep.label, color: PARTY_COLORS.rep },
+    { label: PARTY_REFS.dem.label, color: PARTY_COLORS.dem },
+    { label: PARTY_REFS.rep.label, color: PARTY_COLORS.rep },
 ];
  
 // graph arbitrary duotone

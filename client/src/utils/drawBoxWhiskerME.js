@@ -39,7 +39,6 @@ export function drawBoxWhiskerME({givenSVG, data, margin, racialGroup}){
         .range([0, xOuter.bandwidth()])
         .padding(0.5);
 
-    // Create y axis
     const allVals = groups.flatMap(g => [g.raceBlind.max, g.vra.max, g.enactedCount ]);
     const yMax = d3.max(allVals)
 
@@ -74,7 +73,6 @@ export function drawBoxWhiskerME({givenSVG, data, margin, racialGroup}){
                 .attr("opacity", 0.05);
         }
 
-        // boxes
         ensembleTypes.forEach(type => {
             const stats = g[type];
             const cx = groupX + xInner(type) + xInner.bandwidth() / 2;  
@@ -83,7 +81,6 @@ export function drawBoxWhiskerME({givenSVG, data, margin, racialGroup}){
             drawBox(svg, { cx, bandwidth, y, d: stats, color: ME_COLORS[type] });          
         });
         
-        // circle
         svg.append("circle")
             .attr("cx", groupX + xOuter.bandwidth() / 2)
             .attr("cy", y(g.enactedCount))
@@ -92,7 +89,7 @@ export function drawBoxWhiskerME({givenSVG, data, margin, racialGroup}){
             .attr("stroke", "white")
             .attr("stroke-width", 1.5);
 
-        // dashed line
+        // dashed line separator
         if (i < groups.length - 1) {
             const lineX = groupX + xOuter.bandwidth() + (xOuter.step() * xOuter.paddingInner()) / 2;
             svg.append("line") 

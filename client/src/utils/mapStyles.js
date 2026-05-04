@@ -11,8 +11,6 @@ export const getColor = (feature, minorityGroup) =>{
                             "#ECFDF5";
         }
 
-
-
 export const lineStyle = () => ({
     fillOpacity: 0,
     weight: 1,

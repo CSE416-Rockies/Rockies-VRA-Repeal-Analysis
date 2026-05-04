@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { getCandidateColors , PARTY_COLORS, CAND_LABEL} from "./constants";
+import { getCandidateColors , PARTY_COLORS, PARTY_REFS} from "./constants";
 import { drawAxes, drawGrid } from "./drawGridLines";
 
 export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }) {
@@ -9,7 +9,7 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
         return;
     }
 
-    let candVarName = CAND_LABEL[candView].key;
+    let candVarName = PARTY_REFS[candView].key;
     console.log(candView);
     const candData = data.candidates[candVarName];
     if (!candData) {
@@ -36,13 +36,10 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
     const width = givenSVG.clientWidth - margin.left - margin.right;
     const height = givenSVG.clientHeight - margin.top - margin.bottom;
 
-
-    // Create x axis
     var x = d3.scaleLinear()
-        .domain([0,1])        // axis ticks
-        .range([0,width]);      // graph width 
+        .domain([0,1])        
+        .range([0,width]);      
                 
-    // Create y axis
     const allY = [...raceDensity, ...nonRaceDensity].map(d => d.y);
 
     const maxY = d3.max(allY) * 1.1;
@@ -59,7 +56,6 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
             
     /* ------------------------------------------------------------------ Plot Point Rendering */
 
-    // define color assignment
     const legendColors = getCandidateColors(racialLabel, candView);
     const primaryColor = legendColors[0].color;
     const secondaryColor = legendColors[1].color;
@@ -125,6 +121,7 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
     });        
 }
 
+
 function drawEICompare({ givenSVG, data, margin, racialLabel }){
     const candidates = Object.entries(data.candidates); 
 
@@ -136,12 +133,10 @@ function drawEICompare({ givenSVG, data, margin, racialLabel }){
     const width  = givenSVG.clientWidth  - margin.left - margin.right;
     const height = givenSVG.clientHeight - margin.top  - margin.bottom;
 
-    // Create x axis
     var x = d3.scaleLinear()
-        .domain([0,1])          // axis ticks
-        .range([0,width]);      // graph width 
+        .domain([0,1])          
+        .range([0,width]);     
                 
-    // Create y axis
     const allY = candidates.flatMap(([, cand]) =>
         (cand.groups[racialLabel]?.density.group ?? []).map(d => d.y)
     );

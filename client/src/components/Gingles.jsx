@@ -22,7 +22,6 @@ export default function Gingles(){
 
     const margin = {top: 20, right: 20, bottom: 60, left: 80}
 
-    // state change
     useEffect(()=>{
         if(!selectedState) return;
         getGingles(selectedState)
@@ -33,7 +32,6 @@ export default function Gingles(){
         .catch(err => console.error("Error loading Gingles data:", err));
     }, [selectedState]);
 
-    // draw d3 
     useD3(ref, (svg)=>{
         if(!ginglesData || !racialGroup) return;
         drawGingles({givenSVG: svg, data: ginglesData, margin, racialLabel: racialGroup});

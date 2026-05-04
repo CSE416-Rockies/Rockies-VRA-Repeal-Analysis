@@ -2,7 +2,7 @@ import {useState, useContext} from 'react'
 import {ChevronDownIcon, ChevronUpIcon} from '@heroicons/react/24/solid'
 import Tooltip from './Tooltip';
 import GlobalStoreContext from '../store';
-import { getRaceLabel } from '../utils/helpers';
+import { capitalize } from '../utils/helpers';
 
 export default function DropDownMenu({options, onSelect, icon: Icon, minority=false, toolTipDesc}){
     const { store} = useContext(GlobalStoreContext);
@@ -26,7 +26,7 @@ export default function DropDownMenu({options, onSelect, icon: Icon, minority=fa
                 <button className = 'flex items-center justify-between px-5 capitalize text-lg hover:text-gray-400 transition-all duration-100' onClick = {()=>setOpen(!open)}>
                     <div className = 'flex gap-2 items-center'>
                         { Icon && <Icon className = 'w-7'/> }
-                        { selected ? getRaceLabel(selected) : displayText }
+                        { selected ? capitalize(selected) : displayText }
                     </div>
                     {chevronIcon}
                 </button>

@@ -8,7 +8,7 @@ export default function EnsembleDetail({expanded, onClick}){
     const { store } = useContext(GlobalStoreContext);
     const selectedState = store?.selectedState || "";
     const [ensembleSummary, setEnsembleSummary] = useState(null);
-    const [hoveredCard, setHoveredCard] = useState(null); // ensemble options: 'RB' | 'VRA' | null
+    const [hoveredCard, setHoveredCard] = useState(null);  // ensemble options: 'RB' | 'VRA' | null
 
     useEffect(() => {
         if(!selectedState) return;
@@ -48,29 +48,6 @@ export default function EnsembleDetail({expanded, onClick}){
                         ))
                     }
                 </div>
-                
-                <table className = 'w-full'>
-                    <thead className = 'text-left text-gray-400'>
-                        <tr>
-                            {/* <th></th>
-                            <th>RB</th>
-                            <th>VRA</th> */}
-                        </tr>
-                    </thead>
-                    {/* <tbody className = 'border-divide'>
-                        {rows.map(({label, raceBlind, vra})=>(
-                            <tr key = {label} className = 'h-10'>
-                                <td className = 'text-gray-400'>{label}</td>
-                                <td className={`font-bold pr-2 transition-colors duration-120 ${hoveredCard === 'RB' ? 'text-emerald-500' : 'text-gray-500'}`}>
-                                    {raceBlind ?? "-"}
-                                </td>
-                                <td className={`font-bold pl-2 transition-colors duration-120 ${hoveredCard === 'VRA' ? 'text-emerald-500' : 'text-gray-500'}`}>
-                                    {vra ?? "-"}
-                                </td>
-                            </tr>
-                       ))}
-                    </tbody> */}
-                </table>
 
             </div> 
         </DetailPanel>

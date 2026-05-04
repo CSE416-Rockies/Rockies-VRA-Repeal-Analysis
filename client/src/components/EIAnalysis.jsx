@@ -9,7 +9,7 @@ import { UserGroupIcon } from '@heroicons/react/24/solid';
 import { drawEIAnalysis } from '../utils/drawEIAnalysis';
 import { computeOverlapPct } from '../utils/computeOverlapPct';
 import { useD3 } from '../hooks/useD3';
-import { RACES, PRESIDENT_CAND_LEGEND, CAND_LABEL, getCandidateColors, getCompareColors } from "../utils/constants"
+import { RACES, PRESIDENT_CAND_LEGEND, PARTY_REFS, getCandidateColors, getCompareColors } from "../utils/constants"
 
 import { getEIAnalysis } from '../api/api';
 
@@ -64,14 +64,14 @@ export default function EIAnalysis(){
     const overlapPct = (!eiAnalysisData || !racialGroup || candView === 'compare')
         ? null
         : computeOverlapPct(
-            eiAnalysisData.candidates[CAND_LABEL[candView].key]?.groups[racialGroup]?.density.group,
-            eiAnalysisData.candidates[CAND_LABEL[candView].key]?.groups[racialGroup]?.density.complement
+            eiAnalysisData.candidates[PARTY_REFS[candView].key]?.groups[racialGroup]?.density.group,
+            eiAnalysisData.candidates[PARTY_REFS[candView].key]?.groups[racialGroup]?.density.complement
         );
 
     return(
         <GraphView 
             title = {`Ecological Inference (EI) Analysis: Voting Probability`}
-            subtitle = { candView == "compare" ? 'Comparison by Candidate':  `Support for ${CAND_LABEL[candView].label}` }
+            subtitle = { candView == "compare" ? 'Comparison by Candidate':  `Support for ${PARTY_REFS[candView].label}` }
             legendItems = {candView == "compare" ? getCompareColors() : getCandidateColors(racialGroup, candView)}
             menus = {choiceMenu}
             svgRef = {ref}

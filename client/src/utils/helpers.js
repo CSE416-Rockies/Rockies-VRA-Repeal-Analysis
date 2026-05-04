@@ -1,5 +1,3 @@
-import { RACES } from "./constants";
-
 export function normalizeParty(party) {
     const partyName = party?.toLowerCase();
     if (partyName.includes('rep')) return 'rep';
@@ -12,10 +10,6 @@ export function normalizeDistrict(district) {
 }
 
 export const capitalize = (str) => str.replace(/\b\w/g, c => c.toUpperCase());
-
-
-export const getRaceLabel = (value) => 
-    RACES.find(r => r.value === value)?.label ?? value;
 
 export const toPercent = (value, decimals = 1) => {
     return (value * 100).toFixed(decimals);

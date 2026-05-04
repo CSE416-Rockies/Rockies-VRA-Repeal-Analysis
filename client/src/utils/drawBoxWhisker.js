@@ -68,7 +68,7 @@ export function drawBoxWhisker({ givenSVG, data, margin, racialGroup, ensemble }
             const bandwidth = xInner.bandwidth();
             drawBox(boxGroup, {cx, bandwidth, y, d, color: ME_COLORS[key]});
 
-         // ── Enacted dot ────────────────────────────────────────────────
+        // enacted point
         boxGroup.append("circle")
             .attr("cx", cx)
             .attr("cy", y(d.enacted))

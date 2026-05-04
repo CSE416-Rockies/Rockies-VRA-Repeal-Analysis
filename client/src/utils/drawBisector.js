@@ -2,14 +2,12 @@ import * as d3 from "d3";
 
 export function drawBisector({svg, width, height, x, data, onHover}){
 
-    // bisector
     const bisectLine = svg.append("line")
         .attr("class", "bisector")
-        .attr("y1", 0)                      // line start
-        .attr("y2", height)                 // line end
+        .attr("y1", 0)                      
+        .attr("y2", height)                
         .attr("opacity", 0)
 
-    // tooltip
     let tooltip = d3.select(".tooltip");
     if (tooltip.empty()) {
         tooltip = d3.select("body")
@@ -17,7 +15,6 @@ export function drawBisector({svg, width, height, x, data, onHover}){
             .attr("class", "tooltip");
     }
 
-    // 3. invisible overlay to catch mouse events
     const bisect = d3.bisector(d => d.x).left;
 
     svg.append("rect")
@@ -28,19 +25,16 @@ export function drawBisector({svg, width, height, x, data, onHover}){
             const [mouseX] = d3.pointer(event);
             const xVal = x.invert(mouseX);
 
-            // find nearest data point
             const points = data.map(set => {
                 const i = bisect(set.values, xVal);
                 return {label: set.label, point: set.values[i]};
             });
 
-            // move the vertical line
             bisectLine
                 .attr("x1", mouseX)
                 .attr("x2", mouseX)
                 .attr("opacity", 1);
 
-            // show tooltip
             tooltip
                 .classed("visible", true)
                 .style("left", (event.pageX + 16) + "px")

@@ -4,7 +4,6 @@ export function drawAxes({ svg, width, height, margin, xLabel, yLabel, xConfig, 
     
     /* -------------------------------------------------- axes */
 
-    // draw X axis
     const xAxis = svg.append("g")
         .attr("class", "axisColor")
         .attr("transform", `translate(0, ${height})`)
@@ -13,7 +12,6 @@ export function drawAxes({ svg, width, height, margin, xLabel, yLabel, xConfig, 
     xAxis.selectAll("text")
         .attr("font-size", small ? "12px" : "16px");
     
-    // draw y axis
     const yAxis = svg.append("g")
         .attr("class", "axisColor")
         .call(yConfig);
@@ -21,7 +19,6 @@ export function drawAxes({ svg, width, height, margin, xLabel, yLabel, xConfig, 
     yAxis.selectAll("text")
         .attr("font-size", small ? "12px" : "16px");
 
-    // x axis label
     svg.append("text")
         .attr("text-anchor", "middle")
         .attr("x", width / 2)
@@ -30,7 +27,6 @@ export function drawAxes({ svg, width, height, margin, xLabel, yLabel, xConfig, 
         .attr("font-size", small ? "12px" : "16px")
         .text(xLabel);
 
-    // y axis label
     svg.append("text")
         .attr("text-anchor", "middle")
         .attr("transform", "rotate(-90)")
@@ -48,12 +44,10 @@ export function drawGrid({svg, width, height, xConfig, yConfig, hideX = false}){
     const yGrid = d3.axisLeft(yConfig.scale()).ticks(4).tickSize(-width).tickFormat("");
     const xGrid = d3.axisBottom(xConfig.scale()).ticks(4).tickSize(-height).tickFormat("");
 
-    // horizontal lines
     const horizontalLines = svg.append("g")
         .attr("class", "gridColor")
         .call(yGrid);
 
-    // vertical lines
     if (!hideX){
         const verticalLines = svg.append("g")
             .attr("class", "gridColor")
@@ -62,6 +56,5 @@ export function drawGrid({svg, width, height, xConfig, yConfig, hideX = false}){
         verticalLines.select(".domain").remove();
     }
     
-    // remove lines
     horizontalLines.select(".domain").remove();
 }

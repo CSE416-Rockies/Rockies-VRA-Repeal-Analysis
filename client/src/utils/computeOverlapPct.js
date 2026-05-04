@@ -1,3 +1,5 @@
+import { toPercent } from "./helpers";
+
 export function computeOverlapPct(curveA, curveB) {
     console.log(curveA);
     console.log(curveB);
@@ -12,7 +14,7 @@ export function computeOverlapPct(curveA, curveB) {
         return curve[i].y + t * (curve[i + 1].y - curve[i].y);
     };
 
-    // trapeezoidal integration
+    // trapezoidal integration
     let overlap = 0;
     for (let i = 0; i < xs.length - 1; i++) {
         const dx = xs[i + 1] - xs[i];
@@ -20,5 +22,5 @@ export function computeOverlapPct(curveA, curveB) {
                                Math.min(interp(curveA, xs[i + 1]), interp(curveB, xs[i + 1])));
     }
 
-    return +(overlap * 100).toFixed(1);
+    return +toPercent(overlap);
 }

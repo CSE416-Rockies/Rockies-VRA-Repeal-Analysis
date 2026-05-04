@@ -1,7 +1,6 @@
 
 export function drawAxes({ svg, width, height, margin, xLabel, yLabel, xConfig, yConfig, small = false}) {
 
-    // draw X axis
     const xAxis = svg.append("g")
         .attr("class", "axisColor")
         .attr("transform", `translate(0, ${height})`)
@@ -11,7 +10,6 @@ export function drawAxes({ svg, width, height, margin, xLabel, yLabel, xConfig, 
         .attr("font-size", small ? "12px" : "16px")
         .attr("class", "capitalize-axis");
     
-    // draw y axis
     const yAxis = svg.append("g")
         .attr("class", "axisColor")
         .call(yConfig);
@@ -20,7 +18,6 @@ export function drawAxes({ svg, width, height, margin, xLabel, yLabel, xConfig, 
         .attr("font-size", small ? "12px" : "14px")
         .attr("class", "capitalize-axis");
 
-    // X axis label
     svg.append("text")
         .attr("text-anchor", "middle")
         .attr("x", width / 2)
@@ -29,7 +26,6 @@ export function drawAxes({ svg, width, height, margin, xLabel, yLabel, xConfig, 
         .attr("font-size", small ? "10px" : "12px")
         .text(xLabel);
 
-    // Y axis label
     svg.append("text")
         .attr("text-anchor", "middle")
         .attr("transform", "rotate(-90)")

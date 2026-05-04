@@ -12,6 +12,7 @@ export function drawGingles({ givenSVG, data, margin, racialLabel }) {
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
     /* ------------------------------------------------------------------ Dimensions */
+
     const width = givenSVG.clientWidth - margin.left - margin.right;
     const height = givenSVG.clientHeight - margin.top - margin.bottom;
     if (width <= 0 || height <= 0) return;
@@ -38,16 +39,14 @@ export function drawGingles({ givenSVG, data, margin, racialLabel }) {
 
     /* ------------------------------------------------------------------ Axes */
     
-    // Create x axis
     const xMax = Math.ceil(d3.max(flatData, d => d.racial_pct) / 10) * 10;
     var x = d3.scaleLinear()
-        .domain([0,xMax])        // axis ticks
-        .range([0,width]);      // graph width 
+        .domain([0,xMax])        
+        .range([0,width]);       
                 
-    // Create y axis
     var y = d3.scaleLinear()
-        .domain([100,0])        // axis ticks
-        .range([0,height]);     // graph height
+        .domain([100,0])       
+        .range([0,height]);    
 
     const xConfig = d3.axisBottom(x).ticks(4).tickFormat(d => `${d}%`);
     const yConfig = d3.axisLeft(y).ticks(4).tickFormat(d => `${d}%`);
@@ -66,16 +65,15 @@ export function drawGingles({ givenSVG, data, margin, racialLabel }) {
     // Scatter dots
     svg.append('g')
         .selectAll("dot")
-        .data(flatData)                                     // bind data to dots
-        .join("circle")                                     // create circle
+        .data(flatData)                                     
+        .join("circle")                                     
             .attr("cx", d => x(d.racial_pct))
             .attr("cy", d => y(d.vote_share) )
             .attr("r", 2)
             .style("fill",  d => PARTY_COLORS[d.party])
             .style("fill-opacity", 0.3)
 
-    /* Draw regression lines from coefficients */
-
+    // build regression line
     const lineDataByParty = {};
     ['dem', 'rep'].forEach(party => {
         const fit = party === 'dem' ? demFit : repFit;

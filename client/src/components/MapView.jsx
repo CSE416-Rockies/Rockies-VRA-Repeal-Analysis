@@ -67,7 +67,6 @@ export default function MapView(){
     const districtStyle = (feature) => {
         const mapDistrictValue = normalizeDistrict(feature.properties.DISTRICT);
 
-        // district's color
         let partyColor = MAP_PARTY_COLORS.other;
         const district = districtArr.find(
             (rep) => String(rep.districtNumber) === mapDistrictValue
@@ -169,7 +168,6 @@ export default function MapView(){
 
     useEffect(() => {
         if (!selectedState || !store.minorityGroup) return;
-        // console.log("fetching legend");
         getStateLegend(selectedState)
         .then((res) => {
             const data = res.data;
