@@ -1,0 +1,482 @@
+{
+  "info": {
+    "_postman_id": "790815ad-e201-4930-9f2a-e3dca3df6300",
+    "name": "Arkansas and Georgia VRA Repeal Analysis",
+    "description": "## Backend Tests\n\nThis collection contains backend API tests for a **redistricting/VRA appeal analysis application**, targeting a locally running server at `http://localhost:8080`. It validates endpoints that power the application's GUI use cases across two U.S. states — **Georgia** and **Arkansas**.\n\n### Structure\n\nThe collection is organized into two folders:\n\n- **State** — Requests that retrieve high-level state data, including ensemble summaries, state detail, and congressional representative information for Georgia and Arkansas.\n    \n- **Graphs** — Requests that fetch visualization data, including Box & Whisker plots, Scatter plots (Gingles analysis), Ecological Inference (EI) analysis, ensemble splits, impact threshold tables, ME ensemble histograms, and ME Box & Whisker plots.\n    \n\n### Terminology\n\n- **Minority Effectiveness (ME):** A district is considered \"minority-effective\" if the  \n    minority group wields equal opportunity to influence election outcomes.\n    \n\n### Endpoints Covered\n\n| Endpoint | Description |\n| --- | --- |\n| `/api/state/{state}/ensembleSummary` | Ensemble summary (number of district plans, population equality threshold) |\n| `/api/state/{state}/stateDetail` | Detailed state-level data |\n| `/api/state/{state}/representatives` | Congressional representative summary and table data |\n| `/api/state/{state}/boxWhiskers` | Box & Whisker plot data |\n| `/api/state/{state}/gingles` | Scatter plot data for Gingles analysis |\n| `/api/state/{state}/eiAnalysis` | Ecological Inference analysis data |\n| `/api/state/{state}/ensembleSplits` | Ensemble split data |\n| `/api/state/{state}/ensembleHistogramME` | Ensemble Histogram ME data |\n| `/api/state/{state}/boxWhiskersME` | Box Whiskers ME data |\n| `/api/state/{state}/impactThresholdTable` | Impact Threshold Table |",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53053223",
+    "_collection_link": "https://go.postman.co/collection/53053223-790815ad-e201-4930-9f2a-e3dca3df6300?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "State",
+      "item": [
+        {
+          "name": "Georgia Representatives",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/Georgia/representatives",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "Georgia",
+                "representatives"
+              ]
+            },
+            "description": "Use Cases:\n\n1. GUI-3: State data summary (Congressional Representative Summary)\n    \n2. GUI- 6: Display Congressional representation table\n    \n\nPassing Parameter: stateName (GA)"
+          },
+          "response": []
+        },
+        {
+          "name": "Arkansas Representatives",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/Arkansas/representatives",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "Arkansas",
+                "representatives"
+              ]
+            },
+            "description": "Use Cases:\n\n1. GUI-3: State data summary (Congressional Representative Summary)\n    \n2. GUI- 6: Display Congressional representation table\n    \n\nPassing Parameter: stateName (AR)"
+          },
+          "response": []
+        },
+        {
+          "name": "Georgia Ensemble Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/Georgia/ensembleSummary",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "Georgia",
+                "ensembleSummary"
+              ]
+            },
+            "description": "Use Cases:\n\n1. GUI-3: State data summary (Summary of the Ensembles Available)\n    \n\n- Number of district plans, population equality threshold.\n    \n\nPassing Parameter: stateName (GA)"
+          },
+          "response": []
+        },
+        {
+          "name": "Arkansas Ensemble Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/Arkansas/ensembleSummary",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "Arkansas",
+                "ensembleSummary"
+              ]
+            },
+            "description": "Use Cases:\n\n1. GUI-3: State data summary (Summary of the Ensembles Available)\n    \n\n- Number of district plans, population equality threshold.\n    \n\nPassing Parameter: stateName (AR)"
+          },
+          "response": []
+        },
+        {
+          "name": "Georgia State Detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/Georgia/stateDetail",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "Georgia",
+                "stateDetail"
+              ]
+            },
+            "description": "Use Cases:\n\n1. GUI-3: State data summary\n    \n\n- State population, state voter population, population of each significant racial/ethnic group, party control of the redistricting process\n    \n\nPassing Parameter: stateName (GA)"
+          },
+          "response": []
+        },
+        {
+          "name": "Arkansas State Detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/Arkansas/stateDetail",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "Arkansas",
+                "stateDetail"
+              ]
+            },
+            "description": "Use Cases:\n\n1. GUI-3: State data summary\n    \n\n- State population, state voter population, population of each significant racial/ethnic group, party control of the redistricting process\n    \n\nPassing Parameter: stateName (AR)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Graphs",
+      "item": [
+        {
+          "name": "Georgia BoxWhisker Plots",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/GA/boxWhiskers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "GA",
+                "boxWhiskers"
+              ]
+            },
+            "description": "Use Cases:\n\n1. GUI-17: Display Box and Whisker data\n    \n\nPassing Parameter: stateName (GA)"
+          },
+          "response": []
+        },
+        {
+          "name": "Arkansas BoxWhisker Plots",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/AR/boxWhiskers",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "AR",
+                "boxWhiskers"
+              ]
+            },
+            "description": "Use Cases:\n\n1. GUI-17: Display Box and Whisker data\n    \n\nPassing Parameter: stateName (AR)"
+          },
+          "response": []
+        },
+        {
+          "name": "Georgia ScatterPlots",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/GA/gingles",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "GA",
+                "gingles"
+              ]
+            },
+            "description": "Use Cases:\n\n1. GUI-9: Display Gingles Analysis Results\n    \n\nPassing Parameter: stateName (GA)"
+          },
+          "response": []
+        },
+        {
+          "name": "Arkansas ScatterPlots",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/AR/gingles",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "AR",
+                "gingles"
+              ]
+            },
+            "description": "Use Cases:\n\n1. GUI-9: Display Gingles Analysis Results\n    \n\nPassing Parameter: stateName (AR)"
+          },
+          "response": []
+        },
+        {
+          "name": "Georgia EI Analysis",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/GA/eiAnalysis",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "GA",
+                "eiAnalysis"
+              ]
+            },
+            "description": "Use Cases:\n\n1. GUI-12: Display candidate results of EI Analysis\n    \n\nPassing Parameter: stateName (GA)"
+          },
+          "response": []
+        },
+        {
+          "name": "Arkansas EI Analysis",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/AR/eiAnalysis",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "AR",
+                "eiAnalysis"
+              ]
+            },
+            "description": "Use Cases:\n\n1. GUI-12: Display candidate results of EI Analysis\n    \n\nPassing Parameter: stateName (AR)"
+          },
+          "response": []
+        },
+        {
+          "name": "Georgia Ensemble Splits",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/GA/ensembleSplits",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "GA",
+                "ensembleSplits"
+              ]
+            },
+            "description": "Use Cases:\n\n1. GUI-16: Display ensemble splits in a bar chart\n    \n\nPassing Parameter: stateName (GA)"
+          },
+          "response": []
+        },
+        {
+          "name": "Georgia BoxWhisker ME",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/GA/boxWhiskersME",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "GA",
+                "boxWhiskersME"
+              ]
+            },
+            "description": "Use Cases:\n\n1. GUI-17: Display box & whisker data\n    \n\nPassing Parameter: stateName (GA)"
+          },
+          "response": []
+        },
+        {
+          "name": "Arkansas BoxWhisker ME",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/AR/boxWhiskersME",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "AR",
+                "boxWhiskersME"
+              ]
+            },
+            "description": "Use Cases:\n\n1. GUI-17: Display box & whisker data\n    \n\nPassing Parameter: stateName (AR)"
+          },
+          "response": []
+        },
+        {
+          "name": "Arkansas EnsembleHistogram ME",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/AR/ensembleHistogramME",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "AR",
+                "ensembleHistogramME"
+              ]
+            },
+            "description": "Use Cases:\n\n1. GUI-22: Display minority effectiveness ensemble histogram\n    \n\nPassing Parameter: stateName (AR)"
+          },
+          "response": []
+        },
+        {
+          "name": "Georgia EnsembleHistogram ME",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/GA/ensembleHistogramME",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "GA",
+                "ensembleHistogramME"
+              ]
+            },
+            "description": "Use Cases:\n\n1. GUI-22: Display minority effectiveness ensemble histogram\n    \n\nPassing Parameter: stateName (GA)"
+          },
+          "response": []
+        },
+        {
+          "name": "Arkansas Ensemble Splits",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/Arkansas/ensembleSplits",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "Arkansas",
+                "ensembleSplits"
+              ]
+            },
+            "description": "Use Cases:\n\n1. GUI-16: Display ensemble splits in a bar chart\n    \n\nPassing Parameter: stateName (AR)"
+          },
+          "response": []
+        },
+        {
+          "name": "Arkansas Impact Threshold Table",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/AR/impactThresholdTable",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "AR",
+                "impactThresholdTable"
+              ]
+            },
+            "description": "Use Cases:\n\n1. GUI-20: Display VRA impact threshold table\n    \n\nPassing Parameter: stateName (AR)"
+          },
+          "response": []
+        },
+        {
+          "name": "Georgia Impact Threshold Table",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/state/GA/impactThresholdTable",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "state",
+                "GA",
+                "impactThresholdTable"
+              ]
+            },
+            "description": "Use Cases:\n\n1. GUI-20: Display VRA impact threshold table\n    \n\nPassing Parameter: stateName (GA)"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

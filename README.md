@@ -11,13 +11,19 @@ The approach to data analysis and the underlying methodology draw upon [Computat
 ## Tech Stack
 - ReactJS, TailwindCSS, SpringJS, MongoDB, Python
 
+**Prerequisites**
+- Node v22.14.0
+- npm 10.9.2
+- Python 3.13.2
+- Java 23.0.1
+- SBU Authentication for SeaWulf access
+
 ## Contents
 - `/client/`: Contains all client-side source code, including frontend logic, and user interfaces.
 - `/server/`: Holds server-side source code, including APIs, backend logic, and data handling services.
 - `/data/`: Shared directory for selected state data.
 - `/preprocessing/`: Includes Jupyter notebooks and generated outputs for data cleaning, transformation, and calculations.
 - `/seawulf/`: Contains scripts and outputs related to processing on the SeaWulf.
-
 
 
 ## Set Up
@@ -63,3 +69,6 @@ Submit a Job:
 module load slurm
 sbatch python/your_job.slurm
 ```
+
+## Postman Testing
+Import `server/postman_tests.json` into Postman to explore the available endpoints and test the server. Further documentation on expected parameters, associated use cases, and referenced terminology are also included.
