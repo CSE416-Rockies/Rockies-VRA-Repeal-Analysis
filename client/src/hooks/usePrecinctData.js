@@ -18,7 +18,6 @@ export function usePrecinctData(name, mapMode){
                         ? JSON.parse(topology)
                         : topology;
 
-                    console.log(parsed)
                     const objectKey = Object.keys(parsed.objects)[0];
                     console.log(objectKey)
                     const geojson = feature(

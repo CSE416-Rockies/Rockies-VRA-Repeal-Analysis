@@ -10,8 +10,6 @@ export function drawEnsembleHistME({givenSVG, data, margin, racialGroup}){
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    console.log(data);
-
     /* ------------------------------------------------------------------- Dimensions */
     const width  = givenSVG.clientWidth  - margin.left - margin.right;
     const height = givenSVG.clientHeight - margin.top  - margin.bottom;

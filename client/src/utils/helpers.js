@@ -42,3 +42,18 @@ export function predict(model, params, x) {
             return 0;
     }
 }
+
+export function computeOverlapPct(curveA, curveB) {
+    const xs = curveA.map(d => d.x);
+
+    // trapezoidal integration
+    let overlap = 0;
+    for (let i = 0; i < xs.length - 1; i++) {
+        const dx = xs[i + 1] - xs[i];
+        const minL = Math.min(curveA[i].y, curveB[i].y);
+        const minR = Math.min(curveA[i + 1].y, curveB[i + 1].y);
+        overlap += 0.5 * dx * (minL + minR);
+    }
+
+    return +toPercent(overlap);
+}

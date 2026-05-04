@@ -10,7 +10,6 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
     }
 
     let candVarName = PARTY_REFS[candView].key;
-    console.log(candView);
     const candData = data.candidates[candVarName];
     if (!candData) {
         console.error("Candidate not found:", candData);
@@ -22,8 +21,6 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
         console.error("Group data not found: ", racialLabel);
         return;
     }
-
-      console.log(groupData);
 
     var raceDensity = groupData.density.group;
     var nonRaceDensity = groupData.density.complement;
@@ -81,8 +78,6 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
             ci: groupData.credible_interval_95.complement
         }   
     ];
-
-    console.log(curves);
     
     let tooltip = d3.select(".tooltip");
     if (tooltip.empty()) {

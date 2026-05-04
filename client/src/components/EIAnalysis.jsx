@@ -7,7 +7,7 @@ import { SelectionPlaceholder } from './SelectionPlaceholder';
 import { UserGroupIcon } from '@heroicons/react/24/solid';
 
 import { drawEIAnalysis } from '../utils/drawEIAnalysis';
-import { computeOverlapPct } from '../utils/computeOverlapPct';
+import { computeOverlapPct } from '../utils/helpers';
 import { useD3 } from '../hooks/useD3';
 import { RACES, PRESIDENT_CAND_LEGEND, PARTY_REFS, getCandidateColors, getCompareColors } from "../utils/constants"
 
