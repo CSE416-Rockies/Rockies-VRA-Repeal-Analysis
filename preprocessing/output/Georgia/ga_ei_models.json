@@ -812,7 +812,12 @@
               "y": 0.0
             }
           ],
-          "overlap": 1.0
+          "overlap": {
+            "white": 1.0,
+            "black": 0.0,
+            "latino": 0.0,
+            "other": 0.0
+          }
         },
         "black": {
           "posterior_mean": 0.9179745596584314,
@@ -1622,7 +1627,12 @@
               "y": 0.0
             }
           ],
-          "overlap": 0.0
+          "overlap": {
+            "white": 0.0,
+            "black": 1.0,
+            "latino": 0.0,
+            "other": 0.15796923830040205
+          }
         },
         "latino": {
           "posterior_mean": 0.688455717500153,
@@ -2432,7 +2442,12 @@
               "y": 0.0
             }
           ],
-          "overlap": 0.0
+          "overlap": {
+            "white": 0.0,
+            "black": 0.0,
+            "latino": 1.0,
+            "other": 3.271664493643422e-75
+          }
         },
         "other": {
           "posterior_mean": 0.896745131438776,
@@ -3242,7 +3257,12 @@
               "y": 1.6166687506286889e-134
             }
           ],
-          "overlap": 0.0
+          "overlap": {
+            "white": 0.0,
+            "black": 0.15291222549625832,
+            "latino": 3.271444834832539e-75,
+            "other": 1.0
+          }
         }
       }
     },
@@ -4057,7 +4077,12 @@
               "y": 0.0
             }
           ],
-          "overlap": 1.0
+          "overlap": {
+            "white": 1.0,
+            "black": 0.0,
+            "latino": 0.0,
+            "other": 0.0
+          }
         },
         "black": {
           "posterior_mean": 0.07598297256066412,
@@ -4867,7 +4892,12 @@
               "y": 0.0
             }
           ],
-          "overlap": 0.0
+          "overlap": {
+            "white": 0.0,
+            "black": 1.0,
+            "latino": 0.0,
+            "other": 0.3271726146886791
+          }
         },
         "latino": {
           "posterior_mean": 0.2782996319829722,
@@ -5677,7 +5707,12 @@
               "y": 0.0
             }
           ],
-          "overlap": 0.0
+          "overlap": {
+            "white": 0.0,
+            "black": 0.0,
+            "latino": 1.0,
+            "other": 7.652858751524093e-99
+          }
         },
         "other": {
           "posterior_mean": 0.07687634899874801,
@@ -6487,7 +6522,12 @@
               "y": 0.0
             }
           ],
-          "overlap": 0.0
+          "overlap": {
+            "white": 0.0,
+            "black": 0.32378944651665786,
+            "latino": 7.65424927728778e-99,
+            "other": 1.0
+          }
         }
       }
     }
