@@ -28,8 +28,8 @@ export default function DistrictDetail({expanded, onClick, selectedDistrict, onS
                 const title_height = titleRef.current.clientHeight;
                 const row_height = rowRef.current.clientHeight;
                 const page_height = pageRef.current.clientHeight
-                const padding = 20;
-                const gap = 20;
+                const padding = 30;
+                const gap = 30;
                 const available = containerRef.current.clientHeight - page_height - title_height - header_height - padding - gap;
                 const rows = Math.max(1, Math.floor(available / row_height));
                 setPerPage(rows);
@@ -53,7 +53,7 @@ export default function DistrictDetail({expanded, onClick, selectedDistrict, onS
 
     return(
 
-        <DetailPanel title="District Detail" expanded={expanded} onClick={onClick} className="pt-4" containerRef={containerRef}>
+        <DetailPanel title="District Detail" expanded={expanded} onClick={onClick} className="pt-4" containerRef={containerRef} titleRef = {titleRef}>
             <div className={`flex flex-col relative flex-1 justify-between items-center gap-5 overflow-y-auto ${expanded ? 'opacity-100 pt-5' : 'max-h-0 opacity-0'}`}>
                 <table className = 'w-full'>
                     <thead className = 'text-left text-gray-400' ref={theadRef}>
