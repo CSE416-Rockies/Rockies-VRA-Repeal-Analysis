@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import GlobalStoreContext from "../store/index.jsx";
 import StateDetail from './StateDetail.jsx';
 import DistrictDetail from './DistrictDetail.jsx';
-import EnsembleDetail from "./EnsembleDetail.jsx";
 import MapSelect from './MapSelect.jsx';
 import StateSelection from "./StateSelection.jsx";
 import Heatmap_Legend from "./Heatmap_Legend.jsx";
@@ -211,7 +210,6 @@ export default function MapView(){
                 >
                     <StateDetail expanded = {expanded === 'state'} onClick = {()=>setExpanded('state')} />
                     <DistrictDetail expanded = {expanded === 'district'} onClick = {()=>setExpanded('district')} selectedDistrict = {selectedDistrict} onSelect = {selectDistrict} />
-                    <EnsembleDetail expanded = {expanded === 'ensemble'} onClick = {()=>setExpanded('ensemble')} />
                 </div>
    
                 {(districtError || precinctError) 

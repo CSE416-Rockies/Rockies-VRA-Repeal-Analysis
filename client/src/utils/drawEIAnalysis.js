@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import { getCandidateColors , PARTY_COLORS, PARTY_REFS} from "./constants";
 import { drawAxes, drawGrid } from "./drawGridLines";
+import { bindTooltip } from "./tooltip";
 
 export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }) {
 
@@ -16,14 +17,17 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
         return;
     }
 
-    var groupData = candData.groups[racialLabel];
-    if (!groupData){
-        console.error("Group data not found: ", racialLabel);
+    var whiteData = candData.groups["white"];
+    if (!whiteData){
+        console.error("White data not found");
         return;
     }
 
-    var raceDensity = groupData.density.group;
-    var nonRaceDensity = groupData.density.complement;
+    var targetData = candData.groups[racialLabel];
+    if (!targetData){
+        console.error("Target data not found: ", racialLabel);
+        return;
+    }
 
     var svg = d3.select(givenSVG)
         .append("g")
@@ -37,7 +41,7 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
         .domain([0,1])        
         .range([0,width]);      
                 
-    const allY = [...raceDensity, ...nonRaceDensity].map(d => d.y);
+    const allY = [...whiteData.density, ...targetData.density].map(d => d.y);
 
     const maxY = d3.max(allY) * 1.1;
     var y = d3.scaleLinear()
@@ -54,7 +58,7 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
     /* ------------------------------------------------------------------ Plot Point Rendering */
 
     const legendColors = getCandidateColors(racialLabel, candView);
-    const primaryColor = legendColors[0].color;
+    const baseColor = legendColors[0].color;
     const secondaryColor = legendColors[1].color;
 
     const areaGen = d3.area().curve(d3.curveBasis)
@@ -64,46 +68,35 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
 
     const curves = [
         {
-            data: raceDensity,
-            fill: primaryColor,
+            data: whiteData.density,
+            fill: baseColor,
             label: racialLabel,
-            mean: groupData.posterior_mean.group,
-            ci: groupData.credible_interval_95.group
+            mean: whiteData.posterior_mean,
+            ci: whiteData.credible_interval_95
         },
         {
-            data: nonRaceDensity,
+            data: targetData.density,
             fill: secondaryColor,
-            label: `Not ${racialLabel}`,
-            mean: groupData.posterior_mean.complement,
-            ci: groupData.credible_interval_95.complement
+            label: racialLabel,
+            mean: targetData.posterior_mean,
+            ci: targetData.credible_interval_95
         }   
     ];
-    
-    let tooltip = d3.select(".tooltip");
-    if (tooltip.empty()) {
-        tooltip = d3.select("body")
-            .append("div")
-            .attr("class", "tooltip");
-    }
 
     curves.forEach(curve => {
-        svg.append("path")
-            .attr("class", "kdeFill")
-            .datum(curve.data)
-            .attr("fill", curve.fill)
-            .attr("stroke", d3.color(curve.fill).darker(1))
-            .attr("d", areaGen)
-            .on("mousemove", function(event) {
-                tooltip.classed("visible", true)
-                    .style("left", (event.pageX + 16) + "px")
-                    .style("top", (event.pageY - 28) + "px")
-                    .html(`
-                        <strong style="text-transform: capitalize">${curve.label}</strong>
-                        <div>Mean: ${curve.mean.toFixed(2)}</div>
-                        <div>95% CI: [${curve.ci[0].toFixed(2)}, ${curve.ci[1].toFixed(2)}]</div>
-                    `);
-            })
-            .on("mouseout", () => tooltip.classed("visible", false));
+        const path = svg.append("path")
+        .attr("class", "kdeFill")
+        .datum(curve.data)
+        .attr("fill", curve.fill)
+        .attr("fill-opacity", 0.35)
+        .attr("stroke", d3.color(curve.fill).darker(1))
+        .attr("d", areaGen);
+
+        bindTooltip(path, () => `
+            <strong style="text-transform: capitalize">${curve.label}</strong>
+            <div>Mean: ${curve.mean.toFixed(2)}</div>
+            <div>95% CI: [${curve.ci[0].toFixed(2)}, ${curve.ci[1].toFixed(2)}]</div>
+        `);
     });
 
     drawAxes({
@@ -133,7 +126,7 @@ function drawEICompare({ givenSVG, data, margin, racialLabel }){
         .range([0,width]);     
                 
     const allY = candidates.flatMap(([, cand]) =>
-        (cand.groups[racialLabel]?.density.group ?? []).map(d => d.y)
+        (cand.groups[racialLabel]?.density ?? []).map(d => d.y)
     );
 
     const maxY = d3.max(allY) * 1.1;
@@ -166,24 +159,19 @@ function drawEICompare({ givenSVG, data, margin, racialLabel }){
  
         const color = candKey === 'democrat' ? PARTY_COLORS.dem : PARTY_COLORS.rep;
  
-        svg.append("path")
-            .attr("class", "kdeFill")
-            .datum(groupData.density.group)
-            .attr("fill", color)
-            .attr("fill-opacity", 0.35)
-            .attr("stroke", d3.color(color).darker(1))
-            .attr("d", areaGen)
-            .on("mousemove", function(event) {
-                tooltip.classed("visible", true)
-                    .style("left", (event.pageX + 16) + "px")
-                    .style("top",  (event.pageY - 28) + "px")
-                    .html(`
-                        <strong style="text-transform:capitalize">${candKey}</strong>
-                        <div>Mean: ${groupData.posterior_mean.group.toFixed(2)}</div>
-                        <div>95% CI: [${groupData.credible_interval_95.group[0].toFixed(2)}, ${groupData.credible_interval_95.group[1].toFixed(2)}]</div>
-                    `);
-            })
-            .on("mouseout", () => tooltip.classed("visible", false));
+        const path = svg.append("path")
+        .attr("class", "kdeFill")
+        .datum(groupData.density)
+        .attr("fill", color)
+        .attr("fill-opacity", 0.35)
+        .attr("stroke", d3.color(color).darker(1))
+        .attr("d", areaGen);
+
+        bindTooltip(path, () => `
+            <strong style="text-transform:capitalize">${candKey}</strong>
+            <div>Mean: ${groupData.posterior_mean.toFixed(2)}</div>
+            <div>95% CI: [${groupData.credible_interval_95[0].toFixed(2)}, ${groupData.credible_interval_95[1].toFixed(2)}]</div>
+        `);
     });
 
     drawAxes({

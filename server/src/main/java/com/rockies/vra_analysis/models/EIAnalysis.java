@@ -37,46 +37,18 @@ public class EIAnalysis extends StateDocument{
 
     public static class GroupResult{
         @JsonProperty("posterior_mean")
-        private PosteriorMean posteriorMean;
+        private double posteriorMean;
         @JsonProperty("credible_interval_95")
-        private CredibleInterval credibleInterval95;
-        private Density density;
+        private List<Double> credibleInterval95;
+        private List<Point> density;
+        private double overlap;
 
         public GroupResult() {}
 
-        public PosteriorMean getPosteriorMean() { return posteriorMean; }
-        public CredibleInterval getCredibleInterval95() { return credibleInterval95; }
-        public Density getDensity() { return density; }
-    }
-        
-    public static class PosteriorMean{
-        private double group;
-        private double complement;
-
-        public PosteriorMean() {}
-
-        public double getGroup() { return group; }
-        public double getComplement() { return complement; }
-    }
-
-    public static class CredibleInterval {
-        private List<Double> group;
-        private List<Double> complement;
-
-        public CredibleInterval() {}
-
-        public List<Double> getGroup() { return group; }
-        public List<Double> getComplement() { return complement; }
-    }
-
-    public static class Density{
-        private List<Point> group;
-        private List<Point> complement;
-
-        public Density() {}
-
-        public List<Point> getGroup() { return group; }
-        public List<Point> getComplement() { return complement; }
+        public double getPosteriorMean() { return posteriorMean; }
+        public List<Double> getCredibleInterval95() { return credibleInterval95; }
+        public List<Point> getDensity() { return density; }
+        public double getOverlap() { return overlap; }
     }
 
     public static class Point {

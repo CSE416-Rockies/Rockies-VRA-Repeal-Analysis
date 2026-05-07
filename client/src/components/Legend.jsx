@@ -1,3 +1,5 @@
+import { darkenColor } from "../utils/helpers";
+
 export default function Legend({ items, small = false }) {
 
   const SHAPES = {
@@ -5,7 +7,7 @@ export default function Legend({ items, small = false }) {
         <div className={`rounded-full ${small ? "w-3 h-3" : "w-4 h-4"}`} style={{ backgroundColor: color }} />
     ),
     square: (color, small) => (
-        <div className={`rounded-sm ${small ? "w-3 h-3" : "w-4 h-4"} border-2 border-black`} style={{ backgroundColor: color }} />
+        <div className={`rounded-sm ${small ? "w-3 h-3" : "w-4 h-4"} border-2`} style={{borderColor: darkenColor(color, 0.9), backgroundColor:`${color}6D` }} />
     ),
     boxplot: () => (
         <svg width="16" height="16" viewBox="0 0 16 16">

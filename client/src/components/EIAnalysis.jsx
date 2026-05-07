@@ -7,12 +7,12 @@ import { SelectionPlaceholder } from './SelectionPlaceholder';
 import { UserGroupIcon } from '@heroicons/react/24/solid';
 
 import { drawEIAnalysis } from '../utils/drawEIAnalysis';
-import { computeOverlapPct } from '../utils/helpers';
 import { useD3 } from '../hooks/useD3';
 import { RACES, PRESIDENT_CAND_LEGEND, PARTY_REFS, getCandidateColors, getCompareColors } from "../utils/constants"
 
 import { getEIAnalysis } from '../api/api';
 import ErrorMsg from './ErrorMsg';
+import { toPercent } from '../utils/helpers';
 
 
 export default function EIAnalysis(){
@@ -69,10 +69,7 @@ export default function EIAnalysis(){
 
     const overlapPct = (!eiAnalysisData || !racialGroup || candView === 'compare')
         ? null
-        : computeOverlapPct(
-            eiAnalysisData.candidates[PARTY_REFS[candView].key]?.groups[racialGroup]?.density.group,
-            eiAnalysisData.candidates[PARTY_REFS[candView].key]?.groups[racialGroup]?.density.complement
-        );
+        : toPercent(eiAnalysisData.candidates[PARTY_REFS[candView].key]?.groups[racialGroup]?.overlap);
 
     return(
         <GraphView 
@@ -81,7 +78,7 @@ export default function EIAnalysis(){
             legendItems = {candView == "compare" ? getCompareColors() : getCandidateColors(racialGroup, candView)}
             menus = {choiceMenu}
             svgRef = {ref}
-            extraDisplay={{ label: "Overlap Percentage", data: overlapPct }}
+            extraDisplay={{ label: "Overlap with White Vote", data: overlapPct }}
         >
             {error ? <ErrorMsg message={error} />
             : 

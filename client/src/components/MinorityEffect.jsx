@@ -101,7 +101,7 @@ export default function MinorityEffect(){
                                 racialGroup = {racialGroup}
                                 margin = {margin} 
                                 drawFunc = {drawEnsembleHistME}
-                                legendItems = {ENSEMBLE_LEGEND}
+                                legendItems = {ENSEMBLE_LEGEND['both']}
                             >
                                 {ensembleError && <ErrorMsg message={ensembleError} />}
                             </MiniGraphView>

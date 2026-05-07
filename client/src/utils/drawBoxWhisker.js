@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import { drawBox } from "./drawBox";
 import { drawAxes, drawGrid } from "./drawGridLines";
 import { ME_COLORS } from "./constants";
+import { toPercent } from "./helpers";
 
 
 export function drawBoxWhisker({ givenSVG, data, margin, racialGroup, ensemble }) {
@@ -20,11 +21,16 @@ export function drawBoxWhisker({ givenSVG, data, margin, racialGroup, ensemble }
     const raceBlind = data?.raceBlind?.[racialGroup] ?? [];
     const vra = data?.vra?.[racialGroup] ?? [];
 
-    const allEntries = ensemble === "both"
-        ? [{ key: "raceBlind", label: "Race-Blind", series: raceBlind }, { key: "vra", label: "VRA", series: vra }]
-        : [{ key: ensemble,    label: ensemble === "raceBlind" ? "Race-Blind" : "VRA", series: ensemble === "raceBlind" ? raceBlind : vra }];
+    const ALL_ENTRIES = [
+        { key: "raceBlind", label: "Race-Blind", series: raceBlind },
+        { key: "vra", label: "VRA", series: vra }
+    ];
 
-    const n = allEntries[0].series.length;
+    const allEntries = (!ensemble || ensemble === "both")
+    ? ALL_ENTRIES
+    : ALL_ENTRIES.filter(d => d.key === ensemble);
+
+    const n = vra.length;
 
     /* ------------------------------------------------------------------ Scales */
 
@@ -54,18 +60,25 @@ export function drawBoxWhisker({ givenSVG, data, margin, racialGroup, ensemble }
     drawAxes({
         svg, width, height, margin, xConfig, yConfig,
         xLabel: "Indexed Districts",
-        yLabel: `Population Share`,
+        yLabel: `${racialGroup} Population Share`,
         small: true
     });
 
     /* ------------------------------------------------------------------ Box & Whisker Groups */
     const boxGroup = svg.append("g").attr("class", "boxes");
+    const tooltipHTML = (label) => (d) =>
+        `<strong>${label}</strong><br/>
+        Max: ${toPercent(d.max)}%<br/>
+        Q3: ${toPercent(d.q3)}%<br/>
+        Median: ${toPercent(d.median)}%<br/>
+        Q1: ${toPercent(d.q1)}%<br/>
+        Min: ${toPercent(d.min.toFixed(2))}%`;
 
-    allEntries.forEach(({key, series}) => {
+    allEntries.forEach(({ key, label, series }) => {
         series.forEach((d,i)=> {
             const cx = xOuter(i + 1) + xInner(key) + xInner.bandwidth() / 2;
             const bandwidth = xInner.bandwidth();
-            drawBox(boxGroup, {cx, bandwidth, y, d, color: ME_COLORS[key]});
+            drawBox(boxGroup, {cx, bandwidth, y, d, color: ME_COLORS[key], tooltipHTML: tooltipHTML(label)});
 
         // enacted point
         boxGroup.append("circle")
@@ -75,7 +88,6 @@ export function drawBoxWhisker({ givenSVG, data, margin, racialGroup, ensemble }
             .attr("fill", ME_COLORS["enacted"])
             .attr("stroke", "white")
             .attr("stroke-width", 1);
-
         })
         
 

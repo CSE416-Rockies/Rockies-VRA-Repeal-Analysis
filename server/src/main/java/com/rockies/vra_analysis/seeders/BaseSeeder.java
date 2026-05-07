@@ -31,6 +31,11 @@ public abstract class BaseSeeder {
         return "data/" + state + "/" + code + "_" + filename + ".jsonl"; 
     }
 
+    // e.g: rough_proportionality.json
+    protected String genJsonPath( String filename){
+        return "data/" + filename + ".json"; 
+    }
+
     protected boolean alreadySeeded(String collection, State state){
         return mongoTemplate.exists(
             Query.query(Criteria.where("state").is(state.getValue())),

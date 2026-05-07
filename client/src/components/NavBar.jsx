@@ -23,7 +23,7 @@ export default function NavBar(){
         {to: `/map/${selectedStateName}`, id: "map-nav", Icon: MapIcon, label: "Map"},
         {to: "/gingles", id: "gingles-nav", Icon: ScatterIcon, label: "Gingles"},
         {to: "/eiAnalysis", id: "boxplot-nav", Icon: EIAnalysisIcon, label: "EI Analysis"},
-        {to: "/ensembles", id: "ensembles-nav", Icon: BoxPlotIcon, label: "Ensemble Visualizations"},
+        {to: "/ensembles", id: "ensembles-nav", Icon: BoxPlotIcon, label: "Ensemble Analysis"},
         {to: "/minorityEffect", id: "minority-nav", Icon: MinorityIcon, label: "Minority Effectiveness"},
     ]
 

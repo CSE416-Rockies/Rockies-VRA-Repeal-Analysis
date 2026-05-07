@@ -52,7 +52,6 @@ public class BoxWhiskerSeeder extends BaseSeeder{
         Map<Race, List<EnsembleDetail>> res = new HashMap<>();
 
         node.properties().forEach(entry ->{
-
             // race
             Race race = Race.fromValue(entry.getKey());
 

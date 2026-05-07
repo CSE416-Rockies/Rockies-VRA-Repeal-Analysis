@@ -23,15 +23,13 @@ export default function GraphView({title, subtitle, legendTitle, legendItems, sv
                                 </div>
                                 {extraDisplay !== null &&  extraDisplay.data != null && (
                                     <div className='flex flex-col gap-1'>
-                                        <div className='text-xs text-gray-400 uppercase tracking-wide'>{extraDisplay.label}</div>
+                                        <div className='text-xs text-gray-400'>{extraDisplay.label}</div>
                                         <div className='text-xl font-semibold text-gray-700'>{extraDisplay.data}%</div>
                                     </div>
                                 )}
                             </div>
                             
                         </div>
-                        
-                        
                     </div>
                     }
                 </div>

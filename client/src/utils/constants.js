@@ -30,6 +30,10 @@ export const ENSEMBLE_VIEW_OPTIONS = [
   { value: "both", label: "Both" },
 ];
 
+export const ME_LABELS = Object.fromEntries(
+    ENSEMBLE_VIEW_OPTIONS.map(({ value, label }) => [value, label])
+);
+
 /* ----------------------------------------------------------------- Colors */
 export const PARTY_COLORS = {
     rep:  "#EF4444",
@@ -48,8 +52,8 @@ export const APP_COLORS = {
 }
 
 export const getCandidateColors = (racialGroup, candView) => [
-    { label: racialGroup, color: PARTY_COLORS[candView] },
-    { label: `Not ${racialGroup}`, color: candView === 'dem' ? '#BFDBFE' : '#FECACA' },
+    { label: "White", color: PARTY_COLORS['other']},
+    { label: `${racialGroup}`, color: PARTY_COLORS[candView]},
 ];
 
 // for EI analysis
@@ -72,21 +76,39 @@ export const ME_COLORS = {
 
 /* ----------------------------------------------------------------- Legends */
 
-export const BOX_WHISKER_LEGEND = [
-    { label: "Ensemble", color: "black", shape:  "boxplot"},
-    { label: "Enacted", color: "#10B981", shape: "circle"},
-]
 
-export const ENSEMBLE_LEGEND = [
-  { label: "Race-Blind", color: "#10B981", shape: "square" },
-  { label: "VRA-Constrained", color: "#EAB308", shape: "square" },
-];
+
+export const ENSEMBLE_LEGEND = {
+    raceBlind: [
+        { label: "Race-Blind", color: "#10B981", shape: "square" }
+    ],
+    vra: [
+        { label: "VRA-Constrained", color: "#EAB308", shape: "square" }
+    ],
+    both: [
+        { label: "Race-Blind", color: "#10B981", shape: "square" },
+        { label: "VRA-Constrained", color: "#EAB308", shape: "square" }
+    ]
+}
 
 export const BOX_WHISKER_ME_LEGEND = [
   { label: "Race-Blind", color: "#10B981", shape: "square" },
   { label: "VRA-Constrained", color: "#EAB308", shape: "square" },
   { label: "Enacted", color: "#5D3FD3", shape: "circle" },
 ];
+
+export const BOX_WHISKER_LEGEND = {
+    raceBlind: [
+        { label: "Race-Blind", color: "#10B981", shape: "square" },
+        { label: "Enacted", color: "#5D3FD3", shape: "circle" },
+    ],
+    vra: [
+        { label: "VRA-Constrained", color: "#EAB308", shape: "square" },
+        { label: "Enacted", color: "#5D3FD3", shape: "circle" },
+    ],
+    both: BOX_WHISKER_ME_LEGEND
+    
+}
 
 export const PRESIDENT_CAND_LEGEND = [
     {label: "Harris", value: "dem", color: PARTY_COLORS.dem},

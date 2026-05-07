@@ -8,7 +8,7 @@ import { SelectionPlaceholder } from './SelectionPlaceholder';
 
 import { drawBoxWhisker } from "../utils/drawBoxWhisker";
 import drawEnsembleSplits from "../utils/drawEnsembleSplits";
-import { BOX_WHISKER_ME_LEGEND, ENSEMBLE_LEGEND, RACES, ENSEMBLE_VIEW_OPTIONS } from '../utils/constants';
+import { BOX_WHISKER_LEGEND, ENSEMBLE_LEGEND, RACES, ENSEMBLE_VIEW_OPTIONS } from '../utils/constants';
 
 import { getBoxWhiskers, getEnsembleSplits } from '../api/api';
 import ErrorMsg from './ErrorMsg';
@@ -77,14 +77,14 @@ export default function Ensemble(){
                         </div>
                     :
                    
-                    <div className = "flex flex-col flex-1 h-full justify-center items-center gap-5">
+                    <div className = "flex flex-col flex-1 h-full justify-center items-center gap-2">
                         <MiniGraphView 
-                            title = {`Box & Whisker Plots [${racialGroup}]`}
+                            title = {`Box & Whisker Plots`}
                             data = {boxWhiskerData} 
                             racialGroup = {racialGroup} 
                             margin = {margin} 
                             drawFunc = {drawBoxWhisker}
-                            legendItems = {BOX_WHISKER_ME_LEGEND}
+                            legendItems = {BOX_WHISKER_LEGEND[ensemble] || []}
                             extraProps={{ensemble}}
                         >
                             {boxError && <ErrorMsg message={boxError} /> }
@@ -96,7 +96,7 @@ export default function Ensemble(){
                             racialGroup = {racialGroup}
                             margin = {margin} 
                             drawFunc = {drawEnsembleSplits}
-                            legendItems = {ENSEMBLE_LEGEND}
+                            legendItems = {ENSEMBLE_LEGEND[ensemble] || []}
                             extraProps={{ensemble}}
                         >
                             {splitsError && <ErrorMsg message={splitsError} /> }

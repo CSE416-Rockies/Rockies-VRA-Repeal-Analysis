@@ -69,9 +69,9 @@ export function drawGingles({ givenSVG, data, margin, racialLabel }) {
         .join("circle")                                     
             .attr("cx", d => x(d.racial_pct))
             .attr("cy", d => y(d.vote_share) )
-            .attr("r", 2)
+            .attr("r", 1.5)
             .style("fill",  d => PARTY_COLORS[d.party])
-            .style("fill-opacity", 0.3)
+            .style("fill-opacity", 0.4)
 
     // build regression line
     const lineDataByParty = {};

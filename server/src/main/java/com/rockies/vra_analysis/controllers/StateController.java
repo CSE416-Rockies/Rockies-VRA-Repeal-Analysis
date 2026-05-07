@@ -13,9 +13,6 @@ import com.rockies.vra_analysis.models.*;
 
 import java.util.List;
 
-// import org.springframework.web.bind.annotation.*;
-
-
 @RestController
 @RequestMapping("/api/state/{stateName}")
 @CrossOrigin(origins = "http://localhost:5173")

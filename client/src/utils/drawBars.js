@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { bindTooltip } from "./tooltip";
 
 export function drawBars({svg, height, x, y, entries, color, xOffset = 0, barWidth = x.bandwidth(), tooltipHTML }){
 
@@ -8,9 +9,8 @@ export function drawBars({svg, height, x, y, entries, color, xOffset = 0, barWid
             .attr("id", "chart-tooltip")
             .attr("class", "tooltip");
     }
-    const tooltip = d3.select("#chart-tooltip");
     
-    svg.selectAll(`.bar-${color.replace("#", "")}`)
+    const bars = svg.selectAll(`.bar-${color.replace("#", "")}`)
         .data(entries)
         .join("rect")
         .attr("x", d => x(d.x) + xOffset)
@@ -18,20 +18,12 @@ export function drawBars({svg, height, x, y, entries, color, xOffset = 0, barWid
         .attr("width", barWidth)
         .attr("height", d => Math.max(0, height - y(d.y)))
         .attr("fill", color)
-        .attr("stroke", d3.color(color).darker(1.5))
+        .attr("fill-opacity", 0.5)
+        .attr("stroke", d3.color(color).darker(1))
         .attr("stroke-width", 2)
-        .attr("opacity", 0.8)
-        .on("mouseover", (event, d) => {
-            tooltip.classed("visible", true)
-                .html(tooltipHTML(d));
-        })
-        .on("mousemove", (event) => {
-            tooltip
-                .style("left", `${event.pageX + 12}px`)
-                .style("top", `${event.pageY - 28}px`);
-        })
-        .on("mouseout", () => {
-            tooltip.classed("visible", false);
-        });
+        .attr("opacity", 0.8);
+    
+    bindTooltip(bars, tooltipHTML);
+
 
 }

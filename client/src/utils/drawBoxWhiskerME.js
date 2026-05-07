@@ -1,7 +1,9 @@
 import * as d3 from "d3";
 import { drawAxes, drawGrid } from "./drawGridLines";
 import { drawBox} from "./drawBox";
-import { ME_COLORS } from "./constants";
+import { ME_COLORS, ME_LABELS } from "./constants";
+import { bindTooltip } from "./tooltip";
+
 
 export function drawBoxWhiskerME({givenSVG, data, margin, racialGroup}){
     if(!givenSVG) return;
@@ -39,7 +41,11 @@ export function drawBoxWhiskerME({givenSVG, data, margin, racialGroup}){
         .range([0, xOuter.bandwidth()])
         .padding(0.5);
 
-    const allVals = groups.flatMap(g => [g.raceBlind.max, g.vra.max, g.enactedCount ]);
+    const allVals = groups.flatMap(g => [
+        g.raceBlind.min, g.raceBlind.max,
+        g.vra.min, g.vra.max,
+        g.enactedCount
+    ]);
     const yMax = d3.max(allVals)
 
     const y = d3.scaleLinear()
@@ -58,6 +64,14 @@ export function drawBoxWhiskerME({givenSVG, data, margin, racialGroup}){
     });
 
     /* ------------------------------------------------------------------ Boxes */
+
+    const tooltipHTML = (label) => (d) =>
+        `<strong> ${label} </strong><br/>
+        Max: ${d.max}<br/>
+        Q3: ${d.q3}<br/>
+        Median: ${d.median}<br/>
+        Q1: ${d.q1}<br/>
+        Min: ${d.min}`;
     
     groups.forEach((g,i) => {
         const groupX = xOuter(g.race);
@@ -78,16 +92,17 @@ export function drawBoxWhiskerME({givenSVG, data, margin, racialGroup}){
             const cx = groupX + xInner(type) + xInner.bandwidth() / 2;  
             const bandwidth = xInner.bandwidth();
             
-            drawBox(svg, { cx, bandwidth, y, d: stats, color: ME_COLORS[type] });          
+            drawBox(svg, { cx, bandwidth, y, d: stats, color: ME_COLORS[type], tooltipHTML: tooltipHTML(ME_LABELS[type]) });          
         });
         
-        svg.append("circle")
-            .attr("cx", groupX + xOuter.bandwidth() / 2)
-            .attr("cy", y(g.enactedCount))
-            .attr("r", 6)
-            .attr("fill", ME_COLORS["enacted"])
-            .attr("stroke", "white")
-            .attr("stroke-width", 1.5);
+        const enactedPt = svg.append("circle")
+                .attr("cx", groupX + xOuter.bandwidth() / 2)
+                .attr("cy", y(g.enactedCount))
+                .attr("r", 6)
+                .attr("fill", ME_COLORS["enacted"])
+                .attr("stroke", "white")
+                .attr("stroke-width", 1.5);
+        bindTooltip(enactedPt, () => `<strong>Enacted Plan</strong><br/>Effective Districts: ${g.enactedCount}`);
 
         // dashed line separator
         if (i < groups.length - 1) {
