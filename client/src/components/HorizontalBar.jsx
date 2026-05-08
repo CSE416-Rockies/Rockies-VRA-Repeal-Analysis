@@ -15,7 +15,7 @@ export function BarFill({percent, color}){
 export function BarSection({title, arr}){
 
     return(
-    <div className = 'flex flex-col gap-2 text-gray-500 pt-5'>
+    <div className = 'flex flex-col gap-2 text-gray-500 pt-5 pb-2'>
        <span>{title}</span>
                 
         <div className = 'flex flex-col gap-3 w-full text-sm'>
