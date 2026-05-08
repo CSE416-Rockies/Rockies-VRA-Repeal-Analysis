@@ -88,7 +88,7 @@ export default function MinorityEffect(){
                                 >
                                     {thresholdError ? <ErrorMsg message={thresholdError} /> :
                                     <div className = 'flex flex-col items-center gap-2 justify-center'>
-                                        <div> VRA Impact Threshold Table <span className = 'text-emerald-500 font-bold capitalize'> [{racialGroup}]</span></div>
+                                        <div className = 'font-semibold text-gray-700'> VRA Impact Threshold Table <span className = 'text-emerald-500 font-bold capitalize'> [{racialGroup}]</span></div>
                                         <ThresholdTable data = {thresholdData} racialGroup = {racialGroup}/>
                                     </div>
                                     }

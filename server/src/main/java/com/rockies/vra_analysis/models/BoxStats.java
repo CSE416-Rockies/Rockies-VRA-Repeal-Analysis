@@ -9,6 +9,13 @@ public class BoxStats {
     private double max;
 
     public BoxStats() {}
+    public BoxStats(double min, double q1, double median, double q3, double max){
+        this.min = min;
+        this.q1 = q1;
+        this.median = median;
+        this.q3 = q3;
+        this.max = max;
+    }
 
     public double getMin() { return min; }
     public double getQ1() { return q1; }
