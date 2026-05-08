@@ -1,0 +1,33 @@
+{
+  "groups": {
+    "BLACK": {
+      "enactedThreshold": {
+        "raceBlind": 1291,
+        "vra": 5000
+      },
+      "proportionalThreshold": {
+        "raceBlind": 1291,
+        "vra": 5000
+      },
+      "bothThreshold": {
+        "raceBlind": 1291,
+        "vra": 5000
+      }
+    },
+    "LATINO": {
+      "enactedThreshold": {
+        "raceBlind": 5000,
+        "vra": 5000
+      },
+      "proportionalThreshold": {
+        "raceBlind": 5000,
+        "vra": 5000
+      },
+      "bothThreshold": {
+        "raceBlind": 5000,
+        "vra": 5000
+      }
+    }
+  },
+  "state": "GA"
+}
