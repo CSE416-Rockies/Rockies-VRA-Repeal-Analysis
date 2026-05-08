@@ -48,6 +48,11 @@ public class StateController {
         return stateService.getRepresentatives(stateName);
     }
 
+    @GetMapping("/districtMEScores")
+    public DistrictMEScores getDistrictMEScores(@PathVariable State stateName) {
+        return stateService.getDistrictMEScores(stateName);
+    }
+
     @GetMapping("/gingles")
     public Gingles getGingles(@PathVariable State stateName) {
         System.out.println("requested gingles");

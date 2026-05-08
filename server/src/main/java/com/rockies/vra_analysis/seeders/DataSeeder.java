@@ -18,13 +18,14 @@ public class DataSeeder implements CommandLineRunner {
     private final BoxWhiskerMESeeder boxWhiskerMESeeder;
     private final EnsembleSplitsSeeder ensembleSplitsSeeder;
     private final EnsembleHistogramMESeeder ensembleHistogramMESeeder;
+    private final DistrictMEScoresSeeder districtMEScoresSeeder;
 
     public DataSeeder(GinglesSeeder ginglesSeeder, EIAnalysisSeeder eiAnalysisSeeder, 
             ImpactThresholdTableSeeder impactThresholdSeeder, 
             StateDetailSeeder stateDetailSeeder, 
             EnsembleSummarySeeder ensembleSummarySeeder,BoxWhiskerSeeder boxWhiskerSeeder,
             BoxWhiskerMESeeder boxWhiskerMESeeder,EnsembleSplitsSeeder ensembleSplitsSeeder,
-            EnsembleHistogramMESeeder ensembleHistogramMESeeder) {
+            EnsembleHistogramMESeeder ensembleHistogramMESeeder, DistrictMEScoresSeeder districtMEScoresSeeder) {
 
         this.ginglesSeeder = ginglesSeeder;
         this.eiAnalysisSeeder = eiAnalysisSeeder;
@@ -35,6 +36,7 @@ public class DataSeeder implements CommandLineRunner {
         this.boxWhiskerMESeeder = boxWhiskerMESeeder;
         this.ensembleSplitsSeeder = ensembleSplitsSeeder;
         this.ensembleHistogramMESeeder = ensembleHistogramMESeeder;
+        this.districtMEScoresSeeder = districtMEScoresSeeder;
     }
 
     @Override
@@ -49,6 +51,7 @@ public class DataSeeder implements CommandLineRunner {
             boxWhiskerMESeeder.seed(state);
             ensembleSplitsSeeder.seed(state);
             ensembleHistogramMESeeder.seed(state);
+            districtMEScoresSeeder.seed(state);
         }
     }
     

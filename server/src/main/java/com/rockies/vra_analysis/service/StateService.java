@@ -43,6 +43,9 @@ public class StateService {
     private RepresentativeRepository representativeRepo;
 
     @Autowired 
+    private DistrictMEScoresRepository districtMEScoresRepo;
+
+    @Autowired 
     private ImpactThresholdTableRepository impactThresholdTableRepo;
 
     /*  */
@@ -79,6 +82,13 @@ public class StateService {
     public List<Representative> getRepresentatives(State state) {
         List<Representative> result = representativeRepo.findByState(state);
         if (result == null) throw new StateDataNotFoundException(state, "representatives");
+        return result;
+    }
+
+    @Cacheable("getDistrictMEScores")
+    public DistrictMEScores getDistrictMEScores(State state){
+        DistrictMEScores result = districtMEScoresRepo.findByState(state);
+        if (result == null) throw new StateDataNotFoundException(state, "district ME scores");
         return result;
     }
 

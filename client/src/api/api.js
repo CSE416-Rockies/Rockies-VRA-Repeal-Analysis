@@ -20,6 +20,10 @@ export const getRepresentatives = (stateName) =>{
     return api.get(`/state/${stateName}/representatives`);
 }
 
+export const getDistrictScores = (stateName) =>{
+    return api.get(`/state/${stateName}/districtMEScores`);
+}
+
 
 /* ----------------------------------------------------------------- Visuals */
 
