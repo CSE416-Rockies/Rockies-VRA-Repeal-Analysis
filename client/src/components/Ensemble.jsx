@@ -19,7 +19,7 @@ export default function Ensemble(){
     const racialGroup = store.racialGroup;
     const ensemble = store.ensemble;
 
-    const margin = {top: 20, right: 20, bottom: 60, left: 80};
+    const margin = {top: 30, right: 20, bottom: 60, left: 80};
 
     const [boxWhiskerData, setBoxWhiskerData] = useState(null);
     const [ensembleSplitsData, setEnsembleSplitsData] = useState(null);    

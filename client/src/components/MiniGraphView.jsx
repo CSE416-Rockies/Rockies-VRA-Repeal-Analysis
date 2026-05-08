@@ -30,8 +30,13 @@ export default function MiniGraphView({ title, drawFunc, data, racialGroup, marg
                 <div className='text-md capitalize font-semibold text-gray-700'>{title}</div>
             
                 <div className='flex w-full h-full px-20 items-center'>
-                    {!fullScreen && <svg className='flex-1 block' width="100%" height="100%" ref={ref} />}
-                    {legendItems.length > 0 && <Legend items={legendItems} small = {true} />}
+                    <div className = 'relative flex w-full h-full'>
+                        {!fullScreen && <svg className='flex-1 block' width="100%" height="100%" ref={ref} />
+                        }
+                        <div className='absolute top-0 right-5 flex flex-col gap-4'>
+                            {legendItems.length > 0 && <Legend items={legendItems} small = {true} />}
+                        </div>
+                    </div>
                 </div>
             </div>
             }

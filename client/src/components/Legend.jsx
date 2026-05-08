@@ -19,10 +19,10 @@ export default function Legend({ items, small = false }) {
 };
 
   return (
-    <div className= {`flex flex-col bg-white border-2 border-gray-300 rounded-md justify-center w-fit h-fit ${small ? "px-2 py-1 gap-1" : "px-4 py-2 gap-2"}`}>
+    <div className= {`flex border bg-white border-gray-300 rounded-md justify-center w-fit h-fit py-1 px-2 ${small ? "gap-1" : "gap-2"}`}>
 
       {items.map(({ label, color, shape= "circle"}) => (
-        <div key={label} className="flex gap-2 items-center">
+        <div key={label} className="flex gap-1 items-center">
           {SHAPES[shape]?.(color, small)}
           <div className= {`capitalize ${small ? "text-xs" : "text-sm" }`}>{label}</div>
         </div>

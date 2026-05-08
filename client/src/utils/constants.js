@@ -51,8 +51,8 @@ export const APP_COLORS = {
     accentGreen: '#10B981'
 }
 
-export const getCandidateColors = (racialGroup, candView) => [
-    { label: "White", color: PARTY_COLORS['other']},
+export const getCandidateColors = (baseGroup, racialGroup, candView) => [
+    { label: `${baseGroup}`, color: PARTY_COLORS['other']},
     { label: `${racialGroup}`, color: PARTY_COLORS[candView]},
 ];
 
@@ -83,17 +83,17 @@ export const ENSEMBLE_LEGEND = {
         { label: "Race-Blind", color: "#10B981", shape: "square" }
     ],
     vra: [
-        { label: "VRA-Constrained", color: "#EAB308", shape: "square" }
+        { label: "VRA", color: "#EAB308", shape: "square" }
     ],
     both: [
         { label: "Race-Blind", color: "#10B981", shape: "square" },
-        { label: "VRA-Constrained", color: "#EAB308", shape: "square" }
+        { label: "VRA", color: "#EAB308", shape: "square" }
     ]
 }
 
 export const BOX_WHISKER_ME_LEGEND = [
   { label: "Race-Blind", color: "#10B981", shape: "square" },
-  { label: "VRA-Constrained", color: "#EAB308", shape: "square" },
+  { label: "VRA", color: "#EAB308", shape: "square" },
   { label: "Enacted", color: "#5D3FD3", shape: "circle" },
 ];
 
@@ -103,7 +103,7 @@ export const BOX_WHISKER_LEGEND = {
         { label: "Enacted", color: "#5D3FD3", shape: "circle" },
     ],
     vra: [
-        { label: "VRA-Constrained", color: "#EAB308", shape: "square" },
+        { label: "VRA", color: "#EAB308", shape: "square" },
         { label: "Enacted", color: "#5D3FD3", shape: "circle" },
     ],
     both: BOX_WHISKER_ME_LEGEND

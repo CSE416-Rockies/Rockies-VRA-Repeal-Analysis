@@ -41,14 +41,14 @@ public class EIAnalysis extends StateDocument{
         @JsonProperty("credible_interval_95")
         private List<Double> credibleInterval95;
         private List<Point> density;
-        private double overlap;
+        private Map<Race, Double> overlap;
 
         public GroupResult() {}
 
         public double getPosteriorMean() { return posteriorMean; }
         public List<Double> getCredibleInterval95() { return credibleInterval95; }
         public List<Point> getDensity() { return density; }
-        public double getOverlap() { return overlap; }
+        public  Map<Race, Double> getOverlap() { return overlap; }
     }
 
     public static class Point {

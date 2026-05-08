@@ -21,8 +21,13 @@ export default function FullGraphView({title, svgRef, onClose, legendItems}){
 
                 <div className='text-lg font-lg capitalize text-center font-medium'>{title}</div>
                 <div className='flex w-full h-full px-10 items-center'>
-                    <svg className='flex-1 block' width="100%" height="100%" ref={svgRef} />
-                    {legendItems.length > 0 && <Legend items={legendItems} small={false} />}
+                    <div className = 'flex relative w-full h-full'>
+                        <svg className='flex-1 block' width="100%" height="100%" ref={svgRef} />
+                        <div className='absolute top-0 right-0 flex flex-col gap-4'>
+                            {legendItems.length > 0 && <Legend items={legendItems} small={false} />}
+                        </div>
+                    </div>
+                    
                 </div>
 
             </div>

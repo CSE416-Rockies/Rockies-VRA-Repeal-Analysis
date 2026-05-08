@@ -22,7 +22,7 @@ export default function Gingles(){
     const [ginglesData, setGinglesData] = useState(null);
     const [error, setError] = useState(null);
 
-    const margin = {top: 20, right: 20, bottom: 60, left: 80};
+    const margin = {top: 40, right: 20, bottom: 60, left: 80};
 
     useEffect(()=>{
         if(!selectedState) return;

@@ -2,8 +2,9 @@ import * as d3 from "d3";
 import { getCandidateColors , PARTY_COLORS, PARTY_REFS} from "./constants";
 import { drawAxes, drawGrid } from "./drawGridLines";
 import { bindTooltip } from "./tooltip";
+import { normalizeParty } from "./helpers";
 
-export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }) {
+export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView, compareRace }) {
 
     if (candView === "compare") {
         drawEICompare({ givenSVG, data, margin, racialLabel });
@@ -17,17 +18,20 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
         return;
     }
 
-    var whiteData = candData.groups["white"];
-    if (!whiteData){
-        console.error("White data not found");
+    var baseData = candData.groups[racialLabel];
+    if (!baseData){
+        console.error("Base data not found: ", racialLabel);
         return;
     }
 
-    var targetData = candData.groups[racialLabel];
-    if (!targetData){
-        console.error("Target data not found: ", racialLabel);
-        return;
+    if (compareRace !== null){
+        var targetData = candData.groups[compareRace];
+        if (!targetData){
+            console.error("Compare race data not found: ", compareRace);
+            return;
+        }
     }
+    
 
     var svg = d3.select(givenSVG)
         .append("g")
@@ -41,7 +45,7 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
         .domain([0,1])        
         .range([0,width]);      
                 
-    const allY = [...whiteData.density, ...targetData.density].map(d => d.y);
+    const allY = [...baseData.density, ...(compareRace ? targetData.density : [])].map(d => d.y);
 
     const maxY = d3.max(allY) * 1.1;
     var y = d3.scaleLinear()
@@ -57,7 +61,7 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
             
     /* ------------------------------------------------------------------ Plot Point Rendering */
 
-    const legendColors = getCandidateColors(racialLabel, candView);
+    const legendColors = getCandidateColors(racialLabel, compareRace, candView);
     const baseColor = legendColors[0].color;
     const secondaryColor = legendColors[1].color;
 
@@ -68,19 +72,19 @@ export function drawEIAnalysis({ givenSVG, data, margin, racialLabel, candView }
 
     const curves = [
         {
-            data: whiteData.density,
+            data: baseData.density,
             fill: baseColor,
             label: racialLabel,
-            mean: whiteData.posterior_mean,
-            ci: whiteData.credible_interval_95
+            mean: baseData.posterior_mean,
+            ci: baseData.credible_interval_95
         },
-        {
+        ...(compareRace ? [{
             data: targetData.density,
             fill: secondaryColor,
-            label: racialLabel,
+            label: compareRace,
             mean: targetData.posterior_mean,
             ci: targetData.credible_interval_95
-        }   
+        }] : [])    
     ];
 
     curves.forEach(curve => {
@@ -156,9 +160,10 @@ function drawEICompare({ givenSVG, data, margin, racialLabel }){
     candidates.forEach( ([candKey, candData]) => {
         const groupData = candData.groups[racialLabel];
         if (!groupData) return;
- 
-        const color = candKey === 'democrat' ? PARTY_COLORS.dem : PARTY_COLORS.rep;
- 
+
+        const party = normalizeParty(candKey)
+        const color =  party === 'dem' ? PARTY_COLORS.dem : PARTY_COLORS.rep;
+        
         const path = svg.append("path")
         .attr("class", "kdeFill")
         .datum(groupData.density)
@@ -168,7 +173,7 @@ function drawEICompare({ givenSVG, data, margin, racialLabel }){
         .attr("d", areaGen);
 
         bindTooltip(path, () => `
-            <strong style="text-transform:capitalize">${candKey}</strong>
+            <strong style="text-transform:capitalize">${PARTY_REFS[party].label}</strong>
             <div>Mean: ${groupData.posterior_mean.toFixed(2)}</div>
             <div>95% CI: [${groupData.credible_interval_95[0].toFixed(2)}, ${groupData.credible_interval_95[1].toFixed(2)}]</div>
         `);

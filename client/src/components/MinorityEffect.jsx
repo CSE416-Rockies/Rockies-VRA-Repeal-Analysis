@@ -28,7 +28,7 @@ export default function MinorityEffect(){
     const [thresholdError, setThresholdError] = useState(null);
 
     
-    const margin = {top: 20, right: 20, bottom: 40, left: 80}
+    const margin = {top: 30, right: 20, bottom: 40, left: 80}
     
     // state change
     useEffect(() => {

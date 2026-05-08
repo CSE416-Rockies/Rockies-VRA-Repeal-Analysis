@@ -1,6 +1,6 @@
 import Legend from "./Legend"
 
-export default function GraphView({title, subtitle, legendTitle, legendItems, svgRef, menus, extraDisplay = null, children}){
+export default function GraphView({title, subtitle, legendTitle, legendItems, svgRef, menus, extraDisplay = null, extraMenu, children}){
     return(
         <div className = 'flex justify-center items-center w-full h-screen bg-gray-200'>  
             <div className = 'flex flex-col gap-10 justify-center w-full h-full py-5 px-5 bg-gray-200'
@@ -16,15 +16,21 @@ export default function GraphView({title, subtitle, legendTitle, legendItems, sv
                         </div>
 
                         <div className = 'flex w-full h-full px-20 items-center justify-between'>
-                            <svg className = 'flex-1' width = "100%" height = "100%" ref = {svgRef} style={{overflow: 'visible'}} />
-                            <div className = 'flex flex-col gap-5'>
-                                <div className = 'flex flex-col gap-5 w-fit flex-shrink-0'>
+                            <div className = 'relative w-full h-full flex'>
+                                <svg className = 'flex-1' width = "100%" height = "100%" ref = {svgRef} style={{overflow: 'visible'}} />
+                                <div className='absolute top-0 right-5 flex flex-col gap-4'>
                                     {legendItems.length > 0 && <Legend title={legendTitle} items={legendItems} />}
                                 </div>
+                             </div>
+                            <div className = 'flex flex-col gap-5'>
+                                {extraMenu && (
+                                    <div className='flex flex-col gap-2'>
+                                        {extraMenu}
+                                    </div>
+                                )}
                                 {extraDisplay !== null &&  extraDisplay.data != null && (
-                                    <div className='flex flex-col gap-1'>
-                                        <div className='text-xs text-gray-400'>{extraDisplay.label}</div>
-                                        <div className='text-xl font-semibold text-gray-700'>{extraDisplay.data}%</div>
+                                    <div className='flex flex-col gap-1 p-2 rounded-md'>
+                                        <div className='text-2xl font-semibold text-emerald-500'>{extraDisplay.data}% {extraDisplay.label}</div>
                                     </div>
                                 )}
                             </div>
