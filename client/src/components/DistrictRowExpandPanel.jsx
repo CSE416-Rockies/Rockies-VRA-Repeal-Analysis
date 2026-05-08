@@ -1,4 +1,4 @@
-import { RACES } from '../utils/constants';
+import { MINORITIES } from '../utils/constants';
 
 export default function DistrictRowExpandPanel({ scores, districtNumber }) {
     if (!scores) return <div className='px-5 py-3 text-gray-400 text-sm'>Issue with fetching scores</div>;
@@ -9,7 +9,7 @@ export default function DistrictRowExpandPanel({ scores, districtNumber }) {
                 <thead>
                     <tr className='text-gray-400'>
                         <th className='text-left w-32'></th>
-                        {RACES.map(r => <th key={r.value} className = 'text-left font-normal'>{r.label}</th>)}
+                        {MINORITIES.map(r => <th key={r.value} className = 'text-left font-normal'>{r.label}</th>)}
                     </tr>
                 </thead>
                 <tbody>
@@ -17,7 +17,7 @@ export default function DistrictRowExpandPanel({ scores, districtNumber }) {
                     {['effective', 'calibrated'].map(scoreType => (
                         <tr key={scoreType}>
                             <td className='text-gray-400 capitalize'>{scoreType}</td>
-                            {RACES.map(race => (
+                            {MINORITIES.map(race => (
                                 <ScoreCell 
                                     key={race.value} 
                                     value={scores[scoreType]?.[districtNumber]?.[race.value]}
