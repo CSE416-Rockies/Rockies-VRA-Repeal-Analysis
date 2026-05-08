@@ -209,7 +209,7 @@ export default function MapView(){
                     className = 'flex flex-col absolute gap-3 my-5 bottom-5 z-50 right-5 pointer-events-auto'
                 >
                     <StateDetail expanded = {expanded === 'state'} onClick = {()=>setExpanded('state')} />
-                    <DistrictDetail expanded = {expanded === 'district'} onClick = {()=>setExpanded('district')} selectedDistrict = {selectedDistrict} onSelect = {selectDistrict} />
+                    <DistrictDetail expanded = {expanded === 'district'} onClick = {()=>setExpanded('district')} selectedDistrict = {selectedDistrict} onSelect = {selectDistrict}/>
                 </div>
    
                 {(districtError || precinctError) 

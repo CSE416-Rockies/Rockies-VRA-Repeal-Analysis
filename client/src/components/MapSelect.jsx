@@ -2,7 +2,7 @@ import { useContext} from 'react'
 import { UserGroupIcon } from '@heroicons/react/24/solid';
 import GlobalStoreContext from '../store/index.jsx';
 import DropDownMenu from './DropDownMenu.jsx';
-import { MINORITIES } from '../utils/constants.js';
+import { FEASIBLE_MINORITIES } from '../utils/constants.js';
 
 export default function MapSelect(){
     const { store, setMapMode, setMinorityGroup } = useContext(GlobalStoreContext);
@@ -23,7 +23,7 @@ export default function MapSelect(){
                 }
             </div>
 
-            { store.mapMode == 'precinct' &&  <DropDownMenu options = {MINORITIES} minority = {true} icon = {UserGroupIcon} onSelect={setMinorityGroup} toolTipDesc="Select group to show population" /> }
+            { store.mapMode == 'precinct' &&  <DropDownMenu options = {FEASIBLE_MINORITIES[store.selectedState]} minority = {true} icon = {UserGroupIcon} onSelect={setMinorityGroup} toolTipDesc="Select group to show population" /> }
         </div>
     )
 }

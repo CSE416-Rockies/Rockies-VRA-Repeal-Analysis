@@ -1,17 +1,18 @@
-import { PARTY_COLORS, APP_COLORS, PARTY_REFS } from "../utils/constants";
-import { capitalize, normalizeParty, toPercent } from "../utils/helpers";
+import { PARTY_COLORS, APP_COLORS, PARTY_REFS, FEASIBLE_MINORITIES } from "../utils/constants";
+import { normalizeParty, toPercent } from "../utils/helpers";
 import { BarSection } from './HorizontalBar';
 
 
 /* Default state information component*/
-export default function DefaultDetail({races, stateVoterDist, partyControl, pageNum, statePopulation, repSummary, ensembleDetail}){
+export default function DefaultDetail({selectedState, races, stateVoterDist, partyControl, pageNum, statePopulation, repSummary, ensembleDetail}){
+console.log('roughProp:', ensembleDetail?.roughProp, 'selectedstate:', selectedState, 'minorities:', FEASIBLE_MINORITIES[selectedState]);
 
     return(
     <div className = 'flex flex-col border-divide gap-3 w-full'>
         {pageNum === 'population' ?
             <>
             <div className = 'flex text-gray-500 justify-between pt-3'>
-                <span>State Population</span>
+                <span>Total State Population</span>
                 <span className = "text-emerald-500 font-bold">{statePopulation.toLocaleString()}</span>
             </div>
             <BarSection title = "Racial Population" arr = {races.map(ele=> ({label: ele.race, sublabel: ele.popNumber, color: APP_COLORS.accentGreen, percent: ele.percent}))} />
@@ -65,7 +66,7 @@ export default function DefaultDetail({races, stateVoterDist, partyControl, page
                             <span className='text-right font-bold text-xs text-gray-400'>VRA</span>
                             <span className='text-right font-bold text-xs  text-gray-400'>Race-Blind</span>
                         </div>
-                        <div className='grid grid-cols-3 px-3 py-2 items-center border-b border-gray-100'>
+                        <div className='grid grid-cols-3 px-3 py-2 items-center border-b border-gray-200'>
                             <span className='text-gray-500'>Number of Plans</span>
                             <span className='text-right font-semibold tabular-nums text-gray-600'>{ensembleDetail?.vra?.plans?.toLocaleString()}</span>
                             <span className='text-right font-semibold tabular-nums text-gray-600'>{ensembleDetail?.raceBlind?.plans?.toLocaleString()}</span>
@@ -85,15 +86,14 @@ export default function DefaultDetail({races, stateVoterDist, partyControl, page
                             <span className='text-xs font-semibold text-gray-400'>Group</span>
                             <span className='text-right text-xs font-semibold text-gray-400'>Measure</span>
                         </div>
-                        {ensembleDetail?.roughProp && Object.entries(ensembleDetail.roughProp).map(([race, ratio], i, arr) => (
+                        {ensembleDetail?.roughProp && FEASIBLE_MINORITIES[selectedState]?.map((minority, i, arr) => (
                             <div
-                                key={race}
-                                className='grid grid-cols-2 px-3 py-2 items-center'
-                                style={{ borderBottom: i < arr.length - 1 ? '1px solid #F9FAFB' : 'none' }}
+                            key={minority.value}
+                            className={`grid grid-cols-2 px-3 py-2 items-center ${i < arr.length-1 ? 'border-b border-gray-200' : ''}}`}
                             >
-                                <span className='text-sm text-gray-500'>{capitalize(race)}</span>
-                                <span className={`text-right text-sm tabular-nums font-bold ${ratio >= 1 && ratio > 0 ? ' text-emerald-500' : 'text-gray-500'}`}>
-                                    {ratio.toFixed(3)}
+                                <span className='text-sm text-gray-500'>{minority.label}</span>
+                                <span className={`text-right text-sm tabular-nums font-bold ${ensembleDetail.roughProp[minority.value] >= 1 ? 'text-emerald-500' : 'text-gray-500'}`}>
+                                    {ensembleDetail.roughProp[minority.value]?.toFixed(3) ?? '-'}
                                 </span>
                             </div>
                         ))}

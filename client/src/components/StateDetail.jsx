@@ -86,7 +86,7 @@ export default function StateDetail({expanded, onClick}){
                 :   
                 
                 <div className = 'flex flex-col gap-5 h-full w-full'>
-                    <DefaultDetail races = {raceArr} stateVoterDist = {voterDist} partyControl = {partyControl} pageNum = {view} statePopulation = {statePopulation} ensembleDetail = {ensembleDetail} repSummary = {partyStats}/>
+                    <DefaultDetail selectedState = {selectedState} races = {raceArr} stateVoterDist = {voterDist} partyControl = {partyControl} pageNum = {view} statePopulation = {statePopulation} ensembleDetail = {ensembleDetail} repSummary = {partyStats}/>
                     <PageNum pageNum = {view} setPageNum = {setView}/>
                 </div>
                 }

@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useLayoutEffect } from 'react';
 
 import PageControls from './PageControls';
 import DetailPanel from './DetailPanel';
@@ -19,78 +19,59 @@ export default function DistrictDetail({expanded, onClick, selectedDistrict, onS
     const titleRef = useRef(null);
     const [perPage, setPerPage] = useState(7);
     const [scores, setScores] = useState(null);
+    const expandRowRef = useRef(null);
 
     const { store } = useContext(GlobalStoreContext);
     const selectedState = store?.selectedState || "";
     const districtArr = store?.representatives || [];
 
     useEffect(() => {
+        if(!selectedState) return;
         getDistrictScores(selectedState)
             .then(res => setScores(res.data))
             .catch(console.error)
     }, [selectedState]);
 
-    useEffect(()=>{
-        if(!expanded) return;
-
-        const calculate = () =>{
-            if(containerRef.current && theadRef.current && rowRef.current && pageRef.current && titleRef.current){
-                const header_height = theadRef.current.clientHeight;
-                const title_height = titleRef.current.clientHeight;
-                const row_height = rowRef.current.clientHeight;
-                const page_height = pageRef.current.clientHeight
-                const padding = 30;
-                const gap = 30;
-                const available = containerRef.current.clientHeight - page_height - title_height - header_height - padding - gap;
-                const rows = Math.max(1, Math.floor(available / row_height));
-                setPerPage(rows);
-            }
-        }
-        const timeout = setTimeout(calculate, 700);
-        const observer = new ResizeObserver(calculate);
-        if(containerRef.current) observer.observe(containerRef.current);
-        return ()=>{
-            clearTimeout(timeout);
-            observer.disconnect();
-        }
-    }, [expanded]);
-
-    const effectivePerPage = selectedDistrict ? perPage - 3 : perPage;
-    const {onPage, currPage, goPrev, goNext, hasPrev, hasNext, goToSpecific } = usePaginate(districtArr, effectivePerPage);
+    const { onPage, currPage, goPrev, goNext, hasPrev, hasNext, goToSpecific } = usePaginate(districtArr, perPage); // no effectivePerPage
 
     useEffect(()=>{
         if(!selectedDistrict) return;
         goToSpecific(selectedDistrict-1);
     }, [selectedDistrict]);
 
-    const selectedRowRef = useRef(null);
-    const [pfp, setPfp] = useState(0);
-    const isOnCurrentPage = onPage.some(r => String(r.districtNumber) === selectedDistrict);
+    const calculate = () => {
+        if (containerRef.current && theadRef.current && rowRef.current && pageRef.current && titleRef.current) {
+            const header_height = theadRef.current.clientHeight;
+            const title_height = titleRef.current.clientHeight;
+            const row_height = rowRef.current.clientHeight;
+            const page_height = pageRef.current.clientHeight;
+            const expand_height = expandRowRef.current?.clientHeight ?? 0;
+            const padding = 30;
+            const gap = 30;
+            const available = containerRef.current.clientHeight - page_height - title_height - header_height - padding - gap - expand_height;
+            const rows = Math.max(1, Math.floor(available / row_height));
+            setPerPage(rows);
+        }
+    };
 
     useEffect(() => {
-        const timeout = setTimeout(() => {
-            if (selectedRowRef.current && containerRef.current) {
-                const rowRect = selectedRowRef.current.getBoundingClientRect();
-                const containerRect = containerRef.current.getBoundingClientRect();
-                setPfp(rowRect.top - containerRect.top - 50);     
-            }
-        }, 50);
-        return () => clearTimeout(timeout);
-    }, [selectedDistrict]);
+        if (!expanded) return;
+        const observer = new ResizeObserver(calculate);
+        if (containerRef.current) observer.observe(containerRef.current);
+        if (expandRowRef.current) observer.observe(expandRowRef.current);
+        return () => observer.disconnect();
+    }, [expanded]);
+
+    useLayoutEffect(() => {
+        if (!expanded) return;
+        requestAnimationFrame(() => calculate());
+    }, [expanded, selectedDistrict], currPage);
 
     return(
 
         <DetailPanel title="District Detail" expanded={expanded} onClick={onClick} className="pt-4" containerRef={containerRef} titleRef = {titleRef}>
             
             <div className={`flex flex-col relative flex-1 justify-between items-center gap-5 ${expanded ? 'opacity-100 pt-5' : 'max-h-0 opacity-0'}`}>
-               {selectedDistrict && isOnCurrentPage && (
-                    <img
-                        src={`/imgs/representatives/${districtArr.find(r => String(r.districtNumber) === selectedDistrict)?.imageId}.jpg`}
-                        className="absolute w-20 h-24 object-cover shadow transition-all duration-300 bg-white p-1 rounded-md"
-                        style={{ top: pfp, left: '-90px'}}
-                        onError={e => e.target.style.display = 'none'}
-                    />
-                )}
                 <table className = 'w-full'>
                     <thead className = 'text-left text-gray-400' ref={theadRef}>
                         <tr>
@@ -106,7 +87,7 @@ export default function DistrictDetail({expanded, onClick, selectedDistrict, onS
                         console.log('selectedDistrict:' + typeof(selectedDistrict) );
                         return(<Fragment key={districtNumber}>
                         <tr 
-                            ref={String(districtNumber) === selectedDistrict ? selectedRowRef : (index === 0 ? rowRef : null)}
+                            ref={index === 0 ? rowRef : null} 
                             onClick = {()=> onSelect(districtNumber)}
                             className = {`
                                 h-8 cursor-pointer hover:text-emerald-500 hover:font-semibold
@@ -134,9 +115,9 @@ export default function DistrictDetail({expanded, onClick, selectedDistrict, onS
                         </tr>
                        {
                         (selectedDistrict) === String(districtNumber) && (
-                            <tr>
+                            <tr ref={expandRowRef}>
                                 <td colSpan={5} className = 'border-l-2 border-emerald-400'>
-                                    <DistrictRowExpandPanel scores={scores} districtNumber={districtNumber} />
+                                    <DistrictRowExpandPanel state = {selectedState} scores={scores} districtNumber={districtNumber} />
                                 </td>
                             </tr>
                         )}

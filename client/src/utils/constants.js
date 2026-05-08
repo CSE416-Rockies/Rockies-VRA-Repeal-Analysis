@@ -19,6 +19,17 @@ export const MINORITIES = [
     { value: "other",   label: "Other" },
 ];
 
+export const FEASIBLE_MINORITIES = {
+    'AR': [
+        { value: "black",   label: "Black" },
+    ],
+    'GA': [
+        { value: "black",   label: "Black" },
+        { value: "latino",  label: "Latino" },
+        { value: "other",   label: "Other" },
+    ],
+};
+
 export const MINORITIES_ENSEMBLES = [
     { value: "black",   label: "Black" },
     { value: "latino",  label: "Latino" },

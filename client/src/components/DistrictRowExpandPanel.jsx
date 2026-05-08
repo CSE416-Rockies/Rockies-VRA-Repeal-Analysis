@@ -1,7 +1,7 @@
-import { MINORITIES } from '../utils/constants';
-
-export default function DistrictRowExpandPanel({ scores, districtNumber }) {
+import { FEASIBLE_MINORITIES } from '../utils/constants';
+export default function DistrictRowExpandPanel({ state, scores, districtNumber}) {
     if (!scores) return <div className='px-5 py-3 text-gray-400 text-sm'>Issue with fetching scores</div>;
+    const feasibleRaces = FEASIBLE_MINORITIES[state];
 
     return (
         <div className='px-8 py-2 border-t border-gray-200'>
@@ -9,15 +9,15 @@ export default function DistrictRowExpandPanel({ scores, districtNumber }) {
                 <thead>
                     <tr className='text-gray-400'>
                         <th className='text-left w-32'></th>
-                        {MINORITIES.map(r => <th key={r.value} className = 'text-left font-normal'>{r.label}</th>)}
+                        {feasibleRaces.map(r => <th key={r.value} className = 'text-left font-normal'>{r.label}</th>)}
                     </tr>
                 </thead>
                 <tbody>
                     
-                    {['effective', 'calibrated'].map(scoreType => (
+                    {['calculated', 'calibrated'].map(scoreType => (
                         <tr key={scoreType}>
                             <td className='text-gray-400 capitalize'>{scoreType}</td>
-                            {MINORITIES.map(race => (
+                            {feasibleRaces.map(race => (
                                 <ScoreCell 
                                     key={race.value} 
                                     value={scores[scoreType]?.[districtNumber]?.[race.value]}
