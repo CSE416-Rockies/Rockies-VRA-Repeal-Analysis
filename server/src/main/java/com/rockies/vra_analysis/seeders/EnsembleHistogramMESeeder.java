@@ -58,6 +58,7 @@ public class EnsembleHistogramMESeeder extends BaseSeeder{
         Map<Race, Map<Integer, Integer>> counts = new HashMap<>();
         counts.put(Race.BLACK, new HashMap<>());
         counts.put(Race.LATINO, new HashMap<>());
+        counts.put(Race.OTHER, new HashMap<>());
 
         // assemble map of minority-effective district counts
         String line;
@@ -67,9 +68,11 @@ public class EnsembleHistogramMESeeder extends BaseSeeder{
 
             int blackCount = plan.get("black_effective_score_cnt").asInt();
             int latinoCount = plan.get("latino_effective_score_cnt").asInt();
+            int otherCount = plan.get("other_effective_score_cnt").asInt();
 
             counts.get(Race.BLACK).merge(blackCount, 1, Integer::sum);
             counts.get(Race.LATINO).merge(latinoCount, 1, Integer::sum);
+            counts.get(Race.OTHER).merge(otherCount, 1, Integer::sum);
         }
 
         return counts;

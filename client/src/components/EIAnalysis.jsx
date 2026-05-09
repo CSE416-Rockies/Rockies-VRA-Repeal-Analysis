@@ -8,7 +8,7 @@ import { UserGroupIcon } from '@heroicons/react/24/solid';
 
 import { drawEIAnalysis } from '../utils/drawEIAnalysis';
 import { useD3 } from '../hooks/useD3';
-import { RACES, PRESIDENT_CAND_LEGEND, PARTY_REFS, getCandidateColors, getCompareColors } from "../utils/constants"
+import { FEASIBLE_RACES, PRESIDENT_CAND_LEGEND, PARTY_REFS, getCandidateColors, getCompareColors } from "../utils/constants"
 
 import { getEIAnalysis } from '../api/api';
 import ErrorMsg from './ErrorMsg';
@@ -58,7 +58,7 @@ export default function EIAnalysis(){
 
     const choiceMenu = (
         <div className = 'flex gap-5 items-center'>
-            <DropDownMenu options = {RACES} onSelect = {handleRaceSelect} icon = {UserGroupIcon} toolTipDesc=""/>
+            <DropDownMenu options = {FEASIBLE_RACES[selectedState]} onSelect = {handleRaceSelect} icon = {UserGroupIcon} toolTipDesc=""/>
             <div className = 'flex items-center text-gray-500 gap-5'>
                 {PRESIDENT_CAND_LEGEND.map(({label, value})=>(
                     <button key = {label} className = 'flex gap-2 text-lg items-center cursor-pointer group' onClick = {() => setCandView(value)}>
@@ -79,7 +79,7 @@ export default function EIAnalysis(){
         <div className='flex flex-col gap-2 border border-gray-300 rounded-md px-3 py-2 w-32'>
             <div className='text-sm text-gray-400'>COMPARE: </div>
             <div className='flex flex-col gap-2'>
-                {RACES.filter(r => r.value !== racialGroup).map(({ label, value }) => (
+                {FEASIBLE_RACES[selectedState].filter(r => r.value !== racialGroup).map(({ label, value }) => (
                     <button 
                         key={value} 
                         className='flex gap-1 text-sm items-center cursor-pointer group'

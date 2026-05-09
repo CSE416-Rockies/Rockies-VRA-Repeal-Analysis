@@ -1,5 +1,5 @@
 import {useEffect, useState, useContext} from "react"
-import { MINORITIES_ENSEMBLES, ENSEMBLE_LEGEND, BOX_WHISKER_ME_LEGEND } from "../utils/constants"
+import { FEASIBLE_MINORITIES, ENSEMBLE_LEGEND, BOX_WHISKER_ME_LEGEND } from "../utils/constants"
 import { UserGroupIcon } from "@heroicons/react/24/solid";
 
 import DropDownMenu from "./DropDownMenu";
@@ -57,7 +57,7 @@ export default function MinorityEffect(){
             <div className = 'flex flex-col gap-10 justify-center w-full h-full py-5 px-5 bg-gray-200'
                 style={{ paddingLeft: 'calc(var(--navbar-width) + 1.25rem)' }}
             >    
-                <DropDownMenu  options = {MINORITIES_ENSEMBLES} onSelect = {setMinorityGroup} icon={UserGroupIcon} toolTipDesc="" minority = {true}/>
+                <DropDownMenu  options = {FEASIBLE_MINORITIES[selectedState]} onSelect = {setMinorityGroup} icon={UserGroupIcon} toolTipDesc="" minority = {true}/>
                 
                 { (!racialGroup) ?
                     <div className = 'w-full h-full rounded-xl bg-white'>

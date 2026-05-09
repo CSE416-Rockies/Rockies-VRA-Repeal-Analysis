@@ -8,7 +8,7 @@ import { SelectionPlaceholder } from './SelectionPlaceholder';
 
 import { drawBoxWhisker } from "../utils/drawBoxWhisker";
 import drawEnsembleSplits from "../utils/drawEnsembleSplits";
-import { BOX_WHISKER_LEGEND, ENSEMBLE_LEGEND, RACES, ENSEMBLE_VIEW_OPTIONS } from '../utils/constants';
+import { BOX_WHISKER_LEGEND, ENSEMBLE_LEGEND, FEASIBLE_RACES, ENSEMBLE_VIEW_OPTIONS } from '../utils/constants';
 
 import { getBoxWhiskers, getEnsembleSplits } from '../api/api';
 import ErrorMsg from './ErrorMsg';
@@ -48,7 +48,7 @@ export default function Ensemble(){
 
     const choiceMenu = 
         <div className = 'flex gap-5 items-center'>
-            <DropDownMenu options = {RACES} onSelect = {setRacialGroup} icon = {UserGroupIcon} toolTipDesc=""/>
+            <DropDownMenu options = {FEASIBLE_RACES[selectedState]} onSelect = {setRacialGroup} icon = {UserGroupIcon} toolTipDesc=""/>
             <div className = 'flex items-center text-gray-500 gap-5'>
                 {ENSEMBLE_VIEW_OPTIONS.map(({value, label})=>(
                     <button key = {value} className = 'flex gap-2 text-lg items-center cursor-pointer group' onClick = {() => setEnsemble(value)}>

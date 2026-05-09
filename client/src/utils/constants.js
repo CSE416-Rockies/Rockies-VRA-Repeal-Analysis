@@ -30,6 +30,19 @@ export const FEASIBLE_MINORITIES = {
     ],
 };
 
+export const FEASIBLE_RACES = {
+    'AR': [
+        { value: "white",   label: "White" },
+        { value: "black",   label: "Black" },
+    ],
+    'GA': [
+        { value: "white",   label: "White" },
+        { value: "black",   label: "Black" },
+        { value: "latino",  label: "Latino" },
+        { value: "other",   label: "Other" },
+    ],
+};
+
 export const MINORITIES_ENSEMBLES = [
     { value: "black",   label: "Black" },
     { value: "latino",  label: "Latino" },

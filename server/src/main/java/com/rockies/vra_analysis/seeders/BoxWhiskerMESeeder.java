@@ -51,6 +51,7 @@ public class BoxWhiskerMESeeder extends BaseSeeder{
     private Map<Race, BoxStats> aggregateFromJsonl(String path) throws Exception {
         List<Double> blackCounts = new ArrayList<>();
         List<Double> latinoCounts = new ArrayList<>();
+        List<Double> otherCounts = new ArrayList<>();
 
         InputStream is = new ClassPathResource(path).getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -60,11 +61,13 @@ public class BoxWhiskerMESeeder extends BaseSeeder{
             JsonNode plan = mapper.readTree(line);
             blackCounts.add((double) plan.get("black_effective_score_cnt").asInt());
             latinoCounts.add((double) plan.get("latino_effective_score_cnt").asInt());
+            otherCounts.add((double) plan.get("other_effective_score_cnt").asInt());
         }
 
         Map<Race, BoxStats> result = new HashMap<>();
         result.put(Race.BLACK, toBoxStats(blackCounts));
         result.put(Race.LATINO, toBoxStats(latinoCounts));
+        result.put(Race.OTHER, toBoxStats(otherCounts));
         return result;
     }
 

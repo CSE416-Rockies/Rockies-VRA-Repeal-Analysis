@@ -7,7 +7,7 @@ import GraphView from "./GraphView";
 import { SelectionPlaceholder } from './SelectionPlaceholder';
 
 import { drawGingles } from "../utils/drawGingles";
-import { PRESIDENT_CAND_LEGEND, RACES} from "../utils/constants"
+import { PRESIDENT_CAND_LEGEND, FEASIBLE_RACES} from "../utils/constants"
 import { useD3 } from "../hooks/useD3";
 
 import { getGingles } from "../api/api";
@@ -50,7 +50,7 @@ export default function Gingles(){
             subtitle = {`By ${racialGroup} Population`}
             svgRef = {ref}
             legendItems = {PRESIDENT_CAND_LEGEND}
-            menus = {<DropDownMenu  options = {RACES} onSelect = {setRacialGroup} icon={UserGroupIcon} toolTipDesc=""/>}
+            menus = {<DropDownMenu  options = {FEASIBLE_RACES[selectedState]} onSelect = {setRacialGroup} icon={UserGroupIcon} toolTipDesc=""/>}
         >{
             error ? <ErrorMsg message={error}/> : 
             (!racialGroup) && (
