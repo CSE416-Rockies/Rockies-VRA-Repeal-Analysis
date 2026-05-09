@@ -102,8 +102,8 @@ def main():
     state = args.state
     mode = args.mode
     state_full_name = 'Georgia' if state == 'ga' else "Arkansas"
-    if state == 'ar':
-        TOTAL_DISTRICTS = 4
+
+    TOTAL_DISTRICT = 4 if state == 'ar' else 14
         
     total_plans = args.total_plans
     state_dir = os.path.join(OUTPUT_DIR, state_full_name, mode, str(total_plans))

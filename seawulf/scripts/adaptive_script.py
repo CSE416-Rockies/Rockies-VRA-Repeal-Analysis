@@ -40,13 +40,14 @@ def count_minority_effective_districts(partition, prefer_lookup):
     district_totals = {}
     for node, district_id in partition.assignment.items():
         if district_id not in district_totals:
-            district_totals[district_id] = {"harris": 0.0, "trump": 0.0, "total_pop": 0.0, "Black_population": 0.0, "Latino_population": 0.0}
+            district_totals[district_id] = {"harris": 0.0, "trump": 0.0, "total_pop": 0.0, "Black_population": 0.0, "Latino_population": 0.0, "Other_population": 0.0}
         node_attrs = partition.graph.nodes[node]
         district_totals[district_id]["harris"] += node_attrs["Kamala D. Harris"]
         district_totals[district_id]["trump"] += node_attrs["Donald J. Trump"]
         district_totals[district_id]["total_pop"] += node_attrs["Total_population"]
         district_totals[district_id]["Black_population"] += node_attrs["Black_population"]
         district_totals[district_id]["Latino_population"] += node_attrs["Latino_population"]
+        district_totals[district_id]["Other_population"] += node_attrs["Other_population"]
 
     effective_count = 0
 
@@ -197,15 +198,18 @@ def count_effective(df):
 def scale_score(df, district_score):
     black_eff  = {}
     latino_eff = {}
+    other_eff = {}
     for _, row in df.iterrows():
         district_id = row["District"]
         total  = row["Total_population"]
         black  = row["Black_population"]
         latino = row["Latino_population"]
+        other = row["Other_population"]
         raw = district_score[district_id]
         black_eff[district_id]  = min(black  / total * 2, raw)
         latino_eff[district_id] = min(latino / total * 2, raw)
-    return black_eff, latino_eff
+        other_eff[district_id] = min(other / total * 2, raw)
+    return black_eff, latino_eff, other_eff
 
 
 def calc_minority_effectiveness(district_stats, preferred_candidate):
@@ -214,12 +218,13 @@ def calc_minority_effectiveness(district_stats, preferred_candidate):
     df = district_stats.merge(preferred_candidate, on="District", how="left")
 
     _, _, district_score = count_effective(df)
-    black_eff, latino_eff = scale_score(df, district_score)
+    black_eff, latino_eff, other_eff = scale_score(df, district_score)
 
     black_over  = sum(v > EFFECTIVE_THRESHOLD for v in black_eff.values())
     latino_over = sum(v > EFFECTIVE_THRESHOLD for v in latino_eff.values())
+    other_over = sum(v > EFFECTIVE_THRESHOLD for v in other_eff.values())
 
-    return black_over, black_eff, latino_over, latino_eff
+    return black_over, black_eff, latino_over, latino_eff, other_over, other_eff
 
 
 # ── SW-7: Minority population percentage ─────────────────────────────────────
@@ -227,10 +232,12 @@ def calc_minority_effectiveness(district_stats, preferred_candidate):
 def calc_minority_population(district_stats):
     black_pct  = district_stats["Black_population"]  / district_stats["Total_population"]
     latino_pct = district_stats["Latino_population"] / district_stats["Total_population"]
+    other_pct = district_stats['Other_population'] / district_stats["Total_population"]
     black_cnt = int((black_pct  > 0.5).sum())
     latino_cnt = int((latino_pct > 0.5).sum())
+    other_cnt = int((other_pct > 0.5).sum())
 
-    return black_pct, black_cnt, latino_pct, latino_cnt
+    return black_pct, black_cnt, latino_pct, latino_cnt, other_pct, other_cnt
 
 
 # ── SW-8: Republican/Democratic split ────────────────────────────────────────
@@ -254,8 +261,7 @@ def main():
     plans_per_core = args.plans
     mode = args.mode
     state_dir = os.path.join(OUTPUT_DIR, state_full_name, mode, str(total_plans))
-    if state == 'ar':
-        TOTAL_DISTRICT = 4
+    TOTAL_DISTRICT = 4 if state == 'ar' else 14
         
     bins = {
         demo: [[] for _ in range(TOTAL_DISTRICT)] for demo in demographics
@@ -290,16 +296,20 @@ def main():
             winner = calc_election_winners(district_stats)
             dem_wins, rep_wins = calc_splits(district_stats, TOTAL_DISTRICT)
             
-            black_over, black_eff, latino_over, latino_eff = calc_minority_effectiveness(district_stats, prefer)
+            black_over, black_eff, latino_over, latino_eff, other_over, other_eff = calc_minority_effectiveness(district_stats, prefer)
             black_effective_districts = [str(d) for d, v in black_eff.items() if v > EFFECTIVE_THRESHOLD]
             latino_effective_districts = [str(d) for d, v in latino_eff.items() if v > EFFECTIVE_THRESHOLD]
+            other_effective_districts = [str(d) for d, v in other_eff.items() if v > EFFECTIVE_THRESHOLD]
             
-            black_pct, black_cnt, latino_pct, latino_cnt = calc_minority_population(district_stats)
+            black_pct, black_cnt, latino_pct, latino_cnt, other_pct, other_cnt = calc_minority_population(district_stats)
             black_majority_districts = district_stats.loc[
                 district_stats["Black_population"] / district_stats["Total_population"] > 0.5, "District"
             ].astype(str).tolist()
             latino_majority_districts = district_stats.loc[
                 district_stats["Latino_population"] / district_stats["Total_population"] > 0.5, "District"
+            ].astype(str).tolist()
+            other_majority_districts = district_stats.loc[
+                district_stats["Other_population"] / district_stats["Total_population"] > 0.5, "District"
             ].astype(str).tolist()
 
             result = {
@@ -311,14 +321,19 @@ def main():
                 "black_effective_score_districts": black_effective_districts,
                 "latino_effective_score_cnt": latino_over,
                 "latino_effective_score_districts": latino_effective_districts,
+                "other_effective_score_cnt": other_over,
+                "other_effective_score_districts": other_effective_districts,
                 "black_effective_scores": {str(k): v for k, v in black_eff.items()},
                 "latino_effective_scores": {str(k): v for k, v in latino_eff.items()},
+                "other_effective_scores": {str(k): v for k, v in other_eff.items()},
                 
                 #SW-7
                 "black_population_pct": black_pct.tolist(),
                 "latino_population_pct": latino_pct.tolist(),
+                "other_population_pct": other_pct.tolist(),
                 "black_majority_districts": black_majority_districts,
                 "latino_majority_districts": latino_majority_districts,
+                "other_majority_districts": other_majority_districts,
                 
                 #SW-8
                 "republican_wins": rep_wins, 
