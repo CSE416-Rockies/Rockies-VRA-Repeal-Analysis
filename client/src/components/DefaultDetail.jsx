@@ -47,8 +47,8 @@ console.log('roughProp:', ensembleDetail?.roughProp, 'selectedstate:', selectedS
                         <div style={{ width: `${toPercent(repSummary.repPct)}%`, backgroundColor: PARTY_COLORS.rep }} className="transition-all duration-500" />
                     </div>
                     <div className="flex justify-between text-sm text-gray-500">
-                        <span className="font-semibold" style={{ color: PARTY_COLORS.dem }}>{repSummary.repCounts.dem ?? 0} Democrats </span>
-                        <span className="font-semibold" style={{ color: PARTY_COLORS.rep }}>{repSummary.repCounts.rep ?? 0} Republicans</span> 
+                        <div><span className = 'font-semibold' style={{ color: PARTY_COLORS.other }}>{repSummary.repCounts.dem ?? 0}  </span>Democrats</div>
+                        <div><span className = 'font-semibold' style={{ color: PARTY_COLORS.other }}>{repSummary.repCounts.rep ?? 0} </span> Republicans</div>
 
                     </div>
                 </div>

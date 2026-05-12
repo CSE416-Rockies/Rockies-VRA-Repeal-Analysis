@@ -17,40 +17,53 @@ export default function DistrictDetail({expanded, onClick, selectedDistrict, onS
     const pageRef = useRef(null);
     const containerRef = useRef(null);
     const titleRef = useRef(null);
-    const [perPage, setPerPage] = useState(7);
     const [scores, setScores] = useState(null);
     const expandRowRef = useRef(null);
+
+    const [perPage, setPerPage] = useState(7);
+    const [rowsWithExpand, setRowsWithExpand] = useState(7);
 
     const { store } = useContext(GlobalStoreContext);
     const selectedState = store?.selectedState || "";
     const districtArr = store?.representatives || [];
 
+    const effectivePerPage = selectedDistrict ? rowsWithExpand : perPage;
+    const { onPage, currPage, goPrev, goNext, hasPrev, hasNext, goToSpecific } = usePaginate(districtArr, effectivePerPage);
+
+    // fetch data
     useEffect(() => {
-        if(!selectedState) return;
-        getDistrictScores(selectedState)
-            .then(res => setScores(res.data))
-            .catch(console.error)
+        if (!selectedState) return;
+        getDistrictScores(selectedState).then(res => setScores(res.data)).catch(console.error);
     }, [selectedState]);
 
-    const { onPage, currPage, goPrev, goNext, hasPrev, hasNext, goToSpecific } = usePaginate(districtArr, perPage); // no effectivePerPage
+    // navigate to selected district's page location
+    useEffect(() => {
+        if (!selectedDistrict) return;
+        goToSpecific(parseInt(selectedDistrict, 10) - 1);
+    }, [selectedDistrict, effectivePerPage, rowsWithExpand]);
 
-    useEffect(()=>{
-        if(!selectedDistrict) return;
-        goToSpecific(selectedDistrict-1);
+    // reset to page 1 on deselect
+    useEffect(() => {
+        if (selectedDistrict) return;
+        goToSpecific(0);
     }, [selectedDistrict]);
 
     const calculate = () => {
         if (containerRef.current && theadRef.current && rowRef.current && pageRef.current && titleRef.current) {
-            const header_height = theadRef.current.clientHeight;
-            const title_height = titleRef.current.clientHeight;
+            
+            const available = containerRef.current.clientHeight
+                            - theadRef.current.clientHeight
+                            - titleRef.current.clientHeight
+                            - pageRef.current.clientHeight
+                            - 60;
+
             const row_height = rowRef.current.clientHeight;
-            const page_height = pageRef.current.clientHeight;
             const expand_height = expandRowRef.current?.clientHeight ?? 0;
-            const padding = 30;
-            const gap = 30;
-            const available = containerRef.current.clientHeight - page_height - title_height - header_height - padding - gap - expand_height;
-            const rows = Math.max(1, Math.floor(available / row_height));
-            setPerPage(rows);
+
+            setPerPage(Math.max(1, Math.floor(available / row_height)));
+            if (expand_height > 0) {
+                setRowsWithExpand(Math.max(1, Math.floor((available - expand_height) / row_height)));
+            }
         }
     };
 
@@ -60,12 +73,13 @@ export default function DistrictDetail({expanded, onClick, selectedDistrict, onS
         if (containerRef.current) observer.observe(containerRef.current);
         if (expandRowRef.current) observer.observe(expandRowRef.current);
         return () => observer.disconnect();
-    }, [expanded]);
+    }, [expanded, selectedDistrict]);
 
     useLayoutEffect(() => {
         if (!expanded) return;
-        requestAnimationFrame(() => calculate());
-    }, [expanded, selectedDistrict], currPage);
+        requestAnimationFrame(calculate);
+    }, [expanded, selectedDistrict]);
+
 
     return(
 
@@ -111,7 +125,7 @@ export default function DistrictDetail({expanded, onClick, selectedDistrict, onS
                                 </span>):'-'}                    
                             </td>
                             <td>{racialEthnicGroup ?? "-"}</td>
-                            <td>{voteMarginPercent ?? "-"}%</td>
+                            <td className = 'text-right pr-5'>{voteMarginPercent ?? "-"}%</td>
                         </tr>
                        {
                         (selectedDistrict) === String(districtNumber) && (
