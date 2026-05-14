@@ -4,7 +4,7 @@ import GlobalStoreContext from '../store';
 
 import DetailPanel from './DetailPanel';
 
-import { PARTY_COLORS, APP_COLORS } from '../utils/constants';
+import { PARTY_COLORS, FEASIBLE_RACES } from '../utils/constants';
 import { normalizeParty, capitalize } from '../utils/helpers';
 
 import { getEnsembleSummary, getStateDetail } from '../api/api';
@@ -32,10 +32,12 @@ export default function StateDetail({expanded, onClick}){
         })).sort((a, b) => b.percent - a.percent): [];
 
     const raceArr = stateDetail ? 
-        Object.entries(stateDetail.racialPopulation.populations).map(([race, pop]) => ({
-            race: capitalize(race),
-            popNumber: pop,
-            percent: (pop / stateDetail.racialPopulation.totalPopulation * 100)
+        Object.entries(stateDetail.racialPopulation.populations)
+            .filter(([race]) => FEASIBLE_RACES[selectedState]?.map(r => r.value).includes(race))
+            .map(([race, pop]) => ({
+                race: capitalize(race),
+                popNumber: pop,
+                percent: (pop / stateDetail.racialPopulation.totalPopulation * 100)
     })).sort((a, b) => b.percent - a.percent) : [];
 
     const partyStats = (() => {
