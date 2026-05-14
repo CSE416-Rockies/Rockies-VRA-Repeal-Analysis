@@ -6,6 +6,7 @@ import { FEASIBLE_MINORITIES } from '../utils/constants.js';
 
 export default function MapSelect(){
     const { store, setMapMode, setMinorityGroup } = useContext(GlobalStoreContext);
+    const selectedState = store?.selectedState || "";
 
     const options = [{id: 'district',  label: 'District plan'}, {id: 'precinct', label: 'Precinct'}]
 
@@ -23,7 +24,7 @@ export default function MapSelect(){
                 }
             </div>
 
-            { store.mapMode == 'precinct' &&  <DropDownMenu options = {FEASIBLE_MINORITIES[store.selectedState]} minority = {true} icon = {UserGroupIcon} onSelect={setMinorityGroup} toolTipDesc="Select group to show population" /> }
+            { store.mapMode == 'precinct' &&  <DropDownMenu key={selectedState} options = {FEASIBLE_MINORITIES[store.selectedState]} minority = {true} icon = {UserGroupIcon} onSelect={setMinorityGroup} toolTipDesc="Select group to show population" /> }
         </div>
     )
 }

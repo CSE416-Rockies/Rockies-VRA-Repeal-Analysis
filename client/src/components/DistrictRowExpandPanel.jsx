@@ -5,14 +5,14 @@ export default function DistrictRowExpandPanel({ state, scores, districtNumber})
     if (!scores) return <div className='px-5 py-3 text-gray-400 text-sm'>Issue with fetching scores</div>;
     const feasibleRaces = FEASIBLE_MINORITIES[state];
 
-    const TOOLTIP_TEXT = "Effectiveness scores: probability of electing minority-preferred candidates";
+    const TOOLTIP_TEXT = "probability of electing minority-preferred candidates";
 
     return (
         <div className='px-8 py-2 border-t border-gray-200'>
             <table className='w-full text-sm text-right'>
                 <thead>
                     <tr className='text-gray-400'>
-                        <th className='text-left w-32'><Tooltip text={TOOLTIP_TEXT} /></th>
+                        <th className='text-left w-32'><Tooltip title = "Effectiveness scores: " text={TOOLTIP_TEXT} /></th>
                         {feasibleRaces.map(r => <th key={r.value} className = 'text-right font-normal'>{r.label}</th>)}
                     </tr>
                 </thead>
@@ -45,7 +45,7 @@ function ScoreCell({ value }) {
     );
 }
 
-function Tooltip({ text }) {
+function Tooltip({ title, text }) {
     const [visible, setVisible] = useState(false);
     return (
         <div className='relative flex-shrink-0' onMouseEnter={() => setVisible(true)} onMouseLeave={() => setVisible(false)}>
@@ -54,6 +54,7 @@ function Tooltip({ text }) {
             </div>
             {visible && (
                 <div className='absolute right-full mr-10 top-1/2 -translate-y-1/2 w-44 bg-white border border-gray-200 shadow-md rounded-lg px-3 py-2 text-xs text-gray-600 z-50'>
+                    <span className = 'font-semibold'>{title}</span>
                     {text}
                 </div>
             )}

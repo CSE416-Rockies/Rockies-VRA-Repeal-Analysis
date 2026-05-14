@@ -50,7 +50,7 @@ export default function Gingles(){
             subtitle = {`By ${racialGroup} Population`}
             svgRef = {ref}
             legendItems = {PRESIDENT_CAND_LEGEND}
-            menus = {<DropDownMenu  options = {FEASIBLE_RACES[selectedState]} onSelect = {setRacialGroup} icon={UserGroupIcon} toolTipDesc=""/>}
+            menus = {<DropDownMenu key={selectedState} options = {FEASIBLE_RACES[selectedState]} onSelect = {setRacialGroup} icon={UserGroupIcon} toolTipDesc=""/>}
         >{
             error ? <ErrorMsg message={error}/> : 
             (!racialGroup) && (

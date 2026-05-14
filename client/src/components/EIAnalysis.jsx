@@ -58,7 +58,7 @@ export default function EIAnalysis(){
 
     const choiceMenu = (
         <div className = 'flex gap-5 items-center'>
-            <DropDownMenu options = {FEASIBLE_RACES[selectedState]} onSelect = {handleRaceSelect} icon = {UserGroupIcon} toolTipDesc=""/>
+            <DropDownMenu key={selectedState} options = {FEASIBLE_RACES[selectedState]} onSelect = {handleRaceSelect} icon = {UserGroupIcon} toolTipDesc=""/>
             <div className = 'flex items-center text-gray-500 gap-5'>
                 {PRESIDENT_CAND_LEGEND.map(({label, value})=>(
                     <button key = {label} className = 'flex gap-2 text-lg items-center cursor-pointer group' onClick = {() => setCandView(value)}>

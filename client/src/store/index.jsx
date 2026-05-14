@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer, useMemo } from "react";
-import { STATE_CODE } from "../utils/constants";
+import { STATE_CODE, FEASIBLE_MINORITIES, FEASIBLE_RACES } from "../utils/constants";
 
 export const GlobalStoreContext = createContext({});
 
@@ -17,9 +17,16 @@ function storeReducer(store, action) {
     const { type, payload } = action;
     switch (type) {
         case GlobalStoreActionType.SELECT_STATE: {
+
+            const newState = payload;
+            const availableGroups = FEASIBLE_MINORITIES[newState] ?? [];
+            const availableRaces = FEASIBLE_RACES[newState] ?? [];
+            
             return {
                 ...store,
                 selectedState: payload,
+                minorityGroup: availableGroups.some(r => r.value === store.minorityGroup) ? store.minorityGroup : null,
+                racialGroup: availableRaces.some(r => r.value === store.racialGroup) ? store.racialGroup : null,
             };
         }
         case GlobalStoreActionType.SET_MAP_MODE: {
