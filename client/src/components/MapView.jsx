@@ -96,7 +96,6 @@ export default function MapView(){
             
             layer.on({
                 click: () =>{
-                    console.log(layer.feature.properties.DISTRICT);
                     selectDistrict(normalizeDistrict(layer.feature.properties.DISTRICT));
                 },
                 mouseover: (e) =>  e.target.setStyle(highlightStyle),

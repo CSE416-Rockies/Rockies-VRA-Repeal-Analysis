@@ -29,7 +29,6 @@ export default function Gingles(){
         getGingles(selectedState)
         .then(res => {
             setGinglesData(res.data);
-            console.log(res.data);
         })
         .catch(err => {
             console.error("Error loading Gingles data:", err);

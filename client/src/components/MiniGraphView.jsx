@@ -1,8 +1,9 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useContext } from "react"
 import { createPortal } from "react-dom";
 import { useD3 } from "../hooks/useD3";
 import Legend from "./Legend";
 import FullGraphView from "./FullGraphView";
+import GlobalStoreContext from '../store';
 
 import { ArrowsPointingOutIcon } from "@heroicons/react/24/solid";
 
@@ -10,11 +11,13 @@ import { ArrowsPointingOutIcon } from "@heroicons/react/24/solid";
 export default function MiniGraphView({ title, drawFunc, data, racialGroup, margin, legendItems, extraProps = {}, children }) {
     const ref = useRef(null);
     const [fullScreen, setFullScreen] = useState(false);
+    const { store } = useContext(GlobalStoreContext);
+    const selectedState = store?.selectedState || "";
 
     useD3(ref, (svg) => {
         if (!data || !racialGroup) return;
-        drawFunc({ givenSVG: svg, data, margin, racialGroup, ...extraProps });
-    }, [data, racialGroup, extraProps, fullScreen]);
+        drawFunc({ givenSVG: svg, data, margin, racialGroup, state: selectedState, ...extraProps });
+    }, [data, racialGroup, extraProps, fullScreen, selectedState]);
 
     return (
         <>

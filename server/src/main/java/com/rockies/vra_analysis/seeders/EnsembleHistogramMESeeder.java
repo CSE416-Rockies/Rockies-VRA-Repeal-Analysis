@@ -68,7 +68,7 @@ public class EnsembleHistogramMESeeder extends BaseSeeder{
 
             int blackCount = plan.get("black_effective_score_cnt").asInt();
             int latinoCount = plan.get("latino_effective_score_cnt").asInt();
-            int otherCount = plan.get("other_effective_score_cnt").asInt();
+            int otherCount = plan.path("other_effective_score_cnt").asInt(0);
 
             counts.get(Race.BLACK).merge(blackCount, 1, Integer::sum);
             counts.get(Race.LATINO).merge(latinoCount, 1, Integer::sum);

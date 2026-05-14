@@ -1,11 +1,11 @@
 import * as d3 from "d3";
 import { drawAxes, drawGrid } from "./drawGridLines";
 import { drawBox} from "./drawBox";
-import { ME_COLORS, ME_LABELS } from "./constants";
+import { ME_COLORS, ME_LABELS, FEASIBLE_MINORITIES } from "./constants";
 import { bindTooltip } from "./tooltip";
 
 
-export function drawBoxWhiskerME({givenSVG, data, margin, racialGroup}){
+export function drawBoxWhiskerME({givenSVG, data, margin, racialGroup, state}){
     if(!givenSVG) return;
 
     var svg = d3.select(givenSVG)
@@ -13,7 +13,10 @@ export function drawBoxWhiskerME({givenSVG, data, margin, racialGroup}){
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
     /* ------------------------------------------------------------------ Flatten map */
-    const groups = Object.keys(data.raceBlind).map((race) => ({
+    const groups = Object.keys(data.raceBlind)
+        .filter(race => FEASIBLE_MINORITIES[state]?.map(m => m.value).includes(race))
+        .sort((a, b) => a.localeCompare(b))
+        .map((race) => ({
         race,
         raceBlind: data.raceBlind[race],
         vra: data.vra[race],

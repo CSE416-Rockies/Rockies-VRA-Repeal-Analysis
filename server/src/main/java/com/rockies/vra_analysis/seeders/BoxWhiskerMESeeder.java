@@ -61,7 +61,7 @@ public class BoxWhiskerMESeeder extends BaseSeeder{
             JsonNode plan = mapper.readTree(line);
             blackCounts.add((double) plan.get("black_effective_score_cnt").asInt());
             latinoCounts.add((double) plan.get("latino_effective_score_cnt").asInt());
-            otherCounts.add((double) plan.get("other_effective_score_cnt").asInt());
+            otherCounts.add((double) plan.path("other_effective_score_cnt").asInt(0));
         }
 
         Map<Race, BoxStats> result = new HashMap<>();

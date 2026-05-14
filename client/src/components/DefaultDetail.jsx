@@ -5,7 +5,6 @@ import { BarSection } from './HorizontalBar';
 
 /* Default state information component*/
 export default function DefaultDetail({selectedState, races, stateVoterDist, partyControl, pageNum, statePopulation, repSummary, ensembleDetail}){
-console.log('roughProp:', ensembleDetail?.roughProp, 'selectedstate:', selectedState, 'minorities:', FEASIBLE_MINORITIES[selectedState]);
 
     return(
     <div className = 'flex flex-col border-divide gap-3 w-full'>

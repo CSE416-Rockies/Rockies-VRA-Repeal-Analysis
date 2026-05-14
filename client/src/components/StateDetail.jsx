@@ -55,7 +55,6 @@ export default function StateDetail({expanded, onClick}){
     })();
 
     const statePopulation = stateDetail?.racialPopulation.totalPopulation ?? 0;
-    console.log(stateDetail);
     const partyControl = stateDetail?.voterDistribution.partyControl ?? "";
 
     useEffect(() => {

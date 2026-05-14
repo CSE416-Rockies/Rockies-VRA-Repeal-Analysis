@@ -12,7 +12,6 @@ export default function StateDropdown({onSelect, options}){
 
     const handleSelect = (value)=>{
         if(onSelect){
-            console.log("selected: ", value);
             onSelect(value);
         }
         setOpen(false);

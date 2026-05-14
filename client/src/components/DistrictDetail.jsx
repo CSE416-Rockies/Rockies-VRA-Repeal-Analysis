@@ -98,7 +98,6 @@ export default function DistrictDetail({expanded, onClick, selectedDistrict, onS
                     </thead>
                     <tbody>
                         {onPage.map(({districtNumber, name, party, racialEthnicGroup, voteMarginPercent, status}, index) => {
-                        console.log('selectedDistrict:' + typeof(selectedDistrict) );
                         return(<Fragment key={districtNumber}>
                         <tr 
                             ref={index === 0 ? rowRef : null} 

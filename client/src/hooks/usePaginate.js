@@ -7,7 +7,6 @@ export function usePaginate(arr, perPage) {
 
     const goToSpecific = useCallback((idx, currentPerPage = perPage) => {
         const target = Math.ceil((idx + 1) / currentPerPage);
-        console.log('goToSpecific executing:', { idx, currentPerPage, perPage, target });
         setPage(target);
     }, [perPage]);
 

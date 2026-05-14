@@ -10,7 +10,6 @@ export function usePrecinctData(name, mapMode){
         if(mapMode === 'precinct' && !precinctData) {
             getPrecinctMap(name)                    
                 .then((res) => {
-                    console.log("RAW RES:", res);
                     return res.data
                 })
                 .then(topology => {
@@ -18,8 +17,6 @@ export function usePrecinctData(name, mapMode){
                         ? JSON.parse(topology)
                         : topology;
 
-                    const objectKey = Object.keys(parsed.objects)[0];
-                    console.log(objectKey)
                     const geojson = feature(
                         parsed,
                         parsed.objects["data"]       // name of object inside topojson
