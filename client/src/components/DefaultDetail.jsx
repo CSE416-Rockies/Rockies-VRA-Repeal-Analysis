@@ -24,11 +24,6 @@ export default function DefaultDetail({selectedState, races, stateVoterDist, par
                     style = {{color: PARTY_COLORS[normalizeParty(partyControl)]}}>{partyControl}</span>
             </div>
 
-            <div className = 'flex text-gray-500 justify-between pt-3'>
-                <span>Total Districts</span>
-                <span className = {`font-bold`}>{repSummary.total}</span>
-            </div>
-
             <BarSection title = "State Voter Distribution" arr={stateVoterDist.map(ele => ({
                 label: PARTY_REFS[normalizeParty(ele.party)]?.label ?? ele.party,
                 sublabel: "",
@@ -38,7 +33,12 @@ export default function DefaultDetail({selectedState, races, stateVoterDist, par
 
 
             <div className = 'flex flex-col text-gray-500 justify-between pt-3 gap-2'>
-                State Representatives Distribution
+                <div className = 'flex text-gray-500 justify-between pt-3'>
+                    <span> Congressional Representatives</span>
+                    <span className = {`font-bold`}>{repSummary.total}</span>
+                </div>
+                
+
                 <div className="flex flex-col gap-1 px-1">
                     
                     <div className="flex rounded-md overflow-hidden h-3">

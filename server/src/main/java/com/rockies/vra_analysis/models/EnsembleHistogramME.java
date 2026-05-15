@@ -12,16 +12,19 @@ public class EnsembleHistogramME extends StateDocument{
     private int totalDistricts;
     private Map<Race, Map<Integer, Integer>> raceBlind;
     private Map<Race, Map<Integer, Integer>> vra;
+    private Map<Race, Integer> enactedCounts;
 
     public EnsembleHistogramME() {}
-    public EnsembleHistogramME(State state, int totalDistricts, Map<Race, Map<Integer, Integer>> raceBlind, Map<Race, Map<Integer, Integer>> vra) {
+    public EnsembleHistogramME(State state, int totalDistricts, Map<Race, Map<Integer, Integer>> raceBlind, Map<Race, Map<Integer, Integer>> vra, Map<Race, Integer> enactedCounts) {
         super(state);
         this.totalDistricts = totalDistricts;
         this.raceBlind = raceBlind;
         this.vra = vra;
+        this.enactedCounts = enactedCounts;
     }
 
     public int getTotalDistricts() { return totalDistricts; }
     public Map<Race, Map<Integer, Integer>> getRaceBlind() { return raceBlind; }
     public Map<Race, Map<Integer, Integer>> getVra() { return vra; }
+    public Map<Race, Integer> getEnactedCounts() { return enactedCounts; }
 }

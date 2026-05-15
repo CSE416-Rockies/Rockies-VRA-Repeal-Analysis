@@ -155,9 +155,11 @@ export const CHOROPLETH_COLORS = ["#ECFDF5", "#D1FAE5", "#6EE7B7", "#10B981", "#
 
 export const VALID_STATES = new Set(STATE_OPTIONS.map(s=>s.id));
 
+const LAT_NUDGE = 2;
+const LNG_NUDGE = 0.5;
 export const US_BOUNDS = [
-    [24.396308, -124.848974],
-    [49.384358, -66.885444]  
+    [24.396308 + LAT_NUDGE, -124.848974 + LNG_NUDGE],
+    [49.384358 - LAT_NUDGE, -66.885444 - LNG_NUDGE]
 ]
 
 export const STATE_BOUNDS = {

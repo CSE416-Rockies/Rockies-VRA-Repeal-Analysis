@@ -33,14 +33,31 @@ public class EnsembleHistogramMESeeder extends BaseSeeder{
 
         String rbPath = jsonlPath(state, "rb_5000");
         String vraPath = jsonlPath(state, "vra_5000");
+        String enactedCountPath = jsonPath(state, "enacted_effective");
 
         Map<Race, Map<Integer, Integer>> raceBlind = aggregateFromJsonl(rbPath);
         Map<Race, Map<Integer, Integer>> vra = aggregateFromJsonl(vraPath);
+        Map<Race, Integer> enactedCounts = getEnactedCounts(enactedCountPath);
         int totalDistricts = findTotalDistricts(rbPath);
 
-        EnsembleHistogramME histogram = new EnsembleHistogramME(state, totalDistricts, raceBlind, vra);
+        EnsembleHistogramME histogram = new EnsembleHistogramME(state, totalDistricts, raceBlind, vra, enactedCounts);
         mongoTemplate.save(histogram);
         System.out.println("Migration: Successfully seeded EnsembleHistogramME for " + state);
+    }
+
+    private Map<Race, Integer> getEnactedCounts(String path) throws Exception {
+        InputStream is = new ClassPathResource(path).getInputStream();
+        JsonNode root = mapper.readTree(is);
+
+        JsonNode demographics = root.get("Demographic");
+        JsonNode effectiveDistricts = root.get("Effective_Districts");
+
+        Map<Race, Integer> counts = new HashMap<>();
+        for (int i = 0; i < demographics.size(); i++) {
+            Race race = Race.fromValue(demographics.get(String.valueOf(i)).asText());
+            counts.put(race, effectiveDistricts.get(String.valueOf(i)).asInt());
+        }
+        return counts;
     }
 
     private int findTotalDistricts(String path) throws Exception{

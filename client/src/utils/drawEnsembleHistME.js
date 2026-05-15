@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import { drawAxes, drawGrid } from "./drawGridLines";
 import { drawBars} from "./drawBars";
 import { ME_COLORS } from "./constants";
-
+import { drawEnactedBackground, drawEnactedLabel } from "./drawEnacted";
 
 export function drawEnsembleHistME({givenSVG, data, margin, racialGroup}){
     if (!givenSVG || !data) return;
@@ -17,6 +17,7 @@ export function drawEnsembleHistME({givenSVG, data, margin, racialGroup}){
     /* -------------------------------------------------------------------- Data Manipulation */
     const raceBlindEntries = Object.entries(data.raceBlind[racialGroup]).map(([k, v]) => ({ x: +k, y: v }));
     const vraEntries = Object.entries(data.vra[racialGroup]).map(([k,v]) => ({x: +k, y: v}));
+    const enactedCount = data.enactedCounts[racialGroup];
 
     /* ------------------------------------------------------------------- Axes */
     const allX     = [...raceBlindEntries, ...vraEntries].map(d => d.x);
@@ -42,6 +43,11 @@ export function drawEnsembleHistME({givenSVG, data, margin, racialGroup}){
         small: true
     });
 
+
+    if (enactedCount != null && x(enactedCount) !== undefined){
+        drawEnactedBackground({ svg, x, enactedX: x(enactedCount), height });
+    }
+
     /* ------------------------------------------------------------------- Bars */
 
     const tooltipHTML = (label) => (d) => `
@@ -58,5 +64,11 @@ export function drawEnsembleHistME({givenSVG, data, margin, racialGroup}){
     datasets.forEach(({entries, color, label})=>{
         drawBars({ svg, x, y, height, entries, color, tooltipHTML: tooltipHTML(label) });
     })
+
+    /* ------------------------------------------------------------------- Enacted line */
+    
+    if (enactedCount != null && x(enactedCount) !== undefined){
+        drawEnactedLabel({ svg, x, enactedX: x(enactedCount), margin, height });
+    }
 
 }

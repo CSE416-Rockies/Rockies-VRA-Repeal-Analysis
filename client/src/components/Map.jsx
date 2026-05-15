@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import GlobalStoreContext from "../store";
+import RockiesLogo from '../assets/rockies-logo.png';
 
 import {US_BOUNDS, STATE_BOUNDS, STATE_OPTIONS} from "../utils/constants";
 import { highlightStateStyle } from "../utils/mapStyles";
@@ -116,6 +117,7 @@ export default function Map() {
     <div className = 'relative h-screen w-screen'>
       <MapContainer
         bounds={US_BOUNDS}
+        zoomSnap={0.25}
         className="fixed inset-0 h-screen w-full"
       >
         <MapController mapRef = {mapRef}/>
@@ -130,10 +132,13 @@ export default function Map() {
         { error ? <ErrorMsg message={error}/>
         :
           <>
-            <div className = 'font-semibold text-3xl text-gray-600'>VRA Repeal Analysis </div>
-            <div className = 'flex items-center text-xl text-gray-500'>
-                <div>Rockies 2026</div>
+          <div className='flex items-center gap-3'>
+            <img src={RockiesLogo} className='w-24 h-12 object-contain' />
+            <div>
+                <div className='font-semibold text-3xl text-gray-600'>VRA Repeal Analysis</div>
+                <div className='text-xl text-purple-900 font-medium'>ROCKIES 2026</div>
             </div>
+          </div>
           </>
         }
       </div>

@@ -15,6 +15,7 @@ import com.rockies.vra_analysis.enums.State;
 import com.rockies.vra_analysis.models.EnsembleSplits;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -33,15 +34,26 @@ public class EnsembleSplitsSeeder extends BaseSeeder{
 
         String rbPath = jsonlPath(state, "rb_5000");
         String vraPath = jsonlPath(state, "vra_5000");
+        String enactedPath = jsonPath(state, "party_split");
         int totalDistricts = findTotalDistricts(rbPath);
 
         Map<Integer, Integer> raceBlind = aggregateFromJsonl(rbPath);
         Map<Integer, Integer> vra = aggregateFromJsonl(vraPath);
+        List<Integer> enacted = getEnactedSplit(enactedPath);
 
-        EnsembleSplits splits = new EnsembleSplits(state, totalDistricts, raceBlind, vra);
+        EnsembleSplits splits = new EnsembleSplits(state, totalDistricts, raceBlind, vra, enacted);
         mongoTemplate.save(splits);
         System.out.println("Migration: Successfully seeded EnsembleSplits for " + state);
         
+    }
+
+    private List<Integer> getEnactedSplit(String path) throws Exception {
+        InputStream is = new ClassPathResource(path).getInputStream();
+        JsonNode root = mapper.readTree(is);
+        return List.of(
+            root.get("republican").asInt(),
+            root.get("democrat").asInt()
+        );
     }
 
     private int findTotalDistricts(String path) throws Exception{

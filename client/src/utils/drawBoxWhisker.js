@@ -3,7 +3,7 @@ import { drawBox } from "./drawBox";
 import { drawAxes, drawGrid } from "./drawGridLines";
 import { ME_COLORS } from "./constants";
 import { toPercent } from "./helpers";
-
+import { bindTooltip } from "./tooltip";
 
 export function drawBoxWhisker({ givenSVG, data, margin, racialGroup, ensemble }) {
     if(!givenSVG) return;  
@@ -81,13 +81,15 @@ export function drawBoxWhisker({ givenSVG, data, margin, racialGroup, ensemble }
             drawBox(boxGroup, {cx, bandwidth, y, d, color: ME_COLORS[key], tooltipHTML: tooltipHTML(label)});
 
         // enacted point
-        boxGroup.append("circle")
+       const enactedPt = boxGroup.append("circle")
             .attr("cx", cx)
             .attr("cy", y(d.enacted))
             .attr("r", Math.max(4))
             .attr("fill", ME_COLORS["enacted"])
             .attr("stroke", "white")
             .attr("stroke-width", 1);
+
+            bindTooltip(enactedPt, () => `<strong>Enacted</strong><br/>Population Share: ${toPercent(d.enacted)}%`);
         })
         
 
