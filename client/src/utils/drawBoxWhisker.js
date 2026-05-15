@@ -79,20 +79,20 @@ export function drawBoxWhisker({ givenSVG, data, margin, racialGroup, ensemble }
             const cx = xOuter(i + 1) + xInner(key) + xInner.bandwidth() / 2;
             const bandwidth = xInner.bandwidth();
             drawBox(boxGroup, {cx, bandwidth, y, d, color: ME_COLORS[key], tooltipHTML: tooltipHTML(label)});
+        })  
+    });
 
-        // enacted point
-       const enactedPt = boxGroup.append("circle")
+    const firstSeries = allEntries[0].series;
+    firstSeries.forEach((d, i) => {
+        const cx = xOuter(i + 1) + xOuter.bandwidth() / 2;
+        const enactedPt = boxGroup.append("circle")
             .attr("cx", cx)
             .attr("cy", y(d.enacted))
-            .attr("r", Math.max(4))
+            .attr("r", 4)
             .attr("fill", ME_COLORS["enacted"])
             .attr("stroke", "white")
             .attr("stroke-width", 1);
 
-            bindTooltip(enactedPt, () => `<strong>Enacted</strong><br/>Population Share: ${toPercent(d.enacted)}%`);
-        })
-        
-
-        
+        bindTooltip(enactedPt, () => `<strong>Enacted</strong><br/>Population Share: ${toPercent(d.enacted)}%`);
     });
 }
