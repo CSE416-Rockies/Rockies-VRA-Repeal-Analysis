@@ -21,7 +21,7 @@ export default function NavBar(){
     const [expand, setExpand] = useState(false);
     const navItems = [
         {to: `/map/${selectedStateName}`, id: "map-nav", Icon: MapIcon, label: "Map"},
-        {to: "/gingles", id: "gingles-nav", Icon: ScatterIcon, label: "Gingles"},
+        {to: "/gingles", id: "gingles-nav", Icon: ScatterIcon, label: "Gingles Analysis"},
         {to: "/eiAnalysis", id: "boxplot-nav", Icon: EIAnalysisIcon, label: "EI Analysis"},
         {to: "/ensembles", id: "ensembles-nav", Icon: BoxPlotIcon, label: "Ensemble Analysis"},
         {to: "/minorityEffect", id: "minority-nav", Icon: MinorityIcon, label: "Minority Effectiveness"},

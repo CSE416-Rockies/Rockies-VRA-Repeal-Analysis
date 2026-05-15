@@ -7,7 +7,7 @@ export function drawEnactedBackground({ svg, x, enactedX, height }) {
         .attr("x", enactedX)
         .attr("y", 0)
         .attr("width", bandW)
-        .attr("height", height)
+        .attr("height", Math.max(0, height))
         .attr("fill", ME_COLORS["enacted"])
         .attr("opacity", 0.1);
 }
