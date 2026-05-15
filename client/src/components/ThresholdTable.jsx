@@ -22,7 +22,7 @@ export default function ThresholdTable({data, racialGroup}){
                 ].map(({label, raceBlind, vra, subText}, index)=> (
                     <tr key = {index} className = {`${index % 2 === 0 ? 'bg-gray-100' : ''}`}> 
                         <td className='pl-4 py-2'>
-                            <span className='relative group cursor-help inline-block'>
+                            <span className= {`relative group ${subText && 'cursor-help'} inline-block`}>
                                 {label}
                                 {subText && (
                                     <div className='absolute left-0 top-full mt-1 -ml-2 w-44 bg-white border border-gray-200 shadow-md rounded-lg px-3 py-2 text-xs text-gray-600 z-50 hidden group-hover:block'>
