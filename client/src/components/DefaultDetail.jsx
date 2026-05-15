@@ -83,7 +83,7 @@ export default function DefaultDetail({selectedState, races, stateVoterDist, par
                     <div className='rounded-md overflow-hidden border border-gray-200'>
                         <div className='grid grid-cols-2 px-3 py-1 bg-gray-50 border-b border-gray-200'>
                             <span className='text-xs font-semibold text-gray-400'>Group</span>
-                            <span className='text-right text-xs font-semibold text-gray-400'>Measure</span>
+                            <span className='text-right text-xs font-semibold text-gray-400'>Ratio</span>
                         </div>
                         {ensembleDetail?.roughProp && FEASIBLE_MINORITIES[selectedState]?.map((minority, i, arr) => (
                             <div
